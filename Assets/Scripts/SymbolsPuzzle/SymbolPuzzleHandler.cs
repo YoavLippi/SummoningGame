@@ -17,7 +17,8 @@ public class SymbolPuzzleHandler : MonoBehaviour
     [Header("Runtime")]
     [SerializeField] private List<SymbolOrder> symbolOrders;
     //This will be the truth that is referred back to at runtime
-    [SerializeField] private List<SymbolData> correctOrder;
+    [SerializeField] private List<SymbolData> correctOrderFull;
+    [SerializeField] private List<SymbolData> correctOrderRelevantOnly;
     [SerializeField] private List<SymbolData> correctSymbols;
     [SerializeField] private int correctIndex;
 
@@ -53,6 +54,9 @@ public class SymbolPuzzleHandler : MonoBehaviour
         //resetting correct symbols and populating random new ones
         symbolOrders.Clear();
         correctSymbols.Clear();
+        correctOrderFull.Clear();
+        correctOrderRelevantOnly.Clear();
+        
         for (int i = 0; i < symbolDisplayAmount; i++)
         {
             int pullIndex = Random.Range(0, pullList.Count);
@@ -108,7 +112,16 @@ public class SymbolPuzzleHandler : MonoBehaviour
                     availableIndexes.Remove(subIndex);
                 }
 
-                correctOrder = newOrder.thisOrder;
+                correctOrderFull = newOrder.thisOrder;
+                
+                //pupulating the correct symbol order in particular
+                foreach (var symbol in correctOrderFull)
+                {
+                    if (correctSymbols.Contains(symbol))
+                    {
+                        correctOrderRelevantOnly.Add(symbol);
+                    }
+                }
             }
             else
             {
@@ -140,5 +153,11 @@ public class SymbolPuzzleHandler : MonoBehaviour
         }
 
         return true;
+    }
+
+    public bool ValidateChoice(SymbolData choice)
+    {
+        //we need to know the order the symbols are meant to be clicked in
+        return false;
     }
 }
