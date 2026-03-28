@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class MainMenu : MonoBehaviour
 {
+    public GameManager _gameManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -16,6 +17,6 @@ public class MainMenu : MonoBehaviour
 
     public void StartGame()
     {
-        GameManager.Instance.StartGame();
+  
     }
 }
