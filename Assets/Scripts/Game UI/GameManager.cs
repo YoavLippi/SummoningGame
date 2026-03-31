@@ -7,9 +7,9 @@ public class GameManager : MonoBehaviour
 {
 
     [Header("Interaction Audio")]
-    public AudioSource buttonPressed;
-    public AudioSource gameMusic;
-    public AudioSource roundMusic;
+    // public AudioSource buttonPressed;
+    // public AudioSource gameMusic;
+    // public AudioSource roundMusic;
     public bool isGameMusicPlaying = false;
 
     [Header("Music Settings")]
@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        isGameMusicPlaying = gameMusic.isPlaying;
+       // isGameMusicPlaying = gameMusic.isPlaying;
 
         if (musicSlider != null)
             musicSlider.value = musicVolume;
@@ -37,25 +37,25 @@ public class GameManager : MonoBehaviour
     // Menu UI elements (General logic we may need)
     public void StartGame()
     {
-        buttonPressed.Play();
+       // buttonPressed.Play();
         SceneManager.LoadScene(1);
     }
 
     public void ReturnToMainMenu ()
     {
-        buttonPressed.Play();
+       // buttonPressed.Play();
         SceneManager.LoadScene(0);
     }
 
     public void QuitGame ()
     {
-        buttonPressed.Play();
+       // buttonPressed.Play();
         Application.Quit();
     }
 
     public void RestartGame ()
     {
-        buttonPressed.Play();
+       // buttonPressed.Play();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -81,12 +81,12 @@ public class GameManager : MonoBehaviour
     {
         if (isGameMusicPlaying)
         {
-            gameMusic.Pause();
+         //   gameMusic.Pause();
             isGameMusicPlaying = false;
         }
         else
         {
-            gameMusic.Play();
+         //   gameMusic.Play();
             isGameMusicPlaying = true;
         }
     }
@@ -94,7 +94,7 @@ public class GameManager : MonoBehaviour
     public void SetMusicVolume (float volume)
     {
         musicVolume = volume;
-        gameMusic.volume = musicVolume;
+      //  gameMusic.volume = musicVolume;
     }
 
     // Timer control logic 
