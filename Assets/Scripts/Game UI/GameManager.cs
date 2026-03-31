@@ -38,13 +38,13 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         buttonPressed.Play();
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene(1);
     }
 
     public void ReturnToMainMenu ()
     {
         buttonPressed.Play();
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene(0);
     }
 
     public void QuitGame ()
