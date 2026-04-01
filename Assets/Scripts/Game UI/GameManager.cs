@@ -1,7 +1,12 @@
+using System.Collections;
+using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Events;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +15,8 @@ public class GameManager : MonoBehaviour
     public AudioSource buttonPressed;
     public AudioSource gameMusic;
     public AudioSource roundMusic;
+    public List<SoundContainer> allSounds;
+    public AudioSource uiAudio;
     public bool isGameMusicPlaying = false;
 
     [Header("Music Settings")]
@@ -23,7 +30,24 @@ public class GameManager : MonoBehaviour
     [Header("Menu UI")]
     public GameObject endRoundPanel;
 
-    public static object Instance { get; internal set; }
+    [Header("Events")] 
+    public UnityEvent RoundEnd;
+
+    public static GameManager Instance;
+    
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = GetComponent<GameManager>();
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+    
     bool roundStarted = false;
 
     public void Start()
@@ -32,6 +56,35 @@ public class GameManager : MonoBehaviour
 
         if (musicSlider != null)
             musicSlider.value = musicVolume;
+    }
+    
+    //enum to denote the correct audio sounds
+    public enum Sound
+    {
+        ButtonPressed,
+        GameMusic,
+        RoundMusic
+    }
+
+    public void PlaySound(Sound s)
+    {
+        if (ContainsItemWithSound(allSounds, s))
+        {
+            uiAudio.PlayOneShot(GetSound(allSounds, s).soundClip);
+        }
+    }
+    
+    private bool ContainsItemWithSound(List<SoundContainer> inList, Sound associatedSound)
+    {
+        // Use LINQ's Any() to check if any item in the list matches t
+        return inList.Any(item => item.associatedSound == associatedSound);
+        // This avoids creating heap allocations that might cause performance issues.
+    }
+    
+    private SoundContainer GetSound(List<SoundContainer> inList, Sound associatedSound)
+    {
+        // Use LINQ's FirstOrDefault() to retrieve the item itself
+        return inList.FirstOrDefault(item => item.associatedSound == associatedSound);
     }
 
     // Menu UI elements (General logic we may need)
@@ -66,7 +119,7 @@ public class GameManager : MonoBehaviour
         roundStarted = true;
         timerText.text = "10";
     }
-    public void EndRound ()
+    public void EndRound()
     {
         if (!roundStarted)
             return; // additional check to prevent multiple calls to EndRound
@@ -98,8 +151,9 @@ public class GameManager : MonoBehaviour
     }
 
     // Timer control logic 
+    // Adjusting to be invokable globally
 
-    public void Update()
+    /*public void Update()
     {
         if (timer > 0)
         {
@@ -114,6 +168,12 @@ public class GameManager : MonoBehaviour
 
             Debug.Log("Timer has reached zero!");
         }
+    }*/
+
+    public static IEnumerator DoTiming(int time)
+    {
+        yield return new WaitForSeconds(time);
+        Instance?.RoundEnd.Invoke();
     }
 }
 
