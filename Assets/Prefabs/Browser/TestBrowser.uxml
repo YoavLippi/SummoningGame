@@ -1,0 +1,47 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Prefabs/Browser/BrowserStyle.uss?fileID=7433441132597879392&amp;guid=3d9790a6f1ddfaf4bacc415d0539b5c6&amp;type=3#BrowserStyle"/>
+    <ui:VisualElement class="main_container" style="flex-grow: 1; align-content: auto; align-items: center; flex-direction: column; justify-content: center;">
+        <ui:VisualElement style="flex-grow: 1; flex-direction: row; width: 100%;">
+            <ui:VisualElement name="SessionCreate" class="indiv_tab" style="flex-grow: 1; margin-right: 20px;">
+                <Blocks.Sessions.Common.SessionStatusLabel data-source="project://database/Assets/Prefabs/OurSessionSettings.asset?fileID=11400000&amp;guid=91282b656b0e7334abf064367752c1a1&amp;type=2#OurSessionSettings" class="blocks-element--space-right blocks-label" style="height: 29px;">
+                    <Bindings>
+                        <ui:DataBinding property="SessionType" data-source-path="sessionType" binding-mode="ToTarget"/>
+                    </Bindings>
+                </Blocks.Sessions.Common.SessionStatusLabel>
+                <Blocks.Sessions.CreateSessionElement session-settings="project://database/Assets/Prefabs/OurSessionSettings.asset?fileID=11400000&amp;guid=91282b656b0e7334abf064367752c1a1&amp;type=2#OurSessionSettings" data-source="project://database/Assets/Prefabs/OurSessionSettings.asset?fileID=11400000&amp;guid=91282b656b0e7334abf064367752c1a1&amp;type=2#OurSessionSettings" style="width: 623px;">
+                    <Bindings>
+                        <ui:DataBinding property="SessionSettings" binding-mode="ToTarget" data-source-path=""/>
+                    </Bindings>
+                </Blocks.Sessions.CreateSessionElement>
+                <Blocks.Sessions.Common.PlayerCountLabel data-source="project://database/Assets/Prefabs/OurSessionSettings.asset?fileID=11400000&amp;guid=91282b656b0e7334abf064367752c1a1&amp;type=2#OurSessionSettings">
+                    <Bindings>
+                        <ui:DataBinding property="SessionType" binding-mode="ToTarget" data-source-path="sessionType"/>
+                    </Bindings>
+                </Blocks.Sessions.Common.PlayerCountLabel>
+                <Blocks.Sessions.Common.PlayerListViewElement data-source="project://database/Assets/Prefabs/OurSessionSettings.asset?fileID=11400000&amp;guid=91282b656b0e7334abf064367752c1a1&amp;type=2#OurSessionSettings" class="blocks-element--space-bottom">
+                    <Bindings>
+                        <ui:DataBinding property="SessionType" data-source-path="sessionType" binding-mode="ToTarget"/>
+                    </Bindings>
+                </Blocks.Sessions.Common.PlayerListViewElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="SessionView" class="indiv_tab" style="flex-grow: 1;">
+                <Blocks.Sessions.Common.SessionNameLabel data-source="project://database/Assets/Prefabs/OurSessionSettings.asset?fileID=11400000&amp;guid=91282b656b0e7334abf064367752c1a1&amp;type=2#OurSessionSettings" class="blocks-header blocks-element--space-right">
+                    <Bindings>
+                        <ui:DataBinding property="SessionType" data-source-path="sessionType" binding-mode="ToTarget"/>
+                    </Bindings>
+                </Blocks.Sessions.Common.SessionNameLabel>
+                <Blocks.Sessions.SessionBrowserElement data-source="project://database/Assets/Prefabs/OurSessionSettings.asset?fileID=11400000&amp;guid=91282b656b0e7334abf064367752c1a1&amp;type=2#OurSessionSettings" class="blocks-container--stretch" style="width: 584px;">
+                    <Bindings>
+                        <ui:DataBinding property="SessionSettings" binding-mode="ToTarget" data-source-path=""/>
+                    </Bindings>
+                </Blocks.Sessions.SessionBrowserElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <Blocks.Sessions.Common.LeaveSessionButton data-source="project://database/Assets/Prefabs/OurSessionSettings.asset?fileID=11400000&amp;guid=91282b656b0e7334abf064367752c1a1&amp;type=2#OurSessionSettings">
+            <Bindings>
+                <ui:DataBinding property="SessionType" binding-mode="ToTarget" data-source-path="sessionType"/>
+            </Bindings>
+        </Blocks.Sessions.Common.LeaveSessionButton>
+    </ui:VisualElement>
+    <ui:GroupBox/>
+</ui:UXML>

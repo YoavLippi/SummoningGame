@@ -1,0 +1,29 @@
+:root {
+}
+
+.main_container {
+    top: 20%;
+    left: 10%;
+    right: 10%;
+    bottom: 8%;
+    position: absolute;
+}
+
+.indiv_tab {
+    background-color: rgba(0, 0, 0, 0.75);
+    margin-bottom: 5%;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    border-bottom-left-radius: 50px;
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    padding-top: 15px;
+    padding-left: 20px;
+}
