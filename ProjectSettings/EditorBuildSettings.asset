@@ -14,6 +14,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Puzzle 2 Testing.unity
     guid: 0cefcd84065b6ff42b1900c32f682477
+  - enabled: 1
+    path: Assets/Scenes/NGO_Minimal_Setup/NGO_Setup.unity
+    guid: 54da5fabbfcb8de428445db28a7e0925
+  - enabled: 1
+    path: Assets/Scenes/NGO framework.unity
+    guid: 9fd8e4a52f4554e449b23d8808ba98db
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

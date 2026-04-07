@@ -1,16 +1,15 @@
+using System.Collections;
+using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Events;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
-
-    [Header("Interaction Audio")]
-    public AudioSource buttonPressed;
-    public AudioSource gameMusic;
-    public AudioSource roundMusic;
-    public bool isGameMusicPlaying = false;
 
     [Header("Music Settings")]
     public float musicVolume = 0.5f;
@@ -23,12 +22,29 @@ public class GameManager : MonoBehaviour
     [Header("Menu UI")]
     public GameObject endRoundPanel;
 
-    public static object Instance { get; internal set; }
+    [Header("Events")] 
+    public UnityEvent RoundEnd;
+
+    public static GameManager Instance;
+    
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = GetComponent<GameManager>();
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+    
     bool roundStarted = false;
 
     public void Start()
     {
-        isGameMusicPlaying = gameMusic.isPlaying;
+       // isGameMusicPlaying = gameMusic.isPlaying;
 
         if (musicSlider != null)
             musicSlider.value = musicVolume;
@@ -37,25 +53,25 @@ public class GameManager : MonoBehaviour
     // Menu UI elements (General logic we may need)
     public void StartGame()
     {
-        buttonPressed.Play();
-        SceneManager.LoadScene("GameScene");
+       // buttonPressed.Play();
+        SceneManager.LoadScene(1);
     }
 
     public void ReturnToMainMenu ()
     {
-        buttonPressed.Play();
-        SceneManager.LoadScene("MainMenu");
+       // buttonPressed.Play();
+        SceneManager.LoadScene(0);
     }
 
     public void QuitGame ()
     {
-        buttonPressed.Play();
+       // buttonPressed.Play();
         Application.Quit();
     }
 
     public void RestartGame ()
     {
-        buttonPressed.Play();
+       // buttonPressed.Play();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -66,7 +82,7 @@ public class GameManager : MonoBehaviour
         roundStarted = true;
         timerText.text = "10";
     }
-    public void EndRound ()
+    public void EndRound()
     {
         if (!roundStarted)
             return; // additional check to prevent multiple calls to EndRound
@@ -75,31 +91,16 @@ public class GameManager : MonoBehaviour
         endRoundPanel.SetActive(true);
     }
 
-    // Music control logic (General logic we may need)
-
-    public void ToggleMusic ()
-    {
-        if (isGameMusicPlaying)
-        {
-            gameMusic.Pause();
-            isGameMusicPlaying = false;
-        }
-        else
-        {
-            gameMusic.Play();
-            isGameMusicPlaying = true;
-        }
-    }
-
     public void SetMusicVolume (float volume)
     {
         musicVolume = volume;
-        gameMusic.volume = musicVolume;
+      //  gameMusic.volume = musicVolume;
     }
 
     // Timer control logic 
+    // Adjusting to be invokable globally
 
-    public void Update()
+    /*public void Update()
     {
         if (timer > 0)
         {
@@ -114,6 +115,12 @@ public class GameManager : MonoBehaviour
 
             Debug.Log("Timer has reached zero!");
         }
+    }*/
+
+    public static IEnumerator DoTiming(int time)
+    {
+        yield return new WaitForSeconds(time);
+        Instance?.RoundEnd.Invoke();
     }
 }
 
