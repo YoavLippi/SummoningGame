@@ -71,7 +71,7 @@ using UnityEngine.UIElements;
             }
             else
             {
-                m_ViewModel.JoinVoiceSession(playerName);
+                m_ViewModel.LoginToVivoxService(playerName);
             }
         }
 
