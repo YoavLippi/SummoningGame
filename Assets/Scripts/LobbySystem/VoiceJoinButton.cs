@@ -2,6 +2,7 @@ using System;
 using Blocks.Common;
 using Unity.Properties;
 using Unity.Services.Vivox;
+using UnityEngine;
 using UnityEngine.UIElements;
 
     [UxmlElement]
@@ -72,6 +73,7 @@ using UnityEngine.UIElements;
             else
             {
                 m_ViewModel.LoginToVivoxService(playerName);
+                Debug.Log($"Player name is {playerName}");
             }
         }
 

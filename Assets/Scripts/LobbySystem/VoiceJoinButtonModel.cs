@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using Unity.Netcode;
 using Unity.Properties;
 using Unity.Services.Multiplayer;
 using Unity.Services.Vivox;
@@ -234,6 +235,7 @@ using UnityEngine.UIElements;
     async void LoginToVivox(string inName)
     {
         CanToggleVoice = false;
+        DisplayText = "Joining...";
         await VivoxVoiceManager.Instance.InitializeAsync(inName);
         var loginOptions = new LoginOptions()
         {
