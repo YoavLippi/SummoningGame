@@ -20,6 +20,10 @@ public class WizardController : NetworkBehaviour
 
 	private float verticalRotation = 0f;
 
+	private Vector3 playerVelocity;
+	private bool isGrounded;
+	public float gravityValue = -9.81f;
+
 	void Awake()
 	{
 		controller = GetComponent<CharacterController>();
@@ -34,6 +38,7 @@ public class WizardController : NetworkBehaviour
 			moveAction = playerInput.actions["Move"];
 			lookAction = playerInput.actions["Look"];
 			Cursor.lockState = CursorLockMode.Locked;
+			Cursor.visible = false;
 
 			// If you didn't drag it in, try to find it
 			if (playerCameraHolder == null)
@@ -50,6 +55,7 @@ public class WizardController : NetworkBehaviour
 			// Disable the PlayerInput component on characters we DON'T own
 			// to prevent input "ghosting"
 			playerInput.enabled = false;
+			if (playerCameraHolder != null) playerCameraHolder.gameObject.SetActive(false);
 		}
 	}
 
@@ -63,15 +69,34 @@ public class WizardController : NetworkBehaviour
 
 	void HandleMovement()
 	{
-		Vector2 input = moveAction.ReadValue<Vector2>();
+		//Vector2 input = moveAction.ReadValue<Vector2>();
 
-		// Move relative to WHERE THE PLAYER IS LOOKING (transform.forward)
-		Vector3 moveDir = (transform.forward * input.y) + (transform.right * input.x);
+		//// Move relative to WHERE THE PLAYER IS LOOKING (transform.forward)
+		//Vector3 moveDir = (transform.forward * input.y) + (transform.right * input.x);
 
-		if (moveDir.magnitude > 0.1f)
+		//if (moveDir.magnitude > 0.1f)
+		//{
+		//	controller.Move(moveDir * moveSpeed * Time.deltaTime);
+		//}
+
+		isGrounded = controller.isGrounded;
+		if (isGrounded && playerVelocity.y < 0)
 		{
+			playerVelocity.y = -2f;
+		}
+
+		Vector2 input = moveAction.ReadValue<Vector2>();
+		if (input.sqrMagnitude > 0.001f)
+		{
+			Vector3 moveDir = (transform.forward * input.y) + (transform.right * input.x);
+
+			// Move horizontally
 			controller.Move(moveDir * moveSpeed * Time.deltaTime);
 		}
+
+		// Apply Gravity (Vertical movement)
+		playerVelocity.y += gravityValue * Time.deltaTime;
+		controller.Move(playerVelocity * Time.deltaTime);
 	}
 
 	void HandleRotation()
