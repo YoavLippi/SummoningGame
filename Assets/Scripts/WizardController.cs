@@ -5,53 +5,114 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CharacterController))]
 public class WizardController : NetworkBehaviour
 {
+	[Header("Movement Settings")]
 	public float moveSpeed = 5f;
-	public float rotationSpeed = 720f;
+	public float mouseSensitivity = 0.1f;
+
+	[Header("References")]
+	// Drag the "Head" or "Camera" object from your PREFAB here
+	[SerializeField] private Transform playerCameraHolder;
 
 	private CharacterController controller;
 	private PlayerInput playerInput;
 	private InputAction moveAction;
-	private Transform camTransform;
+	private InputAction lookAction;
+
+	private float verticalRotation = 0f;
+
+	private Vector3 playerVelocity;
+	private bool isGrounded;
+	public float gravityValue = -9.81f;
 
 	void Awake()
 	{
 		controller = GetComponent<CharacterController>();
 		playerInput = GetComponent<PlayerInput>();
-
-		// Link the "Move" action from your map to this variable
-		moveAction = playerInput.actions["Move"];
 	}
 
-	void Start()
+	
+	public override void OnNetworkSpawn()
 	{
-		camTransform = Camera.main.transform;
+		if (IsOwner)
+		{
+			moveAction = playerInput.actions["Move"];
+			lookAction = playerInput.actions["Look"];
+			Cursor.lockState = CursorLockMode.Locked;
+			Cursor.visible = false;
+
+			// If you didn't drag it in, try to find it
+			if (playerCameraHolder == null)
+				playerCameraHolder = transform.Find("Camera");
+
+			var brain = Camera.main.GetComponent<Unity.Cinemachine.CinemachineBrain>();
+			if (brain == null)
+			{
+				Debug.LogError("Main Camera is missing a Cinemachine Brain!");
+			}
+		}
+		else
+		{
+			// Disable the PlayerInput component on characters we DON'T own
+			// to prevent input "ghosting"
+			playerInput.enabled = false;
+			if (playerCameraHolder != null) playerCameraHolder.gameObject.SetActive(false);
+		}
 	}
 
 	void Update()
 	{
-		// Only move the wizard you actually own!
 		if (!IsOwner) return;
 
+		HandleRotation();
 		HandleMovement();
 	}
 
 	void HandleMovement()
 	{
-		// Read the WASD value as a Vector2 (X and Y)
-		Vector2 input = moveAction.ReadValue<Vector2>();
-		Vector3 direction = new Vector3(input.x, 0, input.y).normalized;
+		//Vector2 input = moveAction.ReadValue<Vector2>();
 
-		if (direction.magnitude >= 0.1f)
+		//// Move relative to WHERE THE PLAYER IS LOOKING (transform.forward)
+		//Vector3 moveDir = (transform.forward * input.y) + (transform.right * input.x);
+
+		//if (moveDir.magnitude > 0.1f)
+		//{
+		//	controller.Move(moveDir * moveSpeed * Time.deltaTime);
+		//}
+
+		isGrounded = controller.isGrounded;
+		if (isGrounded && playerVelocity.y < 0)
 		{
-			// Calculate direction relative to camera
-			float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + camTransform.eulerAngles.y;
-			Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+			playerVelocity.y = -2f;
+		}
 
+		Vector2 input = moveAction.ReadValue<Vector2>();
+		if (input.sqrMagnitude > 0.001f)
+		{
+			Vector3 moveDir = (transform.forward * input.y) + (transform.right * input.x);
+
+			// Move horizontally
 			controller.Move(moveDir * moveSpeed * Time.deltaTime);
+		}
 
-			// Smoothly rotate the wizard
-			Quaternion targetRot = Quaternion.LookRotation(moveDir);
-			transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
+		// Apply Gravity (Vertical movement)
+		playerVelocity.y += gravityValue * Time.deltaTime;
+		controller.Move(playerVelocity * Time.deltaTime);
+	}
+
+	void HandleRotation()
+	{
+		Vector2 lookInput = lookAction.ReadValue<Vector2>();
+
+		// 1. Horizontal Rotation (Whole Body)
+		transform.Rotate(Vector3.up * lookInput.x * mouseSensitivity);
+
+		// 2. Vertical Rotation (Camera Only)
+		verticalRotation -= lookInput.y * mouseSensitivity;
+		verticalRotation = Mathf.Clamp(verticalRotation, -85f, 85f);
+
+		if (playerCameraHolder != null)
+		{
+			playerCameraHolder.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
 		}
 	}
 }
