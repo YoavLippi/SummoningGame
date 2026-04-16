@@ -27,13 +27,13 @@ public class WizardController : NetworkBehaviour
 	private bool isGrounded;
 	public float gravityValue = -9.81f;
 
+
 	void Awake()
 	{
 		controller = GetComponent<CharacterController>();
 		playerInput = GetComponent<PlayerInput>();
 	}
-
-	
+		
 	public override void OnNetworkSpawn()
 	{
 		if (IsOwner)
@@ -108,17 +108,24 @@ public class WizardController : NetworkBehaviour
 		controller.Move(playerVelocity * Time.deltaTime);
 	}
 
+
 	void HandleRotation()
 	{
+		// 1. Get Mouse Delta (X = side-to-side, Y = up/down)
 		Vector2 lookInput = lookAction.ReadValue<Vector2>();
 
-		// 1. Horizontal Rotation (Whole Body)
-		transform.Rotate(Vector3.up * lookInput.x * mouseSensitivity);
+		// 2. HORIZONTAL: Rotate the whole body Left/Right (Y-axis)
+		float mouseX = lookInput.x * mouseSensitivity;
+		transform.Rotate(Vector3.up * mouseX);
 
-		// 2. Vertical Rotation (Camera Only)
-		verticalRotation -= lookInput.y * mouseSensitivity;
-		verticalRotation = Mathf.Clamp(verticalRotation, -85f, 85f);
+		// 3. VERTICAL: Rotate the Camera/Eyes Up/Down (X-axis)
+		float mouseY = lookInput.y * mouseSensitivity;
+		verticalRotation -= mouseY; // Subtracting makes the mouse 'Natural' (pull up to look up)
 
+		// 4. CLAMP: Prevent the camera from flipping over
+		verticalRotation = Mathf.Clamp(verticalRotation, -80f, 80f);
+
+		// 5. APPLY: Only tilt the camera holder, not the wizard's feet!
 		if (playerCameraHolder != null)
 		{
 			playerCameraHolder.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
