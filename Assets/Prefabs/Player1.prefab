@@ -184,6 +184,7 @@ GameObject:
   - component: {fileID: 900132669005303114}
   - component: {fileID: 5411821594753082249}
   - component: {fileID: -1906157402960468665}
+  - component: {fileID: 7045168791728569487}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Untagged
@@ -277,7 +278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 253506300
+  GlobalObjectIdHash: 1022860673
   InScenePlacedSourceGlobalObjectIdHash: 1022860673
   DeferredDespawnTick: 0
   Ownership: 1
@@ -417,3 +418,15 @@ MonoBehaviour:
   m_DefaultActionMap: PlayerController
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &7045168791728569487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8259517982039980482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 731d5f6e0adab034e869f84e873f8bbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHandler
