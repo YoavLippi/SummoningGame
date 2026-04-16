@@ -53,7 +53,7 @@ public class WizardController : NetworkBehaviour
 				Debug.LogError("Main Camera is missing a Cinemachine Brain!");
 			}
 
-			//localCamera.gameObject.SetActive(true);
+			localCamera.gameObject.SetActive(true);
 			localCamera.Priority = 10;
 		}
 		else
@@ -64,7 +64,7 @@ public class WizardController : NetworkBehaviour
 			if (playerCameraHolder != null) playerCameraHolder.gameObject.SetActive(false);
 			
 			localCamera.Priority = 0;
-			//localCamera.gameObject.SetActive(false);
+			localCamera.gameObject.SetActive(false);
 		}
 	}
 

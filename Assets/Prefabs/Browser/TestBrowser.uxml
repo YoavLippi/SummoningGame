@@ -48,11 +48,6 @@
                     <ui:DataBinding property="SessionType" data-source-path="sessionType" binding-mode="ToTarget"/>
                 </Bindings>
             </StartButton>
-            <VoiceJoinButton data-source="project://database/Assets/Prefabs/OurSessionSettings.asset?fileID=11400000&amp;guid=91282b656b0e7334abf064367752c1a1&amp;type=2#OurSessionSettings" style="aspect-ratio: 3; width: 40%;">
-                <Bindings>
-                    <ui:DataBinding property="SessionType" data-source-path="sessionType" binding-mode="ToTarget"/>
-                </Bindings>
-            </VoiceJoinButton>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
