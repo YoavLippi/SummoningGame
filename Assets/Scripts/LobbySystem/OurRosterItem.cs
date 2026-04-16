@@ -4,7 +4,7 @@ using Unity.Services.Vivox;
 using Unity.Services.Authentication;
 using TMPro;
 
-public class RosterItem : MonoBehaviour
+public class OurRosterItem : MonoBehaviour
 {
     // Player specific items.
     public VivoxParticipant Participant;
