@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.InputSystem;
@@ -12,6 +13,8 @@ public class WizardController : NetworkBehaviour
 	[Header("References")]
 	// Drag the "Head" or "Camera" object from your PREFAB here
 	[SerializeField] private Transform playerCameraHolder;
+
+	[SerializeField] private CinemachineCamera localCamera;
 
 	private CharacterController controller;
 	private PlayerInput playerInput;
@@ -49,6 +52,9 @@ public class WizardController : NetworkBehaviour
 			{
 				Debug.LogError("Main Camera is missing a Cinemachine Brain!");
 			}
+
+			//localCamera.gameObject.SetActive(true);
+			localCamera.Priority = 10;
 		}
 		else
 		{
@@ -56,6 +62,9 @@ public class WizardController : NetworkBehaviour
 			// to prevent input "ghosting"
 			playerInput.enabled = false;
 			if (playerCameraHolder != null) playerCameraHolder.gameObject.SetActive(false);
+			
+			localCamera.Priority = 0;
+			//localCamera.gameObject.SetActive(false);
 		}
 	}
 

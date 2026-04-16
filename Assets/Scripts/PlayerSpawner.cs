@@ -25,7 +25,7 @@ public class PlayerSpawner : NetworkBehaviour
             {
                 Transform spawnPos = IsHost ? hostSpawn : clientSpawn;
                 GameObject newPlayer = Instantiate(playerPrefab, spawnPos.position, Quaternion.identity);
-                newPlayer.GetComponent<CinemachineCamera>().Priority = 10;
+                //newPlayer.GetComponent<CinemachineCamera>().Priority = 10;
                 newPlayer.GetComponent<NetworkObject>().SpawnAsPlayerObject(player.Key);
             }
         }
