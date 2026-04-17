@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class RosterManager : MonoBehaviour
+public class OurRosterManager : MonoBehaviour
 {
     public GameObject rosterItemPrefab;
     public Button deletionFallback;
