@@ -25,8 +25,6 @@ public class InteractionHandler : NetworkBehaviour
         SortHotbar();
         StartCoroutine(SetSelectionAfterDelay(0));
     }
-    
-    #region Hotbar Controller
 
     private IEnumerator SetSelectionAfterDelay(int num)
     {
@@ -34,25 +32,16 @@ public class InteractionHandler : NetworkBehaviour
         SetSelection(num);
     }
 
+    #region Hotbar Controller
+
     [Header("Hotbar")] 
-    [Header("Runtime")]
+    [Header("Setup")] 
     [SerializeField] private int hotbarSize = 9;
     [SerializeField] private List<GameObject> hotbarSlots;
     //indicates which slot is currently selected (Some sort of overlay)
     [SerializeField] private GameObject selectionBox;
+    [Header("Runtime")]
     [SerializeField] private int currentSelection = 0;
-    
-    public enum Color
-    {
-        Red,
-        Blue,
-        Yellow,
-        Green,
-        Orange,
-        Purple,
-        Pink,
-        White
-    }
 
     public int CurrentSelection
     {
