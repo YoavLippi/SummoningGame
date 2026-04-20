@@ -10,8 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3262118589120858966}
   - component: {fileID: 1195311440804003583}
-  - component: {fileID: 6194076531313159865}
-  - component: {fileID: 278295506510702147}
+  - component: {fileID: 8582228843601973015}
   m_Layer: 0
   m_Name: PlayerEyes
   m_TagString: Untagged
@@ -31,7 +30,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6240224717426055414}
   m_Father: {fileID: 7482137950723057178}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1195311440804003583
@@ -77,38 +77,7 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
---- !u!114 &6194076531313159865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2209063688443103029}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 886251e9a18ece04ea8e61686c173e1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachinePositionComposer
-  CameraDistance: 5
-  DeadZoneDepth: 0
-  Composition:
-    ScreenPosition: {x: 0, y: 0}
-    DeadZone:
-      Enabled: 0
-      Size: {x: 0.2, y: 0.2}
-    HardLimits:
-      Enabled: 0
-      Size: {x: 0.8, y: 0.8}
-      Offset: {x: 0, y: 0}
-  CenterOnActivate: 1
-  TargetOffset: {x: 0, y: 0, z: 0}
-  Damping: {x: 0, y: 0, z: 0}
-  Lookahead:
-    Enabled: 0
-    Time: 0
-    Smoothing: 0
-    IgnoreY: 0
---- !u!114 &278295506510702147
+--- !u!114 &8582228843601973015
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -166,7 +135,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7482137950723057178}
+  m_Father: {fileID: 3262118589120858966}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8259517982039980482
 GameObject:
@@ -206,7 +175,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3262118589120858966}
-  - {fileID: 6240224717426055414}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8529619350442361659
@@ -278,7 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1022860673
+  GlobalObjectIdHash: 253506300
   InScenePlacedSourceGlobalObjectIdHash: 1022860673
   DeferredDespawnTick: 0
   Ownership: 1
@@ -377,7 +345,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   moveSpeed: 5
   mouseSensitivity: 0.1
-  playerCameraHolder: {fileID: 9192250898911943422, guid: cb9872f53998aaa4c98e4ecdd95a1c9c, type: 3}
+  playerCameraHolder: {fileID: 3262118589120858966}
   localCamera: {fileID: 1195311440804003583}
   gravityValue: -9.81
 --- !u!114 &-1906157402960468665
@@ -414,19 +382,7 @@ MonoBehaviour:
     m_ActionId: 921bf43c-5886-45f2-9caf-9718ca894d21
     m_ActionName: 'PlayerController/Look[/Mouse/delta]'
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7045168791728569487}
-        m_TargetAssemblyTypeName: InteractionHandler, Assembly-CSharp
-        m_MethodName: OnScroll
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 66f18c9a-3f0f-4ccb-9e1f-9eeb4956d9b5
     m_ActionName: 'PlayerController/Scroll[/Mouse/scroll/down,/Mouse/scroll/up]'
   m_NeverAutoSwitchControlSchemes: 0
@@ -441,9 +397,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8259517982039980482}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 731d5f6e0adab034e869f84e873f8bbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHandler
+  ShowTopMostFoldoutHeaderGroup: 1
+  hotbarSize: 9
+  hotbarSlots: []
+  selectionBox: {fileID: 3101185189510847125, guid: c88032a86f1bf86429b3eb91e2f5d718, type: 3}
   currentSelection: 0

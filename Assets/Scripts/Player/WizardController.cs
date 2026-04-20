@@ -78,16 +78,6 @@ public class WizardController : NetworkBehaviour
 
 	void HandleMovement()
 	{
-		//Vector2 input = moveAction.ReadValue<Vector2>();
-
-		//// Move relative to WHERE THE PLAYER IS LOOKING (transform.forward)
-		//Vector3 moveDir = (transform.forward * input.y) + (transform.right * input.x);
-
-		//if (moveDir.magnitude > 0.1f)
-		//{
-		//	controller.Move(moveDir * moveSpeed * Time.deltaTime);
-		//}
-
 		isGrounded = controller.isGrounded;
 		if (isGrounded && playerVelocity.y < 0)
 		{
@@ -115,12 +105,10 @@ public class WizardController : NetworkBehaviour
 		Vector2 lookInput = lookAction.ReadValue<Vector2>();
 
 		// 2. HORIZONTAL: Rotate the whole body Left/Right (Y-axis)
-		float mouseX = lookInput.x * mouseSensitivity;
-		transform.Rotate(Vector3.up * mouseX);
+		transform.Rotate(Vector3.up * lookInput.x * mouseSensitivity);
 
 		// 3. VERTICAL: Rotate the Camera/Eyes Up/Down (X-axis)
-		float mouseY = lookInput.y * mouseSensitivity;
-		verticalRotation -= mouseY; // Subtracting makes the mouse 'Natural' (pull up to look up)
+		verticalRotation -= lookInput.y * mouseSensitivity; // Subtracting makes the mouse 'Natural' (pull up to look up)
 
 		// 4. CLAMP: Prevent the camera from flipping over
 		verticalRotation = Mathf.Clamp(verticalRotation, -80f, 80f);
