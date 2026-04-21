@@ -246,7 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 253506300
+  GlobalObjectIdHash: 1022860673
   InScenePlacedSourceGlobalObjectIdHash: 1022860673
   DeferredDespawnTick: 0
   Ownership: 1
@@ -382,7 +382,19 @@ MonoBehaviour:
     m_ActionId: 921bf43c-5886-45f2-9caf-9718ca894d21
     m_ActionName: 'PlayerController/Look[/Mouse/delta]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7045168791728569487}
+        m_TargetAssemblyTypeName: InteractionHandler, Assembly-CSharp
+        m_MethodName: OnScroll
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 66f18c9a-3f0f-4ccb-9e1f-9eeb4956d9b5
     m_ActionName: 'PlayerController/Scroll[/Mouse/scroll/down,/Mouse/scroll/up]'
   m_NeverAutoSwitchControlSchemes: 0
@@ -397,7 +409,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8259517982039980482}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 731d5f6e0adab034e869f84e873f8bbc, type: 3}
   m_Name: 
@@ -405,5 +417,5 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   hotbarSize: 9
   hotbarSlots: []
-  selectionBox: {fileID: 3101185189510847125, guid: c88032a86f1bf86429b3eb91e2f5d718, type: 3}
+  selectionBox: {fileID: 0}
   currentSelection: 0
