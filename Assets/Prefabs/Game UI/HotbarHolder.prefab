@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HotbarSlot
   associatedColour: 1
-  slotColor: {r: 0, g: 0.21416616, b: 1, a: 0}
+  slotColor: {r: 0, g: 0.21416616, b: 1, a: 1}
 --- !u!1 &334346574622147024
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,7 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HotbarSlot
   associatedColour: 4
-  slotColor: {r: 1, g: 0.5184128, b: 0, a: 0}
+  slotColor: {r: 1, g: 0.5184128, b: 0, a: 1}
 --- !u!1 &3620842771132542156
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,7 +332,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HotbarSlot
   associatedColour: 7
-  slotColor: {r: 1, g: 1, b: 1, a: 0}
+  slotColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &5129742935473881282
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,7 +443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HotbarSlot
   associatedColour: 0
-  slotColor: {r: 1, g: 0.000000075499216, b: 0, a: 0}
+  slotColor: {r: 1, g: 0.000000075499216, b: 0, a: 1}
 --- !u!1 &5241371348548148798
 GameObject:
   m_ObjectHideFlags: 0
@@ -554,7 +554,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HotbarSlot
   associatedColour: 6
-  slotColor: {r: 0.99306536, g: 0, b: 1, a: 0}
+  slotColor: {r: 0.99306536, g: 0, b: 1, a: 1}
 --- !u!1 &5336991329625998531
 GameObject:
   m_ObjectHideFlags: 0
@@ -665,7 +665,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HotbarSlot
   associatedColour: 2
-  slotColor: {r: 1, g: 0.9564916, b: 0, a: 0}
+  slotColor: {r: 1, g: 0.9564916, b: 0, a: 1}
 --- !u!1 &8106104340320725884
 GameObject:
   m_ObjectHideFlags: 0
@@ -776,7 +776,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HotbarSlot
   associatedColour: 5
-  slotColor: {r: 0.45948458, g: 0, b: 1, a: 0}
+  slotColor: {r: 0.45948458, g: 0, b: 1, a: 1}
 --- !u!1 &8407796686211779553
 GameObject:
   m_ObjectHideFlags: 0
@@ -997,4 +997,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HotbarSlot
   associatedColour: 3
-  slotColor: {r: 0.06132126, g: 1, b: 0, a: 0}
+  slotColor: {r: 0.06132126, g: 1, b: 0, a: 1}
