@@ -137,6 +137,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3262118589120858966}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7946526798095251059
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5491930813688140524}
+  m_Layer: 0
+  m_Name: WandPos
+  m_TagString: Untagged
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5491930813688140524
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7946526798095251059}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.66}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7482137950723057178}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8259517982039980482
 GameObject:
   m_ObjectHideFlags: 0
@@ -154,6 +185,7 @@ GameObject:
   - component: {fileID: 5411821594753082249}
   - component: {fileID: -1906157402960468665}
   - component: {fileID: 7045168791728569487}
+  - component: {fileID: -436604901402377656}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Untagged
@@ -175,6 +207,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3262118589120858966}
+  - {fileID: 5491930813688140524}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8529619350442361659
@@ -397,6 +430,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 66f18c9a-3f0f-4ccb-9e1f-9eeb4956d9b5
     m_ActionName: 'PlayerController/Scroll[/Mouse/scroll/down,/Mouse/scroll/up]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7045168791728569487}
+        m_TargetAssemblyTypeName: InteractionHandler, Assembly-CSharp
+        m_MethodName: OnFire
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ecd5724b-d299-4d90-8224-89f11f58bd05
+    m_ActionName: 'PlayerController/Fire[/Mouse/leftButton]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerController
@@ -415,7 +464,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHandler
   ShowTopMostFoldoutHeaderGroup: 1
+  _wandController: {fileID: -436604901402377656}
+  playerViewCam: {fileID: 1195311440804003583}
   hotbarSize: 9
   hotbarSlots: []
   selectionBox: {fileID: 0}
   currentSelection: 0
+  wandPos: {fileID: 5491930813688140524}
+--- !u!114 &-436604901402377656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8259517982039980482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 604f801dc73f4ca4884f87ccb0ab49da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WandController
+  ShowTopMostFoldoutHeaderGroup: 1
+  spellPrefab: {fileID: 4832854508912409458, guid: c711fc9c22b1dd246af7cf1a46788e38, type: 3}
+  spellCharges:
+  - spellColor: 0
+    prefab: {fileID: 4832854508912409458, guid: c711fc9c22b1dd246af7cf1a46788e38, type: 3}
+  - spellColor: 1
+    prefab: {fileID: 4832854508912409458, guid: c711fc9c22b1dd246af7cf1a46788e38, type: 3}
+  - spellColor: 2
+    prefab: {fileID: 4832854508912409458, guid: c711fc9c22b1dd246af7cf1a46788e38, type: 3}
+  - spellColor: 3
+    prefab: {fileID: 4832854508912409458, guid: c711fc9c22b1dd246af7cf1a46788e38, type: 3}
+  - spellColor: 4
+    prefab: {fileID: 4832854508912409458, guid: c711fc9c22b1dd246af7cf1a46788e38, type: 3}
+  - spellColor: 5
+    prefab: {fileID: 4832854508912409458, guid: c711fc9c22b1dd246af7cf1a46788e38, type: 3}
+  - spellColor: 6
+    prefab: {fileID: 4832854508912409458, guid: c711fc9c22b1dd246af7cf1a46788e38, type: 3}
+  - spellColor: 7
+    prefab: {fileID: 4832854508912409458, guid: c711fc9c22b1dd246af7cf1a46788e38, type: 3}
+  spellSpeed: 5
+  spellDuration: 5

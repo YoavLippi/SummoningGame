@@ -1,12 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InteractionHandler : NetworkBehaviour
 {
+    [Header("Controllers")] 
+    [SerializeField] private WandController _wandController;
+
+    [SerializeField] private CinemachineCamera playerViewCam;
     public void Start()
     {
         if (!IsOwner) return;
@@ -24,6 +29,8 @@ public class InteractionHandler : NetworkBehaviour
         
         SortHotbar();
         StartCoroutine(SetSelectionAfterDelay(0));
+
+        _wandController = GetComponent<WandController>();
     }
     
     #region Hotbar Controller
@@ -34,8 +41,7 @@ public class InteractionHandler : NetworkBehaviour
         SetSelection(num);
     }
 
-    [Header("Hotbar")] 
-    [Header("Runtime")]
+    [Header("Hotbar")]
     [SerializeField] private int hotbarSize = 9;
     [SerializeField] private List<GameObject> hotbarSlots;
     //indicates which slot is currently selected (Some sort of overlay)
@@ -113,6 +119,21 @@ public class InteractionHandler : NetworkBehaviour
         }
         int.TryParse(slotName.Substring(slotName.IndexOf(' ')), out int slot);
         return slot;
+    }
+
+    #endregion
+
+    #region FiringBehaviour
+    
+    [Header("Firing")] 
+    [SerializeField] private Transform wandPos;
+    public void OnFire(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        if (!IsOwner) return;
+        
+        //Vector3 dir = playerViewCam.transform.rotation
+        _wandController.FireWithColor(wandPos.position, playerViewCam.transform.rotation, hotbarSlots[currentSelection].GetComponent<HotbarSlot>().slotColor);
     }
 
     #endregion

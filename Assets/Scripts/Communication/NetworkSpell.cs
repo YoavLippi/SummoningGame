@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class NetworkSpell : NetworkBehaviour
 {
-    public enum SpellType { Red, Blue, Yellow, Green, Cyan}
+    //public enum SpellType { Red, Blue, Yellow, Green, Cyan}
 
-    public NetworkVariable<SpellType> CurrentSpellType = new NetworkVariable<SpellType>(
-        SpellType.Red,
+    public NetworkVariable<InteractionHandler.Color> CurrentSpellType = new NetworkVariable<InteractionHandler.Color>(
+        InteractionHandler.Color.Red,
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Owner
         );

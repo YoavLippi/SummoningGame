@@ -5,12 +5,14 @@ using UnityEngine.InputSystem;
 [System.Serializable]
 public struct SpellCharge
 {
-    public NetworkSpell.SpellType spellType;
+    //public NetworkSpell.SpellType spellType;
+    public InteractionHandler.Color spellColor;
     public GameObject prefab;
 }
 
 public class WandController : NetworkBehaviour
 {
+    public GameObject spellPrefab;
     public SpellCharge[] spellCharges;
     public float spellSpeed;
     public float spellDuration;
@@ -42,30 +44,30 @@ public class WandController : NetworkBehaviour
 
     void CycleColor(int direction)
     {
-        int count = System.Enum.GetValues(typeof(NetworkSpell.SpellType)).Length;
+        int count = System.Enum.GetValues(typeof(InteractionHandler.Color)).Length;
         currentColorIndex = (currentColorIndex + direction + count) % count;
-        networkSpell.CurrentSpellType.Value = (NetworkSpell.SpellType)currentColorIndex;
+        networkSpell.CurrentSpellType.Value = (InteractionHandler.Color)currentColorIndex;
     }
 
     void Fire()
     {
         SpellCharge selected = GetCurrentSpellCharge();
-        FireServerRpc(transform.position, transform.up, selected.spellType);
+        FireServerRpc(transform.position, transform.up, selected.spellColor);
     }
 
     SpellCharge GetCurrentSpellCharge()
     {
-        NetworkSpell.SpellType current = networkSpell.CurrentSpellType.Value;
+        InteractionHandler.Color current = networkSpell.CurrentSpellType.Value;
         foreach (SpellCharge charge in spellCharges)
         {
-            if (charge.spellType == current) return charge;
+            if (charge.spellColor == current) return charge;
         }
 
         return spellCharges[0];
     }
 
     [ServerRpc]
-    private void FireServerRpc(Vector3 position, Vector3 direction, NetworkSpell.SpellType spellType)
+    private void FireServerRpc(Vector3 position, Vector3 direction, InteractionHandler.Color spellType)
     {
         SpellCharge selected = GetSpellChargeByType(spellType);
         GameObject spell = Instantiate(selected.prefab, position, Quaternion.identity);
@@ -73,14 +75,30 @@ public class WandController : NetworkBehaviour
         netObj.Spawn();
 
         NetworkProjectile projectile = spell.GetComponent<NetworkProjectile>();
-        projectile?.Initialize(direction, spellSpeed, spellDuration, spellType);
+        projectile?.Initialize(direction, spellSpeed, spellDuration);
     }
 
-    SpellCharge GetSpellChargeByType(NetworkSpell.SpellType spellType)
+    public void FireWithColor(Vector3 position, Quaternion direction, Color spellColor)
+    {
+        //Debug.Log("Trying to fire spell");
+        GameObject spell = Instantiate(spellPrefab, position, direction);
+        NetworkObject netObj = spell.GetComponent<NetworkObject>();
+        netObj.Spawn();
+
+        NetworkProjectile projectile = spell.GetComponent<NetworkProjectile>();
+        if (projectile)
+        {
+            //just using zero as a placeholder value
+            projectile.Initialize(Vector3.zero, spellSpeed, spellDuration);
+            projectile.spellType.Value = spellColor;
+        }
+    }
+
+    SpellCharge GetSpellChargeByType(InteractionHandler.Color spellType)
     {
         foreach (SpellCharge ammo in spellCharges)
         {
-            if (ammo.spellType == spellType) return ammo;
+            if (ammo.spellColor == spellType) return ammo;
         }
         return spellCharges[0];
     }
