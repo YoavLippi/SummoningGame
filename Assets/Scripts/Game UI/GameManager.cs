@@ -22,12 +22,15 @@ public class GameManager : MonoBehaviour
     [Header("Menu UI")]
     public GameObject endRoundPanel;
 
-    [Header("Events")] 
+    [Header("Events")]
     public UnityEvent RoundEnd;
 
     public static GameManager Instance;
-    
-    private void Awake()
+
+    public GameObject endScreen;
+    public GameObject pauseScreen;
+
+    void Awake()
     {
         if (Instance == null)
         {
@@ -39,12 +42,12 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
     bool roundStarted = false;
 
     public void Start()
     {
-       // isGameMusicPlaying = gameMusic.isPlaying;
+        // isGameMusicPlaying = gameMusic.isPlaying;
 
         if (musicSlider != null)
             musicSlider.value = musicVolume;
@@ -53,25 +56,25 @@ public class GameManager : MonoBehaviour
     // Menu UI elements (General logic we may need)
     public void StartGame()
     {
-       // buttonPressed.Play();
+        // buttonPressed.Play();
         SceneManager.LoadScene(1);
     }
 
-    public void ReturnToMainMenu ()
+    public void ReturnToMainMenu()
     {
-       // buttonPressed.Play();
+        // buttonPressed.Play();
         SceneManager.LoadScene(0);
     }
 
-    public void QuitGame ()
+    public void QuitGame()
     {
-       // buttonPressed.Play();
+        // buttonPressed.Play();
         Application.Quit();
     }
 
-    public void RestartGame ()
+    public void RestartGame()
     {
-       // buttonPressed.Play();
+        // buttonPressed.Play();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -91,10 +94,10 @@ public class GameManager : MonoBehaviour
         endRoundPanel.SetActive(true);
     }
 
-    public void SetMusicVolume (float volume)
+    public void SetMusicVolume(float volume)
     {
         musicVolume = volume;
-      //  gameMusic.volume = musicVolume;
+        AudioManager.Instance?.SetVolume(volume);
     }
 
     // Timer control logic 
@@ -123,4 +126,3 @@ public class GameManager : MonoBehaviour
         Instance?.RoundEnd.Invoke();
     }
 }
-
