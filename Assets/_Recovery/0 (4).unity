@@ -1531,6 +1531,8 @@ MonoBehaviour:
   RoundEnd:
     m_PersistentCalls:
       m_Calls: []
+  endScreen: {fileID: 0}
+  pauseScreen: {fileID: 0}
 --- !u!1 &435033161
 GameObject:
   m_ObjectHideFlags: 0
