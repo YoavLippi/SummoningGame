@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Hotbar
   - HotbarSelector
+  - GraveRaycastTarget
   layers:
   - Default
   - TransparentFX
