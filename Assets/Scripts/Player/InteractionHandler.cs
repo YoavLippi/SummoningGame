@@ -127,12 +127,36 @@ public class InteractionHandler : NetworkBehaviour
     
     [Header("Firing")] 
     [SerializeField] private Transform wandPos;
+
+    [SerializeField] private float reachDistance = 50f;
+
+    private void FixedUpdate()
+    {
+        Ray caster = new Ray(playerViewCam.transform.position, playerViewCam.transform.forward);
+        Debug.DrawRay(playerViewCam.transform.position, playerViewCam.transform.forward*reachDistance, UnityEngine.Color.azure);
+    }
+
     public void OnFire(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
         if (!IsOwner) return;
         
         //Vector3 dir = playerViewCam.transform.rotation
+        Ray caster = new Ray(playerViewCam.transform.position, playerViewCam.transform.forward);
+        if (Physics.Raycast(playerViewCam.transform.position, playerViewCam.transform.forward, out RaycastHit hitInfo, reachDistance))
+        {
+            Debug.Log($"Raycast just hit {hitInfo.transform.name}");
+            //should do the grave behaviour if it hit the grave, color shot else
+            if (hitInfo.transform.gameObject.CompareTag("GraveRaycastTarget"))
+            {
+                Debug.Log("Shot the grave");
+
+                GraveBehaviour hitBehaviour = hitInfo.transform.gameObject.GetComponent<GraveBehaviour>();
+                hitBehaviour.AddColorRpc(hotbarSlots[currentSelection].GetComponent<HotbarSlot>().associatedColour);
+                return;
+            }
+        }
+        
         _wandController.FireWithColor(wandPos.position, playerViewCam.transform.rotation, hotbarSlots[currentSelection].GetComponent<HotbarSlot>().slotColor);
     }
 

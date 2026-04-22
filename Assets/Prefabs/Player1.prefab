@@ -471,6 +471,7 @@ MonoBehaviour:
   selectionBox: {fileID: 0}
   currentSelection: 0
   wandPos: {fileID: 5491930813688140524}
+  reachDistance: 50
 --- !u!114 &-436604901402377656
 MonoBehaviour:
   m_ObjectHideFlags: 0
