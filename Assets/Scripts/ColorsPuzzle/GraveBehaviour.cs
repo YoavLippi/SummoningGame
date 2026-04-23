@@ -30,8 +30,15 @@ public class GraveBehaviour : NetworkBehaviour
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void AddColorRpc(InteractionHandler.Color newColor)
     {
-        Debug.Log("Recieved RPC");
-        inputtedColors.Add((int)newColor);
+        if (newColor == InteractionHandler.Color.White)
+        {
+            RemoveTopRpc();
+        }
+        else
+        {
+            inputtedColors.Add((int)newColor);
+        }
+        //Debug.Log("Recieved RPC");
     }
     
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
