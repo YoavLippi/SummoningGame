@@ -2323,8 +2323,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   ShowTopMostFoldoutHeaderGroup: 1
+  spellPrefab: {fileID: 0}
   spellCharges:
-  - spellType: 0
+  - spellColor: 0
     prefab: {fileID: 4832854508912409458, guid: c711fc9c22b1dd246af7cf1a46788e38, type: 3}
   spellSpeed: 5
   spellDuration: 5
@@ -2359,6 +2360,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NetworkProjectile
   ShowTopMostFoldoutHeaderGroup: 1
+  spellType:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: {r: 0, g: 0, b: 0, a: 0}
+  _particleSystem: {fileID: 0}
 --- !u!1 &864065133
 GameObject:
   m_ObjectHideFlags: 0
@@ -4124,7 +4131,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1857820066
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4649,6 +4656,10 @@ PrefabInstance:
     - target: {fileID: 4958948351080034782, guid: c711fc9c22b1dd246af7cf1a46788e38, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6367256536574448586, guid: c711fc9c22b1dd246af7cf1a46788e38, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1758277280
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

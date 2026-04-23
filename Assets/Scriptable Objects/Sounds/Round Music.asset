@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Round Music
   m_EditorClassIdentifier: Assembly-CSharp::SoundContainer
   associatedSound: 2
-  soundClip: {fileID: 0}
+  soundClip: {fileID: 8300000, guid: 76bae276b0f92664c85996ebc18c0e7a, type: 3}
+  volume: 1

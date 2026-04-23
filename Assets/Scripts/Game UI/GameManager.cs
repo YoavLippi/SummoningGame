@@ -56,25 +56,21 @@ public class GameManager : MonoBehaviour
     // Menu UI elements (General logic we may need)
     public void StartGame()
     {
-        // buttonPressed.Play();
         SceneManager.LoadScene(1);
     }
 
     public void ReturnToMainMenu()
     {
-        // buttonPressed.Play();
         SceneManager.LoadScene(0);
     }
 
     public void QuitGame()
     {
-        // buttonPressed.Play();
         Application.Quit();
     }
 
     public void RestartGame()
     {
-        // buttonPressed.Play();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
