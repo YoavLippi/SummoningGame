@@ -16,7 +16,17 @@ public class WizardController : NetworkBehaviour
 
 	[SerializeField] private CinemachineCamera localCamera;
 
-	private CharacterController controller;
+	[Header ("Sound Effects")]
+	[SerializeField] private AudioSource footstepAudioSource;
+	[SerializeField] private AudioSource owlHootingAudioSource;
+	[SerializeField] private int minStepsBeforeOwlHoot = 5;
+	[SerializeField] private float owlHootChance = 0.2f; // 20% chance to hoot after min steps
+
+	private int stepsSinceLastOwlHoot = 0;
+	private float stepTimer = 0f;
+	[SerializeField] private float stepInterval = 0.5f;
+
+    private CharacterController controller;
 	private PlayerInput playerInput;
 	private InputAction moveAction;
 	private InputAction lookAction;
@@ -91,10 +101,38 @@ public class WizardController : NetworkBehaviour
 
 			// Move horizontally
 			controller.Move(moveDir * moveSpeed * Time.deltaTime);
-		}
 
-		// Apply Gravity (Vertical movement)
-		playerVelocity.y += gravityValue * Time.deltaTime;
+			footstepAudioSource.pitch = moveSpeed;
+            if ((!footstepAudioSource.isPlaying))
+				footstepAudioSource.Play();
+			
+			// Calculates min steps before running a random range to trigger owl sound
+			stepTimer += Time.deltaTime;
+			if (stepTimer >= stepInterval/(moveSpeed/2f))
+			{
+				stepTimer = 0f;
+				stepsSinceLastOwlHoot++;
+
+				if (stepsSinceLastOwlHoot >= minStepsBeforeOwlHoot && !owlHootingAudioSource.isPlaying)
+				{
+					if (Random.value < owlHootChance) {
+                        owlHootingAudioSource.Play();
+                        stepsSinceLastOwlHoot = 0;
+                    }
+                        
+				}
+			}
+
+        }
+
+		else
+		{
+			if (footstepAudioSource.isPlaying)
+				footstepAudioSource.Stop();
+        }
+
+			// Apply Gravity (Vertical movement)
+			playerVelocity.y += gravityValue * Time.deltaTime;
 		controller.Move(playerVelocity * Time.deltaTime);
 	}
 
