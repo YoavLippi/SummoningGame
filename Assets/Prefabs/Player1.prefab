@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 2209063688443103029}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.45, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -203,8 +203,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 30.000002, y: 30.000002, z: 30.000002}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3262118589120858966}
   - {fileID: 5491930813688140524}
@@ -376,7 +376,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WizardController
   ShowTopMostFoldoutHeaderGroup: 1
-  moveSpeed: 5
+  moveSpeed: 20
   mouseSensitivity: 0.1
   playerCameraHolder: {fileID: 3262118589120858966}
   localCamera: {fileID: 1195311440804003583}
@@ -471,7 +471,10 @@ MonoBehaviour:
   selectionBox: {fileID: 0}
   currentSelection: 0
   wandPos: {fileID: 5491930813688140524}
-  reachDistance: 50
+  reachDistance: 75
+  catMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &-436604901402377656
 MonoBehaviour:
   m_ObjectHideFlags: 0

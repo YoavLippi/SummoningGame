@@ -133,9 +133,10 @@ public class InteractionHandler : NetworkBehaviour
     private void FixedUpdate()
     {
         Ray caster = new Ray(playerViewCam.transform.position, playerViewCam.transform.forward);
-        Debug.DrawRay(playerViewCam.transform.position, playerViewCam.transform.forward*reachDistance, UnityEngine.Color.azure);
+        Debug.DrawRay(playerViewCam.transform.position, playerViewCam.transform.forward*reachDistance, UnityEngine.Color.red);
     }
 
+  [SerializeField] private LayerMask catMask;
     public void OnFire(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
@@ -143,7 +144,8 @@ public class InteractionHandler : NetworkBehaviour
         
         //Vector3 dir = playerViewCam.transform.rotation
         Ray caster = new Ray(playerViewCam.transform.position, playerViewCam.transform.forward);
-        if (Physics.Raycast(playerViewCam.transform.position, playerViewCam.transform.forward, out RaycastHit hitInfo, reachDistance))
+        //LayerMask catMask = LayerMask.NameToLayer("CatGrave");
+        if (Physics.Raycast(playerViewCam.transform.position, playerViewCam.transform.forward, out RaycastHit hitInfo, reachDistance, catMask))
         {
             Debug.Log($"Raycast just hit {hitInfo.transform.name}");
             //should do the grave behaviour if it hit the grave, color shot else

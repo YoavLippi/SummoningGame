@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7066324517508418192}
   - component: {fileID: 4368070311028174654}
   - component: {fileID: 7904296574329149815}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CatGrave
   m_TagString: GraveRaycastTarget
   m_Icon: {fileID: 0}
