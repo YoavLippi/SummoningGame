@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
 using System.Linq;
+using Unity.Netcode;
 
 public class GameManager : MonoBehaviour
 {
@@ -48,7 +49,6 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         // isGameMusicPlaying = gameMusic.isPlaying;
-
         if (musicSlider != null)
             musicSlider.value = musicVolume;
     }
