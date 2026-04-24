@@ -213,9 +213,9 @@ MonoBehaviour:
   localCamera: {fileID: 0}
   footstepAudioSource: {fileID: -8042562854964037077}
   owlHootingAudioSource: {fileID: 4902724788701678833}
-  minStepsBeforeOwlHoot: 5
-  owlHootChance: 0.2
-  stepInterval: 0.5
+  minStepsBeforeOwlHoot: 20
+  owlHootChance: 0.05
+  stepInterval: 20
   gravityValue: -9.81
 --- !u!114 &7361521942852739464
 MonoBehaviour:
@@ -275,8 +275,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 07acbec5efbb6d343a0ff50b2a7f22f5, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_PlayOnAwake: 0
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0

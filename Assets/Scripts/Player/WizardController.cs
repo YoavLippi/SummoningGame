@@ -20,9 +20,9 @@ public class WizardController : NetworkBehaviour
 	[SerializeField] private AudioSource footstepAudioSource;
 	[SerializeField] private AudioSource owlHootingAudioSource;
 	[SerializeField] private int minStepsBeforeOwlHoot = 5;
-	[SerializeField] private float owlHootChance = 0.2f; // 20% chance to hoot after min steps
+	[SerializeField] private float owlHootChance = 0.05f; // 20% chance to hoot after min steps
 
-	private int stepsSinceLastOwlHoot = 0;
+	private int stepsSinceLastOwlHoot = 20;
 	private float stepTimer = 0f;
 	[SerializeField] private float stepInterval = 0.5f;
 
