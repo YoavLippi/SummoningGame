@@ -17,11 +17,7 @@ public class ColorPuzzleDisplay : MonoBehaviour
 		StartCoroutine(InitializeDisplay());
 	}
 
-	//private void UpdateDisplay(NetworkListEvent<int> changeEvent)
-	//{
-	//	RefreshUI();
-	//}
-
+	
 	//private void RefreshUI()
 	//{
 	//	for (int i = 0; i < gameController.solution.Count; i++)

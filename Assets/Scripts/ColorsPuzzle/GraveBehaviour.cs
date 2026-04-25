@@ -7,113 +7,197 @@ using UnityEngine.SceneManagement;
 
 public class GraveBehaviour : NetworkBehaviour
 {
-    //[SerializeField]
-    //private NetworkVariable<List<InteractionHandler.Color>> inputtedColors =
-        //new NetworkVariable<List<InteractionHandler.Color>>();
-    //[SerializeField] private List<InteractionHandler.Color> inputtedColors;
-    [SerializeField] private NetworkList<int> inputtedColors = new NetworkList<int>();
-    
-    //just to see in the editor: DO NOT USE
-    [SerializeField] private List<int> debugColorsViewer;
-    [SerializeField] private ColorGameController _gameController;
-    [SerializeField] private bool isSolutionCorrect = false;
+	//[SerializeField]
+	//private NetworkVariable<List<InteractionHandler.Color>> inputtedColors =
+	//new NetworkVariable<List<InteractionHandler.Color>>();
+	//[SerializeField] private List<InteractionHandler.Color> inputtedColors;
+	[SerializeField] private NetworkList<int> inputtedColors = new NetworkList<int>();
 
-    private void Start()
-    {
-        if (!IsServer) return;
-        _gameController = GameObject.FindWithTag("GameController").GetComponent<ColorGameController>();
-    }
+	//just to see in the editor: DO NOT USE
+	[SerializeField] private List<int> debugColorsViewer;
+	[SerializeField] private ColorGameController _gameController;
+	[SerializeField] private bool isSolutionCorrect = false;
 
-    public override void OnNetworkSpawn()
-    {
-        debugColorsViewer = new List<int>();
+	[Header("Ritual Visuals")]
+	[SerializeField] private GameObject[] runeObjects;
+	[SerializeField] private UnityEngine.Color[] palette;
 
-        inputtedColors.OnListChanged += (changeEvent) =>
-        {
-            debugColorsViewer.Clear();
-            foreach (var color in inputtedColors)
-            {
-                debugColorsViewer.Add(color);
-            }
-        };
-    }
+	[Header("Status Colors")]
+	[SerializeField] private UnityEngine.Color successColor = UnityEngine.Color.green;
+	[SerializeField] private UnityEngine.Color failColor = UnityEngine.Color.red;
+	[SerializeField] private float flashDuration = 1.5f;
 
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void AddColorRpc(InteractionHandler.Color newColor)
-    {
-        if (newColor == InteractionHandler.Color.White)
-        {
-            RemoveTopRpc();
-        }
-        else
-        {
-            inputtedColors.Add((int)newColor);
-            if (inputtedColors.Count >= _gameController.solutionSize)
-            {
-                CheckSolutionRpc();
-                if (isSolutionCorrect)
-                {
-                    //win logic here
-                    Debug.Log("WIN!!");
-                }
-                else
-                {
-                    //lose logic here
-                    Debug.Log("LOSE!");
-                }
-                //cleanup user objects (?)
-                CleanupPlayersClientRpc();
-                
-                //boot to main menu
-                //TODO: ADD IN END CUTSCENE
-                NetworkManager.Singleton.SceneManager.LoadScene("Main Menu", LoadSceneMode.Single);
-            }
-        }
-        //Debug.Log("Recieved RPC");
-    }
+	private bool isFlashing = false;
 
-    [ClientRpc]
-    public void CleanupPlayersClientRpc()
-    {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        NetworkManager.Singleton.LocalClient.PlayerObject.Despawn(true);
-    }
-    
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void RemoveColorRpc(InteractionHandler.Color newColor)
-    {
-        if (inputtedColors.Contains((int)newColor))
-        {
-            inputtedColors.Remove((int)newColor);
-        }
-    }
+	private void Start()
+	{
+		if (!IsServer) return;
+		_gameController = GameObject.FindWithTag("GameController").GetComponent<ColorGameController>();
+		StopAllCoroutines();
+	}
 
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void RemoveTopRpc()
-    {
-        if (inputtedColors.Count <= 0) return;
-        inputtedColors.RemoveAt(inputtedColors.Count-1);
-    }
+	public override void OnNetworkSpawn()
+	{
+		debugColorsViewer = new List<int>();
 
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    private void CheckSolutionRpc()
-    {
-        if (inputtedColors.Count != _gameController.solution.Count)
-        {
-            isSolutionCorrect = false;
-            return;
-        }
+		inputtedColors.OnListChanged += (changeEvent) =>
+		{
+			debugColorsViewer.Clear();
+			foreach (var color in inputtedColors)
+			{
+				debugColorsViewer.Add(color);
+			}
+			UpdateAllRunes();
+		};
+	}
 
-        for (int i = 0; i < inputtedColors.Count; i++)
-        {
-            if (inputtedColors[i] != _gameController.solution[i])
-            {
-                isSolutionCorrect = false;
-                return;
-            }
-        }
+	[Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+	public void AddColorRpc(InteractionHandler.Color newColor)
+	{
+		if (newColor == InteractionHandler.Color.White)
+		{
+			RemoveTopRpc();
+		}
+		else
+		{
+			inputtedColors.Add((int)newColor);
+			if (inputtedColors.Count >= _gameController.solutionSize)
+			{
+				CheckSolutionRpc();
+				if (isSolutionCorrect)
+				{
+					//win logic here
+					Debug.Log("WIN!!");
+					TriggerStatusFlashClientRpc(true);
+				}
+				else
+				{
+					//lose logic here
+					Debug.Log("LOSE!");
+					TriggerStatusFlashClientRpc(false);
+					inputtedColors.Clear();
+				}
+				//cleanup user objects (?)
+				CleanupPlayersClientRpc();
 
-        isSolutionCorrect = true;
-    }
+				//boot to main menu
+				//TODO: ADD IN END CUTSCENE
+				NetworkManager.Singleton.SceneManager.LoadScene("Main Menu", LoadSceneMode.Single);
+			}
+		}
+		//Debug.Log("Recieved RPC");
+	}
+
+	[ClientRpc]
+	public void CleanupPlayersClientRpc()
+	{
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
+		NetworkManager.Singleton.LocalClient.PlayerObject.Despawn(true);
+	}
+
+	[Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+	public void RemoveColorRpc(InteractionHandler.Color newColor)
+	{
+		if (inputtedColors.Contains((int)newColor))
+		{
+			inputtedColors.Remove((int)newColor);
+		}
+	}
+
+	[Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+	public void RemoveTopRpc()
+	{
+		if (inputtedColors.Count <= 0) return;
+		inputtedColors.RemoveAt(inputtedColors.Count - 1);
+	}
+
+	[Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+	private void CheckSolutionRpc()
+	{
+		if (inputtedColors.Count != _gameController.solution.Count)
+		{
+			isSolutionCorrect = false;
+			return;
+		}
+
+		for (int i = 0; i < inputtedColors.Count; i++)
+		{
+			if (inputtedColors[i] != _gameController.solution[i])
+			{
+				isSolutionCorrect = false;
+				return;
+			}
+		}
+
+		isSolutionCorrect = true;
+	}
+
+	private void UpdateAllRunes()
+	{
+		for (int i = 0; i < runeObjects.Length; i++)
+		{
+			// If the Apprentice has shot this many colors, light up the rune
+			if (i < inputtedColors.Count)
+			{
+				runeObjects[i].SetActive(true);
+				int colorIndex = inputtedColors[i];
+				UnityEngine.Color shotColor = palette[colorIndex];
+
+				Light light = runeObjects[i].GetComponentInChildren<Light>();
+				//var light = runeObjects[i].GetComponentInChildren<Light>();
+
+				if (light != null)
+				{
+					light.color = shotColor;
+					light.intensity = 3f; 
+				}
+			}
+			else
+			{
+				runeObjects[i].SetActive(false);
+			}
+		}
+	}
+
+	[ClientRpc]
+	private void TriggerStatusFlashClientRpc(bool success)
+	{
+		StartCoroutine(FlashSequence(success));
+	}
+
+	private System.Collections.IEnumerator FlashSequence(bool success)
+	{
+		isFlashing = true;
+		UnityEngine.Color targetColor = success ? successColor : failColor;
+
+		// Turn ALL runes to the status color
+		foreach (var rune in runeObjects)
+		{
+			rune.SetActive(true);
+			var light = rune.GetComponentInChildren<Light>();
+			if (light != null)
+			{
+				light.color = targetColor;
+				light.intensity = 5f; 
+			}
+		}
+
+		yield return new WaitForSeconds(flashDuration);
+		isFlashing = false;
+
+		if (!success)
+		{
+			// If they failed, turn everything off 
+			foreach (var rune in runeObjects) rune.SetActive(false);
+			// Only the server clears the actual data
+			if (IsServer) inputtedColors.Clear();
+		}
+		else
+		{
+			// When they won, we want to keep them Green 
+			// until the scene loads for the cat to rise!
+			Debug.Log("Ritual Complete.");
+		}
+	}
 }
