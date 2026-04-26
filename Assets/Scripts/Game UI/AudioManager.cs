@@ -45,7 +45,6 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         uiAudio = GetComponent<AudioSource>();
-        SetVolume(Sound.GameMusic, PlayerPrefs.GetFloat("MusicVolume", 0.5f));
 
         foreach (var container in allSounds)
             container.volume = PlayerPrefs.GetFloat($"Volume_{container.associatedSound}", 1f);
