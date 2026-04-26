@@ -1,16 +1,20 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class ColorGameController : MonoBehaviour
+public class ColorGameController : NetworkBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public NetworkList<int> solution = new NetworkList<int>(null,	NetworkVariableReadPermission.Everyone,	NetworkVariableWritePermission.Server);
+    public int solutionSize = 5;
+    [SerializeField] private int numberOfColors = 7;
 
-    // Update is called once per frame
-    void Update()
+    public override void OnNetworkSpawn()
     {
-        
+        if (!IsServer) return;
+
+        for (int i = 0; i < solutionSize; i++)
+        {
+            int nextColor = Random.Range(0, numberOfColors);
+            solution.Add(nextColor);
+        }
     }
 }
