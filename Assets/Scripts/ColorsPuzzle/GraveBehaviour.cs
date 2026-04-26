@@ -64,8 +64,8 @@ public class GraveBehaviour : NetworkBehaviour
 			inputtedColors.Add((int)newColor);
 			if (inputtedColors.Count >= _gameController.solutionSize)
 			{
-				//StartCoroutine(WaitCheckSolutionRpc());
-				StartCheckSolutionRpc();
+				StartCoroutine(WaitCheckSolutionRpc());
+				//StartCheckSolutionRpc();
 				/*CheckSolutionRpc();
 				if (isSolutionCorrect)
 				{
@@ -123,22 +123,15 @@ public class GraveBehaviour : NetworkBehaviour
 	
 	private IEnumerator WaitCheckSolutionRpc()
 	{
+		if (!IsServer) yield break;
 		CheckSolutionRpc();
-		if (isSolutionCorrect)
-		{
-			//win logic here
-			Debug.Log("WIN!!");
-			//await TriggerStatusFlashClientRpc(true);
-			yield return StartCoroutine(FlashSequence(true));
-		}
-		else
-		{
-			//lose logic here
-			Debug.Log("LOSE!");
-			//TriggerStatusFlashClientRpc(false);
-			yield return StartCoroutine(FlashSequence(false));
-			inputtedColors.Clear();
-		}
+		yield return new WaitForSeconds(0.2f);
+		
+		Debug.Log(isSolutionCorrect?"WIN":"LOSE");
+		
+		ChangeLightColorsClientRpc(isSolutionCorrect);
+
+		yield return new WaitForSeconds(flashDuration);
 		//cleanup user objects (?)
 		CleanupPlayersClientRpc();
 
@@ -147,7 +140,7 @@ public class GraveBehaviour : NetworkBehaviour
 		NetworkManager.Singleton.SceneManager.LoadScene("Main Menu", LoadSceneMode.Single);
 	}
 
-	[Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+	//[Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
 	private void CheckSolutionRpc()
 	{
 		if (inputtedColors.Count != _gameController.solution.Count)
@@ -179,7 +172,7 @@ public class GraveBehaviour : NetworkBehaviour
 				int colorIndex = inputtedColors[i];
 				UnityEngine.Color shotColor = palette[colorIndex];
 
-				Light light = runeObjects[i].GetComponentInChildren<Light>();
+				Light light = runeObjects[i].GetComponent<Light>();
 				//var light = runeObjects[i].GetComponentInChildren<Light>();
 
 				if (light != null)
@@ -194,21 +187,32 @@ public class GraveBehaviour : NetworkBehaviour
 			}
 		}
 	}
-
+	
 	[ClientRpc]
-	private void TriggerStatusFlashClientRpc(bool success)
+	private void ChangeLightColorsClientRpc(bool success)
 	{
-		StartCoroutine(FlashSequence(success));
+		Debug.Log($"ClientRpc running on client: {NetworkManager.Singleton.LocalClientId}");
+		UnityEngine.Color targetColor = success ? successColor : failColor;
+		foreach (var rune in runeObjects)
+		{
+			Debug.Log("Checking new rune");
+			//rune.SetActive(true);
+			//var light = rune.GetComponentInChildren<Light>();
+			Light light = rune.GetComponent<Light>();
+			if (light != null)
+			{
+				Debug.Log("LIGHT WAS NOT NULL");
+				light.color = targetColor;
+				light.intensity = 5f; 
+			}
+		}
 	}
-
 	private System.Collections.IEnumerator FlashSequence(bool success)
 	{
 		isFlashing = true;
-		UnityEngine.Color targetColor = success ? successColor : failColor;
-
-		Debug.Log("Reached foreach loop");
+		//UnityEngine.Color targetColor = success ? successColor : failColor;
 		// Turn ALL runes to the status color
-		foreach (var rune in runeObjects)
+		/*foreach (var rune in runeObjects)
 		{
 			Debug.Log("Checking new rune");
 			rune.SetActive(true);
@@ -220,7 +224,9 @@ public class GraveBehaviour : NetworkBehaviour
 				light.color = targetColor;
 				light.intensity = 5f; 
 			}
-		}
+		}*/
+		Debug.Log("CallingRpc");
+		ChangeLightColorsClientRpc(success);
 
 		yield return new WaitForSeconds(flashDuration);
 		isFlashing = false;
