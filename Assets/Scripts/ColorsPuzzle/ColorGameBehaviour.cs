@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ColorGameController : NetworkBehaviour
 {
-    public NetworkList<int> solution = new NetworkList<int>();
+    public NetworkList<int> solution = new NetworkList<int>(null,	NetworkVariableReadPermission.Everyone,	NetworkVariableWritePermission.Server);
     public int solutionSize = 5;
     [SerializeField] private int numberOfColors = 7;
 

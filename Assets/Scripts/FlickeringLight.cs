@@ -2,20 +2,16 @@ using UnityEngine;
 
 public class FlickeringLight : MonoBehaviour
 {
-	private Light _light;
-	public float minIntensity = 0.5f;
-	public float maxIntensity = 1.5f;
-	public float smoothing = 0.1f;
+	private new Light light;
+	[SerializeField] private float minIntensity = 1.0f;
+	[SerializeField] private float maxIntensity = 1.8f;
+	[SerializeField] private float speed = 1.5f;
 
-	void Start()
-	{
-		_light = GetComponent<Light>();
-	}
+	void Start() => light = GetComponent<Light>();
 
 	void Update()
 	{
-		// Randomly pick a new intensity and smoothly move toward it
-		float targetIntensity = Random.Range(minIntensity, maxIntensity);
-		_light.intensity = Mathf.Lerp(_light.intensity, targetIntensity, smoothing);
+		float noise = Mathf.PerlinNoise(Time.time * speed, 0);
+		light.intensity = Mathf.Lerp(minIntensity, maxIntensity, noise);
 	}
 }
