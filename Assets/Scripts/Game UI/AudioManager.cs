@@ -96,6 +96,10 @@ public class AudioManager : MonoBehaviour
         container.volume = volume;
         PlayerPrefs.SetFloat($"Volume_{sound}", volume); // Save the volume setting for this sound using PlayerPrefs
         PlayerPrefs.Save();
+
+        // If the sound being adjusted is music, also update the AudioSource's volume to reflect the change immediately
+        if (sound == Sound.GameMusic || sound == Sound.RoundMusic)
+            uiAudio.volume = volume;
     }
 
     public void SetVolume(float volume, params Sound[] sounds)
