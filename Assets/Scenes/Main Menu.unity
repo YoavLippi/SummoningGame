@@ -891,6 +891,7 @@ GameObject:
   - component: {fileID: 305184630}
   - component: {fileID: 305184629}
   - component: {fileID: 305184632}
+  - component: {fileID: 305184633}
   m_Layer: 5
   m_Name: _backButton
   m_TagString: Untagged
@@ -1058,6 +1059,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &305184633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 305184627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60e53330b5203ec4cb442bc6989811f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonBehaviours
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1905,6 +1918,7 @@ GameObject:
   - component: {fileID: 557364290}
   - component: {fileID: 557364289}
   - component: {fileID: 557364288}
+  - component: {fileID: 557364292}
   m_Layer: 5
   m_Name: _quitButton
   m_TagString: Untagged
@@ -2072,6 +2086,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 557364286}
   m_CullTransparentMesh: 1
+--- !u!114 &557364292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 557364286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60e53330b5203ec4cb442bc6989811f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonBehaviours
 --- !u!1 &566538772
 GameObject:
   m_ObjectHideFlags: 0
@@ -3200,6 +3226,7 @@ GameObject:
   - component: {fileID: 820808848}
   - component: {fileID: 820808847}
   - component: {fileID: 820808850}
+  - component: {fileID: 820808851}
   m_Layer: 5
   m_Name: _backButton (2)
   m_TagString: Untagged
@@ -3367,6 +3394,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &820808851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820808845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60e53330b5203ec4cb442bc6989811f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonBehaviours
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -5322,6 +5361,7 @@ GameObject:
   - component: {fileID: 1420733275}
   - component: {fileID: 1420733274}
   - component: {fileID: 1420733277}
+  - component: {fileID: 1420733278}
   m_Layer: 5
   m_Name: _backButton (1)
   m_TagString: Untagged
@@ -5489,6 +5529,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1420733278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1420733272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60e53330b5203ec4cb442bc6989811f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonBehaviours
 --- !u!1 &1481531597
 GameObject:
   m_ObjectHideFlags: 0
@@ -6399,6 +6451,7 @@ GameObject:
   - component: {fileID: 1696344692}
   - component: {fileID: 1696344691}
   - component: {fileID: 1696344690}
+  - component: {fileID: 1696344694}
   m_Layer: 5
   m_Name: _returnButton
   m_TagString: Untagged
@@ -6566,6 +6619,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1696344688}
   m_CullTransparentMesh: 1
+--- !u!114 &1696344694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1696344688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60e53330b5203ec4cb442bc6989811f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonBehaviours
 --- !u!1 &1772090486
 GameObject:
   m_ObjectHideFlags: 0

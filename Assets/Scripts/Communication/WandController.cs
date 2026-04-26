@@ -80,8 +80,14 @@ public class WandController : NetworkBehaviour
 
     public void FireWithColor(Vector3 position, Quaternion direction, Color spellColor)
     {
+        FireWithColorServerRpc(position, direction.eulerAngles, spellColor);
+    }
+
+    [ServerRpc]
+    public void FireWithColorServerRpc (Vector3 position, Vector3 directionEulers, Color spellColor)
+    {
         //Debug.Log("Trying to fire spell");
-        GameObject spell = Instantiate(spellPrefab, position, direction);
+        GameObject spell = Instantiate(spellPrefab, position, Quaternion.Euler(directionEulers));
         NetworkObject netObj = spell.GetComponent<NetworkObject>();
         netObj.Spawn();
 
