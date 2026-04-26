@@ -136,6 +136,13 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
   debugColorsViewer: 
+  _gameController: {fileID: 0}
+  isSolutionCorrect: 0
+  runeObjects: []
+  palette: []
+  successColor: {r: 0, g: 1, b: 0, a: 1}
+  failColor: {r: 1, g: 0, b: 0, a: 1}
+  flashDuration: 5
 --- !u!64 &7904296574329149815
 MeshCollider:
   m_ObjectHideFlags: 0

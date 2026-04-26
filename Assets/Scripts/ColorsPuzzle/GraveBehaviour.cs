@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
@@ -25,7 +26,7 @@ public class GraveBehaviour : NetworkBehaviour
 	[Header("Status Colors")]
 	[SerializeField] private UnityEngine.Color successColor = UnityEngine.Color.green;
 	[SerializeField] private UnityEngine.Color failColor = UnityEngine.Color.red;
-	[SerializeField] private float flashDuration = 1.5f;
+	[SerializeField] private float flashDuration = 5f;
 
 	private bool isFlashing = false;
 
@@ -63,7 +64,9 @@ public class GraveBehaviour : NetworkBehaviour
 			inputtedColors.Add((int)newColor);
 			if (inputtedColors.Count >= _gameController.solutionSize)
 			{
-				CheckSolutionRpc();
+				//StartCoroutine(WaitCheckSolutionRpc());
+				StartCheckSolutionRpc();
+				/*CheckSolutionRpc();
 				if (isSolutionCorrect)
 				{
 					//win logic here
@@ -82,7 +85,7 @@ public class GraveBehaviour : NetworkBehaviour
 
 				//boot to main menu
 				//TODO: ADD IN END CUTSCENE
-				NetworkManager.Singleton.SceneManager.LoadScene("Main Menu", LoadSceneMode.Single);
+				NetworkManager.Singleton.SceneManager.LoadScene("Main Menu", LoadSceneMode.Single);*/
 			}
 		}
 		//Debug.Log("Recieved RPC");
@@ -110,6 +113,38 @@ public class GraveBehaviour : NetworkBehaviour
 	{
 		if (inputtedColors.Count <= 0) return;
 		inputtedColors.RemoveAt(inputtedColors.Count - 1);
+	}
+
+	[Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+	private void StartCheckSolutionRpc()
+	{
+		StartCoroutine(WaitCheckSolutionRpc());
+	}
+	
+	private IEnumerator WaitCheckSolutionRpc()
+	{
+		CheckSolutionRpc();
+		if (isSolutionCorrect)
+		{
+			//win logic here
+			Debug.Log("WIN!!");
+			//await TriggerStatusFlashClientRpc(true);
+			yield return StartCoroutine(FlashSequence(true));
+		}
+		else
+		{
+			//lose logic here
+			Debug.Log("LOSE!");
+			//TriggerStatusFlashClientRpc(false);
+			yield return StartCoroutine(FlashSequence(false));
+			inputtedColors.Clear();
+		}
+		//cleanup user objects (?)
+		CleanupPlayersClientRpc();
+
+		//boot to main menu
+		//TODO: ADD IN END CUTSCENE
+		NetworkManager.Singleton.SceneManager.LoadScene("Main Menu", LoadSceneMode.Single);
 	}
 
 	[Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -171,13 +206,17 @@ public class GraveBehaviour : NetworkBehaviour
 		isFlashing = true;
 		UnityEngine.Color targetColor = success ? successColor : failColor;
 
+		Debug.Log("Reached foreach loop");
 		// Turn ALL runes to the status color
 		foreach (var rune in runeObjects)
 		{
+			Debug.Log("Checking new rune");
 			rune.SetActive(true);
-			var light = rune.GetComponentInChildren<Light>();
+			//var light = rune.GetComponentInChildren<Light>();
+			Light light = rune.GetComponent<Light>();
 			if (light != null)
 			{
+				Debug.Log("LIGHT WAS NOT NULL");
 				light.color = targetColor;
 				light.intensity = 5f; 
 			}
