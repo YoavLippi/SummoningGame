@@ -24,8 +24,6 @@ public class NetworkProjectile : NetworkBehaviour
     private void Start()
     {
         _particleSystem = GetComponent<ParticleSystem>();
-
-        PlayAllParticleEffects();
     }
 
     public void SetParticleColor(Color newColor)
@@ -59,6 +57,7 @@ public class NetworkProjectile : NetworkBehaviour
     {
         _particleSystem = GetComponent<ParticleSystem>();
         SetParticleColor(spellType.Value);
+
 
         PlayAllParticleEffects();
 

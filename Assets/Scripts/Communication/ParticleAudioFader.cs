@@ -11,23 +11,18 @@ public class ParticleAudioFader : MonoBehaviour
 
     private static Dictionary<int, ParticleAudioFader> _registry = new Dictionary<int, ParticleAudioFader>();
 
-    private void Awake()
-    {
-        Debug.Log($"ParticleAudioFader Awake on {gameObject.name}");
-
-        // determines order in which sounds will play and fade out 
-        _registry[_playOrder] = this;        
-    }
-
     private void Start()
     {
         if (_playOrder == 0)
             StartCoroutine(PlaySequence());
     }
 
-    public void Play()
+    private void Update()
     {
-        StartCoroutine(PlaySequence());
+        if (_playOrder == 0) return;
+        if (_audioSource.isPlaying) return;
+        if (_fadeTarget.isPlaying && !_audioSource.isPlaying)
+            StartCoroutine(PlaySequence());
     }
 
     private IEnumerator PlaySequence()
@@ -39,9 +34,9 @@ public class ParticleAudioFader : MonoBehaviour
         Debug.Log($"{gameObject.name} fadeTime: {fadeTime}");
         yield return StartCoroutine(FadeOut(fadeTime));
 
-        int next = _playOrder + 1;
+       /* int next = _playOrder + 1;
         if (_registry.ContainsKey(next))
-            _registry[next].Play();
+            _registry[next].Play(); */
     }
 
     private IEnumerator FadeOut(float duration)
