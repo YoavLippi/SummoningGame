@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Button Hover
   m_EditorClassIdentifier: Assembly-CSharp::SoundContainer
   associatedSound: 3
-  soundClip: {fileID: 8300000, guid: 60d24d53f0c59614b92b9931c2c5b5b9, type: 3}
+  soundClip: {fileID: 8300000, guid: 896ecbd584b65274699c9415f83e015f, type: 3}
   volume: 1
