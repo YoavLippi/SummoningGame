@@ -17,7 +17,10 @@ public class GraveBehaviour : NetworkBehaviour
 	//just to see in the editor: DO NOT USE
 	[SerializeField] private List<int> debugColorsViewer;
 	[SerializeField] private ColorGameController _gameController;
+	
+	[Header("Runtime")]
 	[SerializeField] private bool isSolutionCorrect = false;
+	[SerializeField] private bool canAddColors = true;
 
 	[Header("Ritual Visuals")]
 	[SerializeField] private GameObject[] runeObjects;
@@ -58,6 +61,7 @@ public class GraveBehaviour : NetworkBehaviour
 	[Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
 	public void AddColorRpc(InteractionHandler.Color newColor)
 	{
+		if (!canAddColors) return;
 		if (newColor == InteractionHandler.Color.White)
 		{
 			RemoveTopRpc();
@@ -68,30 +72,8 @@ public class GraveBehaviour : NetworkBehaviour
 			if (inputtedColors.Count >= _gameController.solutionSize)
 			{
 				StartCoroutine(WaitCheckSolutionRpc());
-				//StartCheckSolutionRpc();
-				/*CheckSolutionRpc();
-				if (isSolutionCorrect)
-				{
-					//win logic here
-					Debug.Log("WIN!!");
-					TriggerStatusFlashClientRpc(true);
-				}
-				else
-				{
-					//lose logic here
-					Debug.Log("LOSE!");
-					TriggerStatusFlashClientRpc(false);
-					inputtedColors.Clear();
-				}
-				//cleanup user objects (?)
-				CleanupPlayersClientRpc();
-
-				//boot to main menu
-				//TODO: ADD IN END CUTSCENE
-				NetworkManager.Singleton.SceneManager.LoadScene("Main Menu", LoadSceneMode.Single);*/
 			}
 		}
-		//Debug.Log("Recieved RPC");
 	}
 
 	[ClientRpc]
@@ -117,16 +99,14 @@ public class GraveBehaviour : NetworkBehaviour
 		if (inputtedColors.Count <= 0) return;
 		inputtedColors.RemoveAt(inputtedColors.Count - 1);
 	}
-
-	[Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-	private void StartCheckSolutionRpc()
-	{
-		StartCoroutine(WaitCheckSolutionRpc());
-	}
 	
 	private IEnumerator WaitCheckSolutionRpc()
 	{
+		//before server check so both disable adding colors
+		canAddColors = false;
+		
 		if (!IsServer) yield break;
+		
 		CheckSolutionRpc();
 		yield return new WaitForSeconds(0.2f);
 		
@@ -135,17 +115,20 @@ public class GraveBehaviour : NetworkBehaviour
 		ChangeLightColorsClientRpc(isSolutionCorrect);
 
 		yield return new WaitForSeconds(flashDuration);
+		
 		//cleanup user objects (?)
 		CleanupPlayersClientRpc();
 
         //boot to main menu
-        //TODO: ADD IN END CUTSCENE
-        //NetworkManager.Singleton.SceneManager.LoadScene("Main Menu", LoadSceneMode.Single);
         SessionCutscenes cutscenes = FindObjectOfType<SessionCutscenes>();
         if (isSolutionCorrect)
-            cutscenes.TriggerWinClientRpc();
+        {
+	        cutscenes.TriggerWinClientRpc();
+        }
         else
-            cutscenes.TriggerLoseClientRpc();
+        {
+	        cutscenes.TriggerLoseClientRpc();
+        }
     }
 
 	//[Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]

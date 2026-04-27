@@ -289,7 +289,7 @@ MonoBehaviour:
   m_ProtocolType: 0
   m_UseWebSockets: 0
   m_UseEncryption: 0
-  m_MaxPacketQueueSize: 128
+  m_MaxPacketQueueSize: 256
   m_MaxPayloadSize: 6144
   m_HeartbeatTimeoutMS: 500
   m_ConnectTimeoutMS: 1000
@@ -6380,7 +6380,7 @@ MonoBehaviour:
     <b>Numpad</b>  =  Cycle through
     spell colors
 
-    
+
 
     <b>W</b>  =  Walk forward
 
@@ -6391,10 +6391,10 @@ MonoBehaviour:
 
     <b>D</b>  =  Walk Right
 
-    
 
-    <b>Mousepad</b>  = 
-    Look around'
+
+    <b>Mousepad</b>  =  Look
+    around'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 46253dc64fc7df9498a822376684711c, type: 2}
   m_sharedMaterial: {fileID: 5523587600620123391, guid: 46253dc64fc7df9498a822376684711c, type: 2}
