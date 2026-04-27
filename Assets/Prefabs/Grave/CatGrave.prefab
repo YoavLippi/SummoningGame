@@ -414,6 +414,7 @@ MonoBehaviour:
   successColor: {r: 0, g: 1, b: 0, a: 1}
   failColor: {r: 1, g: 0, b: 0, a: 1}
   flashDuration: 5
+  absorptionEffect: {fileID: 1532592711967869092, guid: 9ae8bec594b24674da4e44ed57ab31eb, type: 3}
 --- !u!64 &7904296574329149815
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -577,7 +578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 4125650893
+  GlobalObjectIdHash: 2489356009
   InScenePlacedSourceGlobalObjectIdHash: 2223713706
   DeferredDespawnTick: 0
   Ownership: 1
@@ -731,7 +732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1188239254
+  GlobalObjectIdHash: 2886492539
   InScenePlacedSourceGlobalObjectIdHash: 2223713706
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1012,7 +1013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 546198582
+  GlobalObjectIdHash: 3534140844
   InScenePlacedSourceGlobalObjectIdHash: 2223713706
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1166,7 +1167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2017272097
+  GlobalObjectIdHash: 999803370
   InScenePlacedSourceGlobalObjectIdHash: 2223713706
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1447,7 +1448,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 615861617
+  GlobalObjectIdHash: 554177070
   InScenePlacedSourceGlobalObjectIdHash: 2223713706
   DeferredDespawnTick: 0
   Ownership: 1

@@ -65,6 +65,20 @@ public class InteractionHandler : NetworkBehaviour
         get => currentSelection;
         set => currentSelection = value;
     }
+
+    public void OnKeynum(InputAction.CallbackContext context)
+    {
+        //making sure it only catches the inputs from the player
+        if (!IsOwner) return;
+        //should only fire once
+        if (!context.performed) return;
+        
+        //value is the key on the keypad which has been pressed
+        if (int.TryParse(context.control.name, out int value))
+        {
+            SetSelection(value-1);
+        }
+    }
     
     public void OnScroll(InputAction.CallbackContext context)
     {

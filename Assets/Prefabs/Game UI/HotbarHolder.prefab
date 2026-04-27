@@ -443,7 +443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HotbarSlot
   associatedColour: 0
-  slotColor: {r: 1, g: 0.000000075499216, b: 0, a: 1}
+  slotColor: {r: 0.809, g: 0, b: 0, a: 1}
 --- !u!1 &5241371348548148798
 GameObject:
   m_ObjectHideFlags: 0
