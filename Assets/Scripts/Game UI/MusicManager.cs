@@ -38,4 +38,11 @@ public class MusicManager : MonoBehaviour
         PlayerPrefs.SetFloat(VolumeKey, volume);
         PlayerPrefs.Save();
     }
+
+    public void SetPaused(bool paused)
+    {
+        // to override sounds when cutscene plays
+        if (paused) audioSource.Pause();
+        else audioSource.UnPause();
+    }
 }

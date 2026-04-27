@@ -138,10 +138,15 @@ public class GraveBehaviour : NetworkBehaviour
 		//cleanup user objects (?)
 		CleanupPlayersClientRpc();
 
-		//boot to main menu
-		//TODO: ADD IN END CUTSCENE
-		NetworkManager.Singleton.SceneManager.LoadScene("Main Menu", LoadSceneMode.Single);
-	}
+        //boot to main menu
+        //TODO: ADD IN END CUTSCENE
+        //NetworkManager.Singleton.SceneManager.LoadScene("Main Menu", LoadSceneMode.Single);
+        SessionCutscenes cutscenes = FindObjectOfType<SessionCutscenes>();
+        if (isSolutionCorrect)
+            cutscenes.TriggerWinClientRpc();
+        else
+            cutscenes.TriggerLoseClientRpc();
+    }
 
 	//[Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
 	private void CheckSolutionRpc()
