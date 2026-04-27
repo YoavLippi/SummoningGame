@@ -40,19 +40,34 @@
 .unity-button:enabled:hover {
     color: rgb(0, 0, 0);
     background-color: rgb(255, 255, 255);
+    scale: 1.1 1.1;
+    border-left-color: rgb(255, 0, 207);
+    border-right-color: rgb(255, 0, 207);
+    border-top-color: rgb(255, 0, 207);
+    border-bottom-color: rgb(255, 0, 207);
 }
 
 .unity-button {
+    scale: 1 1;
+    transition: scale 0.2s ease-out;
     border-top-left-radius: 35px;
     border-top-right-radius: 35px;
     border-bottom-right-radius: 35px;
     border-bottom-left-radius: 35px;
-    background-color: rgba(0, 0, 0, 0);
-    border-top-width: 1px;
-    border-right-width: 1px;
-    border-bottom-width: 1px;
-    border-left-width: 1px;
+    background-color: rgb(143, 143, 143);
+    border-top-width: 1.5px;
+    border-right-width: 1.5px;
+    border-bottom-width: 1.5px;
+    border-left-width: 1.5px;
     -unity-font-style: bold;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    transition-property: scale, border-color;
+    transition-duration: 0.2s, 0.2s;
+    transition-timing-function: ease-out, ease-out;
+    transition-delay: 0s, 0s;
 }
 
 .unity-button:enabled:active {

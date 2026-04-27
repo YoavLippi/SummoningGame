@@ -38,7 +38,7 @@
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement style="flex-grow: 1; align-items: center; flex-direction: row; width: 551px; justify-content: center; align-self: auto;">
-            <Blocks.Sessions.Common.LeaveSessionButton data-source="project://database/Assets/Prefabs/OurSessionSettings.asset?fileID=11400000&amp;guid=91282b656b0e7334abf064367752c1a1&amp;type=2#OurSessionSettings" style="width: 40%; aspect-ratio: 3;">
+            <Blocks.Sessions.Common.LeaveSessionButton data-source="project://database/Assets/Prefabs/OurSessionSettings.asset?fileID=11400000&amp;guid=91282b656b0e7334abf064367752c1a1&amp;type=2#OurSessionSettings" name="LeaveSessionButton" style="width: 40%; aspect-ratio: 3;">
                 <Bindings>
                     <ui:DataBinding property="SessionType" binding-mode="ToTarget" data-source-path="sessionType"/>
                 </Bindings>
