@@ -6377,24 +6377,25 @@ MonoBehaviour:
       m_Calls: []
   m_text: '<b>Left Click</b>  =  Fire spell
 
-    <b>Numpad</b>  =  Cycle through
+    <b>Scroll</b>  =  Cycle through
     spell colors
 
+    <b>Numeric Keys</b> = Select spell color
 
 
-    <b>W</b>  =  Walk forward
+    <b>W</b>  = 
+    Walk forward
 
     <b>A</b>  =  Walk Left
 
-    <b>S</b> 
-    =  Walk Backward
+    <b>S</b>  =  Walk Backward
 
-    <b>D</b>  =  Walk Right
+    <b>D</b> 
+    =  Walk Right
 
 
 
-    <b>Mousepad</b>  =  Look
-    around'
+    <b>Mousepad</b>  =  Look around'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 46253dc64fc7df9498a822376684711c, type: 2}
   m_sharedMaterial: {fileID: 5523587600620123391, guid: 46253dc64fc7df9498a822376684711c, type: 2}
@@ -6460,7 +6461,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -4.492676, y: 0, z: -0.33984375, w: -0.000091552734}
+  m_margin: {x: -4.492676, y: 0, z: -150.24841, w: -0.000091552734}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
