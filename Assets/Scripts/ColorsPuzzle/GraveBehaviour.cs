@@ -28,7 +28,10 @@ public class GraveBehaviour : NetworkBehaviour
 	[SerializeField] private UnityEngine.Color failColor = UnityEngine.Color.red;
 	[SerializeField] private float flashDuration = 5f;
 
-	private bool isFlashing = false;
+    [Header("Absorption Effect")]
+    [SerializeField] private ParticleSystem absorptionEffect;
+
+    private bool isFlashing = false;
 
 	private void Start()
 	{
@@ -180,8 +183,17 @@ public class GraveBehaviour : NetworkBehaviour
 					light.color = shotColor;
 					light.intensity = 3f; 
 				}
-			}
-			else
+
+                // Play absorption with matching color on the most recently added rune
+                if (i == inputtedColors.Count - 1 && absorptionEffect != null)
+                {
+                    var main = absorptionEffect.main;
+                    main.startColor = shotColor;
+                    absorptionEffect.Play();
+                }
+
+            }
+            else
 			{
 				runeObjects[i].SetActive(false);
 			}
