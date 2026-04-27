@@ -46,8 +46,9 @@ public class AudioManager : MonoBehaviour
     {
         uiAudio = GetComponent<AudioSource>();
 
-        foreach (var container in allSounds)
-            container.volume = PlayerPrefs.GetFloat($"Volume_{container.associatedSound}", 1f);
+        foreach (var container in allSounds) 
+        { container.volume = PlayerPrefs.GetFloat($"Volume_{container.associatedSound}", 0.3f); }
+           
     }
 
     private bool ContainsItemWithSound(List<SoundContainer> inList, Sound associatedSound)

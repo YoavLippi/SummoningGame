@@ -26,6 +26,7 @@ public class MusicManager : MonoBehaviour
 
     void Start()
     {
+        PlayerPrefs.SetFloat(VolumeKey, 0.3f);
         float savedVolume = PlayerPrefs.GetFloat(VolumeKey, 1f);
         audioSource.volume = savedVolume;
         audioSource.Play();

@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SoundContainer
   associatedSound: 3
   soundClip: {fileID: 8300000, guid: 896ecbd584b65274699c9415f83e015f, type: 3}
-  volume: 1
+  volume: 0.1
