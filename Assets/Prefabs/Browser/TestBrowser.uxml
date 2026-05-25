@@ -1,6 +1,6 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Prefabs/Browser/BrowserStyle.uss?fileID=7433441132597879392&amp;guid=3d9790a6f1ddfaf4bacc415d0539b5c6&amp;type=3#BrowserStyle"/>
-    <ui:VisualElement class="main_container" style="flex-grow: 1; align-content: auto; align-items: center; flex-direction: column; justify-content: center;">
+    <ui:VisualElement picking-mode="Ignore" class="main_container" style="flex-grow: 1; align-content: auto; align-items: center; flex-direction: column; justify-content: center;">
         <ui:VisualElement style="flex-grow: 1; flex-direction: row; width: 100%;">
             <ui:VisualElement name="SessionCreate" class="indiv_tab" style="flex-grow: 1; margin-right: 20px;">
                 <Blocks.Sessions.Common.SessionStatusLabel data-source="project://database/Assets/Prefabs/OurSessionSettings.asset?fileID=11400000&amp;guid=91282b656b0e7334abf064367752c1a1&amp;type=2#OurSessionSettings" class="blocks-element--space-right blocks-label" style="height: 29px;">
