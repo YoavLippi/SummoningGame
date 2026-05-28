@@ -17,7 +17,7 @@ public class GraveBehaviour : NetworkBehaviour
 	//just to see in the editor: DO NOT USE
 	[SerializeField] private List<int> debugColorsViewer;
 	[SerializeField] private ColorGameController _gameController;
-	
+
 	[Header("Runtime")]
 	[SerializeField] private bool isSolutionCorrect = false;
 	[SerializeField] private bool canAddColors = true;
@@ -31,10 +31,10 @@ public class GraveBehaviour : NetworkBehaviour
 	[SerializeField] private UnityEngine.Color failColor = UnityEngine.Color.red;
 	[SerializeField] private float flashDuration = 5f;
 
-    [Header("Absorption Effect")]
-    [SerializeField] private ParticleSystem absorptionEffect;
+	[Header("Absorption Effect")]
+	[SerializeField] private ParticleSystem absorptionEffect;
 
-    private bool isFlashing = false;
+	private bool isFlashing = false;
 
 	private void Start()
 	{
@@ -99,37 +99,37 @@ public class GraveBehaviour : NetworkBehaviour
 		if (inputtedColors.Count <= 0) return;
 		inputtedColors.RemoveAt(inputtedColors.Count - 1);
 	}
-	
+
 	private IEnumerator WaitCheckSolutionRpc()
 	{
 		//before server check so both disable adding colors
 		canAddColors = false;
-		
+
 		if (!IsServer) yield break;
-		
+
 		CheckSolutionRpc();
 		yield return new WaitForSeconds(0.2f);
-		
-		Debug.Log(isSolutionCorrect?"WIN":"LOSE");
-		
+
+		Debug.Log(isSolutionCorrect ? "WIN" : "LOSE");
+
 		ChangeLightColorsClientRpc(isSolutionCorrect);
 
 		yield return new WaitForSeconds(flashDuration);
-		
+
 		//cleanup user objects (?)
 		CleanupPlayersClientRpc();
 
-        //boot to main menu
-        SessionCutscenes cutscenes = FindObjectOfType<SessionCutscenes>();
-        if (isSolutionCorrect)
-        {
-	        cutscenes.TriggerWinClientRpc();
-        }
-        else
-        {
-	        cutscenes.TriggerLoseClientRpc();
-        }
-    }
+		//boot to main menu
+		SessionCutscenes cutscenes = FindObjectOfType<SessionCutscenes>();
+		if (isSolutionCorrect)
+		{
+			cutscenes.TriggerWinClientRpc();
+		}
+		else
+		{
+			cutscenes.TriggerLoseClientRpc();
+		}
+	}
 
 	//[Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
 	private void CheckSolutionRpc()
@@ -169,25 +169,25 @@ public class GraveBehaviour : NetworkBehaviour
 				if (light != null)
 				{
 					light.color = shotColor;
-					light.intensity = 3f; 
+					light.intensity = 3f;
 				}
 
-                // Play absorption with matching color on the most recently added rune
-                if (i == inputtedColors.Count - 1 && absorptionEffect != null)
-                {
-                    var main = absorptionEffect.main;
-                    main.startColor = shotColor;
-                    absorptionEffect.Play();
-                }
+				// Play absorption with matching color on the most recently added rune
+				if (i == inputtedColors.Count - 1 && absorptionEffect != null)
+				{
+					var main = absorptionEffect.main;
+					main.startColor = shotColor;
+					absorptionEffect.Play();
+				}
 
-            }
-            else
+			}
+			else
 			{
 				runeObjects[i].SetActive(false);
 			}
 		}
 	}
-	
+
 	[ClientRpc]
 	private void ChangeLightColorsClientRpc(bool success)
 	{
@@ -203,7 +203,7 @@ public class GraveBehaviour : NetworkBehaviour
 			{
 				Debug.Log("LIGHT WAS NOT NULL");
 				light.color = targetColor;
-				light.intensity = 5f; 
+				light.intensity = 5f;
 			}
 		}
 	}
