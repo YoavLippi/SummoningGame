@@ -43,7 +43,7 @@
                     <ui:DataBinding property="SessionType" binding-mode="ToTarget" data-source-path="sessionType"/>
                 </Bindings>
             </Blocks.Sessions.Common.LeaveSessionButton>
-            <StartButton data-source="project://database/Assets/Prefabs/OurSessionSettings.asset?fileID=11400000&amp;guid=91282b656b0e7334abf064367752c1a1&amp;type=2#OurSessionSettings" style="width: 40%; aspect-ratio: 3;">
+            <StartButton data-source="project://database/Assets/Prefabs/OurSessionSettings.asset?fileID=11400000&amp;guid=91282b656b0e7334abf064367752c1a1&amp;type=2#OurSessionSettings" name="StartReady" style="width: 40%; aspect-ratio: 3;">
                 <Bindings>
                     <ui:DataBinding property="SessionType" data-source-path="sessionType" binding-mode="ToTarget"/>
                 </Bindings>

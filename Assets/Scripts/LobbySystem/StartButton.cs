@@ -30,7 +30,7 @@ using UnityEngine.UIElements;
         string m_SessionType;
 
         DataBinding displayTextBinding, enabledBinding;
-        StartButtonModel m_Model;
+        public StartButtonModel m_Model;
 
         /*public LeaveSessionButton()
         {
@@ -49,7 +49,7 @@ using UnityEngine.UIElements;
             AddToClassList(BlocksTheme.Label);
             BindData();
 
-            clicked += StartGame;
+            clicked += StartGameServerRpc;
             RegisterCallback<AttachToPanelEvent>(_ => UpdateBindings());
             RegisterCallback<DetachFromPanelEvent>(_ => CleanupBindings());
         }
@@ -71,16 +71,22 @@ using UnityEngine.UIElements;
             SetBinding(new BindingId(nameof(enabledSelf)), enabledBinding);
         }
         
-        //Should allow any client to start the game if they click the button
         //MVC-wise this is bad logic, but we'll have to do it like this because of time constraints
-        [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-        void StartGame()
+        void StartGameServerRpc()
         {
             if (SessionType != null) Debug.Log($"Session name: {SessionType}");
             
+            //this is now a ready behaviour
+            /*if (!NetworkManager.Singleton.IsServer)
+            {
+                m_Model.IsReady = !m_Model.IsReady;
+                Debug.Log($"Ready state is now {m_Model.IsReady}");
+                return;
+            }*/
+
             if (!NetworkManager.Singleton.IsServer)
             {
-                Debug.Log("Not server, ignoring scene load");
+                StartButtonNetwork.Instance.ToggleReadyRpc();
                 return;
             }
             

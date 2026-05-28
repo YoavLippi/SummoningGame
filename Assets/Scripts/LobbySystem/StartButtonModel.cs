@@ -18,6 +18,27 @@ using UnityEngine.UIElements;
         private int CurrentPlayers;
         public bool b_isEnabled;
         
+        private bool b_isReady;
+
+        [CreateProperty]
+        public bool IsReady
+        {
+            get => b_isReady;
+            set
+            {
+                if (b_isReady == value) return;
+
+                b_isReady = value;
+                ++m_UpdateVersion;
+                Notify();
+
+                if (NetworkManager.Singleton.IsHost)
+                {
+                    SetEnabled(value);
+                }
+            }
+        }
+        
         [CreateProperty]
         public bool IsEnabled
         {
@@ -30,6 +51,16 @@ using UnityEngine.UIElements;
                 ++m_UpdateVersion;
                 Notify();
             }
+        }
+
+        public void SetReadyFromNetwork(bool isReady)
+        {
+            IsReady = isReady;
+        }
+
+        public void SetEnabled(bool enabled)
+        {
+            IsEnabled = enabled;
         }
 
         /// <summary>
@@ -72,7 +103,11 @@ using UnityEngine.UIElements;
             m_Session.Changed += OnSessionChanged;
             m_Session.RemovedFromSession += OnSessionRemoved;
             m_Session.Deleted += OnSessionRemoved;
-            IsEnabled = false;
+            if (!NetworkManager.Singleton.IsServer)
+            {
+                IsEnabled = true;
+                DisplayText = "Ready";
+            }
         }
 
         void OnSessionRemoved()
@@ -95,12 +130,15 @@ using UnityEngine.UIElements;
             MaxPlayers = m_Session.MaxPlayers;
             if (NetworkManager.Singleton.IsServer)
             {
-                IsEnabled = (CurrentPlayers == MaxPlayers);
+                if (CurrentPlayers == MaxPlayers && IsReady)
+                {
+                    IsEnabled = true;
+                }
             }
             else
             {
-                IsEnabled = false;
-                DisplayText = "Not Host!";
+                IsEnabled = true;
+                DisplayText = "Ready";
             }
         }
 

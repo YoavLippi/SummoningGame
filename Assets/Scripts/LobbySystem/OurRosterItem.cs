@@ -20,7 +20,7 @@ public class OurRosterItem : MonoBehaviour
     //public Dropdown EffectDropdown;
 
     const float k_minSliderVolume = -50;
-    const float k_maxSliderVolume = 7;
+    const float k_maxSliderVolume = 15;
     readonly Color k_MutedColor = new Color(1, 0.624f, 0.624f, 1);
 
     private void UpdateChatStateImage()
