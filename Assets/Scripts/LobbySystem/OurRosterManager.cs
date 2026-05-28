@@ -13,7 +13,7 @@ public class OurRosterManager : MonoBehaviour
 
     EventSystem m_EventSystem;
 
-    Dictionary<string, List<RosterItem>> m_RosterObjects = new Dictionary<string, List<RosterItem>>();
+    Dictionary<string, List<OurRosterItem>> m_RosterObjects = new Dictionary<string, List<OurRosterItem>>();
 
     void Start()
     {
@@ -43,9 +43,9 @@ public class OurRosterManager : MonoBehaviour
 
     public void ClearAllRosters()
     {
-        foreach (List<RosterItem> rosterList in m_RosterObjects.Values)
+        foreach (List<OurRosterItem> rosterList in m_RosterObjects.Values)
         {
-            foreach (RosterItem item in rosterList)
+            foreach (OurRosterItem item in rosterList)
             {
                 Destroy(item.gameObject);
             }
@@ -56,8 +56,8 @@ public class OurRosterManager : MonoBehaviour
 
     public void ClearChannelRoster(string channelName)
     {
-        List<RosterItem> rosterList = m_RosterObjects[channelName];
-        foreach (RosterItem item in rosterList)
+        List<OurRosterItem> rosterList = m_RosterObjects[channelName];
+        foreach (OurRosterItem item in rosterList)
         {
             Destroy(item.gameObject);
         }
@@ -87,8 +87,8 @@ public class OurRosterManager : MonoBehaviour
     void OnParticipantAdded(VivoxParticipant participant)
     {
         GameObject newRosterObject = GameObject.Instantiate(rosterItemPrefab, this.gameObject.transform);
-        RosterItem newRosterItem = newRosterObject.GetComponent<RosterItem>();
-        List<RosterItem> thisChannelList;
+        OurRosterItem newRosterItem = newRosterObject.GetComponent<OurRosterItem>();
+        List<OurRosterItem> thisChannelList;
 
         if (m_RosterObjects.ContainsKey(participant.ChannelName))
         {
@@ -101,7 +101,7 @@ public class OurRosterManager : MonoBehaviour
         else
         {
             //Create a new roster to add this object to
-            thisChannelList = new List<RosterItem>();
+            thisChannelList = new List<OurRosterItem>();
             thisChannelList.Add(newRosterItem);
             newRosterItem.SetupRosterItem(participant);
             m_RosterObjects.Add(participant.ChannelName, thisChannelList);
@@ -113,7 +113,7 @@ public class OurRosterManager : MonoBehaviour
     {
         if (m_RosterObjects.ContainsKey(participant.ChannelName))
         {
-            RosterItem removedItem = m_RosterObjects[participant.ChannelName].FirstOrDefault(p => p.Participant.PlayerId == participant.PlayerId);
+            OurRosterItem removedItem = m_RosterObjects[participant.ChannelName].FirstOrDefault(p => p.Participant.PlayerId == participant.PlayerId);
             if (removedItem != null)
             {
                 for (GameObject go = m_EventSystem.currentSelectedGameObject; go != null; go = go?.transform?.parent?.gameObject)
