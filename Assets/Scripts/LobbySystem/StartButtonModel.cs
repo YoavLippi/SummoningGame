@@ -53,9 +53,11 @@ using UnityEngine.UIElements;
             }
         }
 
+        //this is a server rpc
         public void SetReadyFromNetwork(bool isReady)
         {
             IsReady = isReady;
+            //DisplayText = isReady ? "Unready" : "Ready";
         }
 
         public void SetEnabled(bool enabled)
@@ -113,6 +115,7 @@ using UnityEngine.UIElements;
         void OnSessionRemoved()
         {
             DisplayText = k_DefaultDisplayText;
+            IsEnabled = false;
             CleanUpSession();
         }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Blocks.Common;
 using Unity.Netcode;
 using Unity.Properties;
@@ -87,6 +88,7 @@ using UnityEngine.UIElements;
             if (!NetworkManager.Singleton.IsServer)
             {
                 StartButtonNetwork.Instance.ToggleReadyRpc();
+                text = (text == "Ready") ? "Unready" : "Ready";
                 return;
             }
             

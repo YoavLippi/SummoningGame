@@ -25,7 +25,13 @@ public class StartButtonNetwork : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        if (IsServer)
+        {
+            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
+        }
         isReady.OnValueChanged += HandleChange;
+        
+        SetReadyRpc(false);
     }
     
     public void HandleChange(bool oldVal, bool newVal) 
@@ -38,5 +44,19 @@ public class StartButtonNetwork : NetworkBehaviour
     {
         isReady.Value = !isReady.Value;
         model.m_Model.SetReadyFromNetwork(isReady.Value);
+    }
+
+    [Rpc(SendTo.Server)]
+    public void SetReadyRpc(bool value)
+    {
+        isReady.Value = value;
+        model.m_Model.SetReadyFromNetwork(value);
+    }
+
+    public void OnClientDisconnected(ulong clientID)
+    {
+        //UnreadyRpc();
+        isReady.Value = false;
+        model.m_Model.SetReadyFromNetwork(false);
     }
 }
