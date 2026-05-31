@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95d0d34066bdd9347a672ad4ed17a03c, type: 3}
   m_Name: SymbolData 1
   m_EditorClassIdentifier: Assembly-CSharp::SymbolData
-  symbolID: 1c54a90c-7f4f-49d3-b72b-e126c21b5e5e
-  symbolSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  symbolID: 1
+  symbolSprite: {fileID: 21300000, guid: 7ee5486e6268149d1b8cb7877044b126, type: 3}

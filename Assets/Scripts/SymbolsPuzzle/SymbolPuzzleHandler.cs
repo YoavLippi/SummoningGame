@@ -1,18 +1,22 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
-public class SymbolPuzzleHandler : MonoBehaviour
+[RequireComponent(typeof(NetworkObject))]
+public class SymbolPuzzleHandler : NetworkBehaviour
 {
     [Header("Setup")]
     [SerializeField] private int columnAmount;
     [SerializeField] private int columnSize;
     [SerializeField] private int symbolDisplayAmount;
     [SerializeField] private GameObject[] allSymbols;
+    [SerializeField] private SymbolBehaviour[] displaySymbols;
     
     [Header("Runtime")]
     [SerializeField] private List<SymbolOrder> symbolOrders;
@@ -22,6 +26,13 @@ public class SymbolPuzzleHandler : MonoBehaviour
     [SerializeField] private List<SymbolData> correctSymbols;
     [SerializeField] private int correctIndex;
 
+    [Header("Network")]
+    //Flattening all orders so that they can be transmitted
+    public NetworkList<int> allOrdersNetwork = new NetworkList<int>();
+    public NetworkList<int> correctOrderNetwork = new NetworkList<int>();
+    public NetworkList<int> correctRelevantOnlyNetwork = new NetworkList<int>();
+    public NetworkList<int> displaySymbolsNetwork = new NetworkList<int>();
+
     [Serializable]
     public class SymbolOrder
     {
@@ -30,9 +41,19 @@ public class SymbolPuzzleHandler : MonoBehaviour
 
     [Header("Events")]
     public UnityEvent puzzleFailure;
-    void Start()
+    public override void OnNetworkSpawn()
     {
-        correctSymbols = new List<SymbolData>();
+        if (IsServer)
+        {
+            correctSymbols = new List<SymbolData>();
+            StartCoroutine(DelaySpawn());
+        }
+    }
+    
+    //manually delaying because there's an issue with race conditions
+    private IEnumerator DelaySpawn()
+    {
+        yield return new WaitForSeconds(0.2f);
         PopulateSymbolOrders(columnSize, columnAmount);
     }
 
@@ -135,6 +156,44 @@ public class SymbolPuzzleHandler : MonoBehaviour
             
             //adding new column to actual columns
             symbolOrders.Add(newOrder);
+        }
+        
+        PopulateNetworkOrders();
+    }
+
+    //network lists can't store structs, so we're flattening them down to 1d arrays of symbol IDs that we can then reconstruct later
+    private void PopulateNetworkOrders()
+    {
+        //each column will occupy [columnSize] spaces in the 1D array
+        int totalOrderSize = columnSize * columnAmount;
+        foreach (var symbolOrder in symbolOrders)
+        {
+            var temp = symbolOrder;
+            foreach (var symbol in temp.thisOrder)
+            {
+                allOrdersNetwork.Add(symbol.symbolID);
+            }
+        }
+
+        int startingIndex = correctIndex * columnSize;
+        for (int i = 0; i < columnSize; i++)
+        {
+            correctOrderNetwork.Add(allOrdersNetwork[startingIndex+i]);
+        }
+
+        foreach (var symbol in correctOrderRelevantOnly)
+        {
+            correctRelevantOnlyNetwork.Add(symbol.symbolID);
+        }
+
+        foreach (var symbol in correctSymbols)
+        {
+            displaySymbolsNetwork.Add(symbol.symbolID);
+        }
+        
+        for (int i = 0; i < displaySymbols.Length; i++)
+        {
+            displaySymbols[i].SymbolID = correctSymbols[i].symbolID;
         }
     }
 
