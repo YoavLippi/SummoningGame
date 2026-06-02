@@ -15,7 +15,7 @@ public class SymbolPuzzleHandler : NetworkBehaviour
     [SerializeField] private int columnAmount;
     [SerializeField] private int columnSize;
     [SerializeField] private int symbolDisplayAmount;
-    [SerializeField] private GameObject[] allSymbols;
+    //[SerializeField] private GameObject[] allSymbols;
     [SerializeField] private SymbolBehaviour[] displaySymbols;
     
     [Header("Runtime")]
@@ -67,9 +67,9 @@ public class SymbolPuzzleHandler : NetworkBehaviour
     {
         //Generating initial list of symbol data to pull from
         List<SymbolData> pullList = new List<SymbolData>();
-        foreach (var symbolObj in allSymbols)
+        foreach (var symbol in SymbolsLookup.Instance.symbols)
         {
-            pullList.Add(symbolObj.GetComponent<SymbolBehaviour>().SymbolData);
+            pullList.Add(symbol);   
         }
         
         //resetting correct symbols and populating random new ones
@@ -91,9 +91,9 @@ public class SymbolPuzzleHandler : NetworkBehaviour
         {
             //reset pull list
             pullList.Clear();
-            foreach (var symbolObj in allSymbols)
+            foreach (var symbol in SymbolsLookup.Instance.symbols)
             {
-                pullList.Add(symbolObj.GetComponent<SymbolBehaviour>().SymbolData);
+                pullList.Add(symbol);
             }
             
             if (colSize >= pullList.Count)

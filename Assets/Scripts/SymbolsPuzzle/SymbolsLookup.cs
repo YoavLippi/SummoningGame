@@ -5,7 +5,7 @@ using UnityEngine;
 public class SymbolsLookup : MonoBehaviour
 {
     public static SymbolsLookup Instance;
-    [SerializeField] private SymbolData[] symbols;
+    public SymbolData[] symbols;
     
     private Dictionary<int, SymbolData> lookupTable;
     private void Awake()

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 95d0d34066bdd9347a672ad4ed17a03c, type: 3}
-  m_Name: SymbolData 6
+  m_Name: SymbolData 23
   m_EditorClassIdentifier: Assembly-CSharp::SymbolData
-  symbolID: 6
-  symbolSprite: {fileID: 971417015, guid: cdc2e3468dca0a84eb6ec6dc3075a661, type: 3}
+  symbolID: 23
+  symbolSprite: {fileID: 897831019, guid: cdc2e3468dca0a84eb6ec6dc3075a661, type: 3}
