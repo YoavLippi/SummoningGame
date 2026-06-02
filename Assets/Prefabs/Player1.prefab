@@ -531,6 +531,12 @@ MonoBehaviour:
   catMask:
     serializedVersion: 2
     m_Bits: 64
+  candleMask:
+    serializedVersion: 2
+    m_Bits: 256
+  woundMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &-436604901402377656
 MonoBehaviour:
   m_ObjectHideFlags: 0

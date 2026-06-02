@@ -7,6 +7,9 @@ TagManager:
   - Hotbar
   - HotbarSelector
   - GraveRaycastTarget
+  - CandleGameController
+  - WoundTarget
+  - CandleSlot
   layers:
   - Default
   - TransparentFX
@@ -15,8 +18,8 @@ TagManager:
   - Water
   - UI
   - CatGrave
-  - 
-  - 
+  - Wound
+  - CandleSlot
   - 
   - 
   - 

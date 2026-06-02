@@ -84,19 +84,24 @@ public class WandController : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void FireWithColorServerRpc (Vector3 position, Vector3 directionEulers, Color spellColor)
+    public void FireWithColorServerRpc(Vector3 position, Vector3 directionEulers, Color spellColor)
     {
-        //Debug.Log("Trying to fire spell");
+        // Debug.Log("Trying to fire spell");
         GameObject spell = Instantiate(spellPrefab, position, Quaternion.Euler(directionEulers));
         NetworkObject netObj = spell.GetComponent<NetworkObject>();
+
+        // CHANGED: spawn first, then set NetworkVariable — NGO requires the object
+        // to be spawned before NetworkVariables can be written to
         netObj.Spawn();
 
         NetworkProjectile projectile = spell.GetComponent<NetworkProjectile>();
         if (projectile)
         {
-            //just using zero as a placeholder value
-            projectile.Initialize(Vector3.zero, spellSpeed, spellDuration);
             projectile.spellType.Value = spellColor;
+            // ADDED: pushes color + triggers Play() on all clients atomically
+            projectile.InitializeClientRpc(spellColor);
+            // just using zero as a placeholder value
+            projectile.Initialize(Vector3.zero, spellSpeed, spellDuration);
         }
     }
 
