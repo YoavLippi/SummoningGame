@@ -126,8 +126,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 556cea0bfa4c37c4eb158af3df7b1298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PotionIngredient
-  potencyValue: 5
-  instabilityValue: 3
+  potencyValue: 3
+  instabilityValue: 2
 --- !u!54 &3007313055277809735
 Rigidbody:
   m_ObjectHideFlags: 0

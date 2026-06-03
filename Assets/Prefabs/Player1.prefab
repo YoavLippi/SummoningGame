@@ -815,8 +815,10 @@ MonoBehaviour:
   interactableLayer:
     serializedVersion: 2
     m_Bits: 128
-  pickupRange: 25
+  pickupRange: 30
   sphereRadius: 0.3
+  cauldronTargetingRadius: 1.5
+  throwForce: 5
 --- !u!1001 &7024049996148724153
 PrefabInstance:
   m_ObjectHideFlags: 0
