@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1038711963271264254}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0884, y: -0.0653, z: 0.15}
+  m_LocalPosition: {x: 0.0933, y: -0.08, z: 0.1354}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -347,7 +347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 253506300
+  GlobalObjectIdHash: 1022860673
   InScenePlacedSourceGlobalObjectIdHash: 1022860673
   DeferredDespawnTick: 0
   Ownership: 1
@@ -815,7 +815,8 @@ MonoBehaviour:
   interactableLayer:
     serializedVersion: 2
     m_Bits: 128
-  pickupRange: 15
+  pickupRange: 25
+  sphereRadius: 0.3
 --- !u!1001 &7024049996148724153
 PrefabInstance:
   m_ObjectHideFlags: 0

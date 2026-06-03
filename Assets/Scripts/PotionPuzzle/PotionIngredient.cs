@@ -3,21 +3,32 @@ using UnityEngine;
 public class PotionIngredient : MonoBehaviour
 {
 	[Header("Ingredient Attributes")]
-	[SerializeField] private int potencyValue = 0;      // Can be positive or negative
-	[SerializeField] private int instabilityValue = 0;    // Can be positive or negative
+	[SerializeField] private int potencyValue = 0;
+	[SerializeField] private int instabilityValue = 0;
 
+	// Handles when it glides inside as a trigger
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.CompareTag("Cauldron"))
+		CheckIngest(other.gameObject);
+	}
+
+	// Backup: Handles normal physics drops if it falls in naturally
+	private void OnCollisionEnter(Collision collision)
+	{
+		CheckIngest(collision.gameObject);
+	}
+
+	private void CheckIngest(GameObject otherObj)
+	{
+		if (otherObj.CompareTag("Cauldron"))
 		{
-			PotionCauldron cauldron = other.GetComponent<PotionCauldron>();
+			PotionCauldron cauldron = otherObj.GetComponent<PotionCauldron>();
 			if (cauldron != null)
 			{
-				// Send this specific item's values to the cauldron
 				cauldron.MixIngredientServerRpc(potencyValue, instabilityValue);
 			}
 
-			// Destroy the ingredient asset after it falls in
+			// Vanish into the brew
 			Destroy(gameObject);
 		}
 	}
