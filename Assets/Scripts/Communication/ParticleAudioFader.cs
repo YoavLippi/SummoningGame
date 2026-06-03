@@ -9,6 +9,8 @@ public class ParticleAudioFader : MonoBehaviour
     [SerializeField] private ParticleSystem _fadeTarget;
     [SerializeField] private int _playOrder;
 
+    private bool _hasPlayed = false;
+
     private static Dictionary<int, ParticleAudioFader> _registry = new Dictionary<int, ParticleAudioFader>();
 
     private void Start()
@@ -20,9 +22,13 @@ public class ParticleAudioFader : MonoBehaviour
     private void Update()
     {
         if (_playOrder == 0) return;
-        if (_audioSource.isPlaying) return;
+        if (_hasPlayed) return;
         if (_fadeTarget.isPlaying && !_audioSource.isPlaying)
+        {
+            _hasPlayed = true;
             StartCoroutine(PlaySequence());
+        }
+            
     }
 
     private IEnumerator PlaySequence()
