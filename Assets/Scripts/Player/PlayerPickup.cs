@@ -22,7 +22,7 @@ public class PlayerPickup : NetworkBehaviour
 
 	[Header("Smart Drop Settings")]
 	[SerializeField] private float cauldronTargetingRadius = 1.5f; // How forgiving the drop aim is
-	[SerializeField] private float throwForce = 5f;
+	//[SerializeField] private float throwForce = 5f;
 
 	private InputAction pickupAction;
 	private GameObject carriedItem;
