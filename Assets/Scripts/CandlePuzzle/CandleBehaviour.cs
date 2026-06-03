@@ -22,6 +22,12 @@ public class CandleBehaviour : NetworkBehaviour
     [SerializeField] private GameObject[] candleObjects;
     [SerializeField] private Light[] candleLights;
 
+    // parallel array of particle systems mapped 1:1 by slot index.
+    // these live as child objects under each candle and mirror the light color/activation.
+    // if left empty in the inspector, Start() will auto-fill them from candleObjects children.
+    [Header("Candle Particles")]
+    [SerializeField] private ParticleSystem[] candleParticles;
+
     // local flags tracking whether a sequence is in progress, input is allowed, and current round number
     [Header("Runtime Flags")]
     [SerializeField] private bool sequenceActive = false;
@@ -41,6 +47,18 @@ public class CandleBehaviour : NetworkBehaviour
             var ctrlObj = GameObject.FindWithTag("CandleController");
             if (ctrlObj != null)
                 _candleController = ctrlObj.GetComponent<CandleController>();
+        }
+
+        // auto-fill particles from children if the array is empty but candleObjects are assigned.
+        // this matches the original pattern of finding references at runtime to reduce inspector setup.
+        if ((candleParticles == null || candleParticles.Length == 0) && candleObjects != null && candleObjects.Length > 0)
+        {
+            candleParticles = new ParticleSystem[candleObjects.Length];
+            for (int i = 0; i < candleObjects.Length; i++)
+            {
+                if (candleObjects[i] != null)
+                    candleParticles[i] = candleObjects[i].GetComponentInChildren<ParticleSystem>(true);
+            }
         }
     }
 
@@ -70,17 +88,20 @@ public class CandleBehaviour : NetworkBehaviour
         foreach (var val in inputtedSequence)
             debugSequenceViewer.Add(val);
 
+        // authoritative rebuild; by the time this fires, litColors is already in sync
+        // because the server always adds to litColors BEFORE inputtedSequence.
         UpdateAllCandles();
     }
 
-    // callback when the lit colors network list changes, syncs debug view and updates visuals
+    // callback when the lit colors network list changes, syncs debug view ONLY
     private void OnLitColorsChanged(NetworkListEvent<int> changeEvent)
     {
         debugColorViewer.Clear();
         foreach (var val in litColors)
             debugColorViewer.Add(val);
 
-        UpdateAllCandles();
+        // 
+        // don't rebuild visuals here. litColors is updated BEFORE inputtedSequence on the server, rebuilding here would run with a complete litColors array but an empty/stale
     }
 
     // returns true if a candle sequence is currently being attempted
@@ -100,7 +121,7 @@ public class CandleBehaviour : NetworkBehaviour
         int stepCount = _candleController != null ? _candleController.GetStepCount(currentRound) : 0;
         ResetAllCandlesClientRpc(stepCount);
 
-        Debug.Log("[Candles] Sequence nulled — round reset.");
+        Debug.Log("[Candles] Sequence nulled ï¿½ round reset.");
     }
 
     // main server rpc that validates player input against the current round's solution step
@@ -109,23 +130,23 @@ public class CandleBehaviour : NetworkBehaviour
     {
         if (_candleController == null)
         {
-            Debug.LogWarning($"[CandleBehaviour] Input rejected — no CandleController. slot={slotIndex}, color={shotColor}");
+            Debug.LogWarning($"[CandleBehaviour] Input rejected ï¿½ no CandleController. slot={slotIndex}, color={shotColor}");
             return;
         }
 
         if (!_candleController.IsRoundReady)
         {
-            Debug.LogWarning($"[CandleBehaviour] Input rejected — round not ready. slot={slotIndex}, color={shotColor}");
+            Debug.LogWarning($"[CandleBehaviour] Input rejected ï¿½ round not ready. slot={slotIndex}, color={shotColor}");
             return;
         }
 
         if (!canInput)
         {
-            Debug.LogWarning($"[CandleBehaviour] Input rejected — input locked. slot={slotIndex}, color={shotColor}");
+            Debug.LogWarning($"[CandleBehaviour] Input rejected ï¿½ input locked. slot={slotIndex}, color={shotColor}");
             return;
         }
 
-        Debug.Log($"[CandleBehaviour] RPC received — slot: {slotIndex}, color: {shotColor}, canInput: {canInput}");
+        Debug.Log($"[CandleBehaviour] RPC received ï¿½ slot: {slotIndex}, color: {shotColor}, canInput: {canInput}");
 
         if (!sequenceActive)
         {
@@ -150,6 +171,9 @@ public class CandleBehaviour : NetworkBehaviour
             litColors.Add((int)shotColor);
             inputtedSequence.Add(slotIndex);
 
+            // Instant visual feedback ï¿½ snaps the light on immediately so the player sees
+            // the result without waiting for the NetworkList sync roundtrip.
+            // The authoritative rebuild from OnSequenceChanged will reconcile it a frame later.
             SetCandleColorClientRpc(slotIndex, shotColor);
 
             if (inputtedSequence.Count >= _candleController.GetStepCount(currentRound))
@@ -231,37 +255,56 @@ public class CandleBehaviour : NetworkBehaviour
     }
 
     /// <summary>
-    /// local visual update. Runs on every client via OnListChanged when the NetworkList syncs.
-    /// lights reflect progress (how many steps are done), not raw slot index.
+    /// local visual update. Runs on every client via OnSequenceChanged when the NetworkList syncs.
+    /// Lights are applied to the EXACT slot indices stored in inputtedSequence, using litColors as
+    /// a parallel array. This mirrors GraveBehaviour's UpdateAllRunes, but accounts for the fact
+    /// that candles are positional (slot-based) rather than sequential (rune-based).
     /// </summary>
     // updates candle object visibility and light states based on current round progress
     private void UpdateAllCandles()
     {
         int count = _candleController != null ? _candleController.GetStepCount(currentRound) : 0;
 
+        // step 1: Set active state and disable all lights (clean slate)
         for (int i = 0; i < candleObjects.Length; i++)
         {
-            if (i >= count)
-            {
-                candleObjects[i].SetActive(false);
-                continue;
-            }
-
-            candleObjects[i].SetActive(true);
-
-            bool isLit = i < inputtedSequence.Count;
+            bool active = i < count;
+            if (candleObjects[i] != null)
+                candleObjects[i].SetActive(active);
 
             if (candleLights[i] != null)
+                candleLights[i].enabled = false;
+
+            // stop and clear particles for any slot that isn't active or hasn't been inputted yet.
+            // this ensures particles don't linger from a previous round or failed attempt.
+            if (i < candleParticles.Length && candleParticles[i] != null)
+                candleParticles[i].Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
+
+        // step 2: Light up only the specific slots that have been inputted.
+        // inputtedSequence[i] = the slot index activated at step i
+        // litColors[i]         = the color used at step i
+        for (int i = 0; i < inputtedSequence.Count; i++)
+        {
+            int slotIndex = inputtedSequence[i];
+
+            if (slotIndex >= candleLights.Length || candleLights[slotIndex] == null)
+                continue;
+
+            if (i < litColors.Count)
             {
-                if (isLit && i < litColors.Count)
+                Color c = GetUnityColor((InteractionHandler.Color)litColors[i]);
+
+                candleLights[slotIndex].enabled = true;
+                candleLights[slotIndex].color = c;
+                candleLights[slotIndex].intensity = 3f;
+
+                // play the particle effect on the matched slot with the same color as the light.
+                // this gives the player immediate visual feedback that their input registered.
+                if (slotIndex < candleParticles.Length && candleParticles[slotIndex] != null)
                 {
-                    candleLights[i].enabled = true;
-                    candleLights[i].color = GetUnityColor((InteractionHandler.Color)litColors[i]);
-                    candleLights[i].intensity = 3f;
-                }
-                else
-                {
-                    candleLights[i].enabled = false;
+                    SetParticleColor(candleParticles[slotIndex], c);
+                    candleParticles[slotIndex].Play();
                 }
             }
         }
@@ -284,16 +327,34 @@ public class CandleBehaviour : NetworkBehaviour
         }
     }
 
+    // helper that sets a particle system's start color to match the candle light color.
+    // this mirrors GraveBehaviour's absorptionEffect color matching pattern.
+    private void SetParticleColor(ParticleSystem ps, Color color)
+    {
+        if (ps == null) return;
+        var main = ps.main;
+        main.startColor = color;
+    }
+
     // client rpc that immediately lights up a specific candle with the shot color
     [ClientRpc]
     private void SetCandleColorClientRpc(int slotIndex, InteractionHandler.Color shotColor)
     {
-        if (slotIndex >= candleLights.Length) return;
-        if (candleLights[slotIndex] == null) return;
+        if (slotIndex >= candleLights.Length || candleLights[slotIndex] == null) return;
+
+        Color c = GetUnityColor(shotColor);
 
         candleLights[slotIndex].enabled = true;
-        candleLights[slotIndex].color = GetUnityColor(shotColor);
+        candleLights[slotIndex].color = c;
         candleLights[slotIndex].intensity = 3f;
+
+        // snap the particle effect on instantly alongside the light.
+        // this avoids the "dark frame" delay from NetworkList sync and gives immediate feedback.
+        if (slotIndex < candleParticles.Length && candleParticles[slotIndex] != null)
+        {
+            SetParticleColor(candleParticles[slotIndex], c);
+            candleParticles[slotIndex].Play();
+        }
     }
 
     // client rpc that resets all candles to the correct count for a new round and disables lights
@@ -302,7 +363,8 @@ public class CandleBehaviour : NetworkBehaviour
     {
         int objCount = candleObjects != null ? candleObjects.Length : 0;
         int lightCount = candleLights != null ? candleLights.Length : 0;
-        int maxIter = Mathf.Max(objCount, lightCount);
+        int particleCount = candleParticles != null ? candleParticles.Length : 0;
+        int maxIter = Mathf.Max(objCount, lightCount, particleCount);
 
         for (int i = 0; i < maxIter; i++)
         {
@@ -313,6 +375,10 @@ public class CandleBehaviour : NetworkBehaviour
 
             if (i < lightCount && candleLights[i] != null)
                 candleLights[i].enabled = false;
+
+            // NEW: stop and clear all particles on reset so nothing lingers between rounds.
+            if (i < particleCount && candleParticles[i] != null)
+                candleParticles[i].Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
     }
 
@@ -320,17 +386,28 @@ public class CandleBehaviour : NetworkBehaviour
     [ClientRpc]
     private void LightUpRoundClientRpc(int roundIndex)
     {
+        // light up the exact slots that were used in this round, preserving their step colors
         for (int i = 0; i < inputtedSequence.Count; i++)
         {
-            if (i >= candleLights.Length) break;
-            if (candleLights[i] == null) continue;
-
-            candleLights[i].enabled = true;
+            int slotIndex = inputtedSequence[i];
+            if (slotIndex >= candleLights.Length || candleLights[slotIndex] == null)
+                continue;
 
             if (i < litColors.Count)
-                candleLights[i].color = GetUnityColor((InteractionHandler.Color)litColors[i]);
+            {
+                Color c = GetUnityColor((InteractionHandler.Color)litColors[i]);
 
-            candleLights[i].intensity = 4f;
+                candleLights[slotIndex].enabled = true;
+                candleLights[slotIndex].color = c;
+                candleLights[slotIndex].intensity = 4f;
+
+                // replay particles on round complete to emphasize the "locked in" success state.
+                if (slotIndex < candleParticles.Length && candleParticles[slotIndex] != null)
+                {
+                    SetParticleColor(candleParticles[slotIndex], c);
+                    candleParticles[slotIndex].Play();
+                }
+            }
         }
 
         Debug.Log($"[Candles] Round {roundIndex + 1} row locked in.");
