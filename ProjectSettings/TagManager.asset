@@ -7,6 +7,7 @@ TagManager:
   - Hotbar
   - HotbarSelector
   - GraveRaycastTarget
+  - Cauldron
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - Water
   - UI
   - CatGrave
-  - 
+  - Interactable
   - 
   - 
   - 
