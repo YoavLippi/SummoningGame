@@ -568,6 +568,11 @@ MonoBehaviour:
   catMask:
     serializedVersion: 2
     m_Bits: 64
+  symbolMask:
+    serializedVersion: 2
+    m_Bits: 4096
+  hitSymbols: 
+  symbolPuzzleHandler: {fileID: 0}
   candleMask:
     serializedVersion: 2
     m_Bits: 256

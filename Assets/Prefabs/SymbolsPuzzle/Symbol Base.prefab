@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 1886754633106953682}
   - component: {fileID: 8579417241020868922}
   - component: {fileID: 8370902025745450419}
-  m_Layer: 0
+  - component: {fileID: 4791463511881140073}
+  m_Layer: 12
   m_Name: Symbol Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,4 +137,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SymbolBehaviour
   ShowTopMostFoldoutHeaderGroup: 1
   symbolData: {fileID: 0}
+  symbolID:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
   spriteRenderer: {fileID: 1886754633106953682}
+--- !u!65 &4791463511881140073
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8433390988445556711}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 0.1}
+  m_Center: {x: 0, y: 0, z: 0}

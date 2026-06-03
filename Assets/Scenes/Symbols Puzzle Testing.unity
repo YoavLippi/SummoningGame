@@ -195,9 +195,10 @@ GameObject:
   - component: {fileID: 256564158}
   - component: {fileID: 256564157}
   - component: {fileID: 256564159}
+  - component: {fileID: 256564160}
   m_Layer: 0
   m_Name: GameController
-  m_TagString: Untagged
+  m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -233,27 +234,6 @@ MonoBehaviour:
   columnAmount: 5
   columnSize: 7
   symbolDisplayAmount: 4
-  allSymbols:
-  - {fileID: 3069087369994077759, guid: 03bb6d0675f3d824582defd507881ef7, type: 3}
-  - {fileID: 3069087369994077759, guid: b9718b1ae15cb0c4b9bb04b784657e0e, type: 3}
-  - {fileID: 3069087369994077759, guid: 3c91e98187a5ca34b8965a15b20b68bd, type: 3}
-  - {fileID: 3069087369994077759, guid: c354a8f8430867146aba5cc4bf4f9826, type: 3}
-  - {fileID: 3069087369994077759, guid: 9602aa5be94fb1348baf35ef8c2b85e6, type: 3}
-  - {fileID: 3069087369994077759, guid: 926ebd1c4fbd8684b9aa172377c27e0d, type: 3}
-  - {fileID: 3069087369994077759, guid: 19e23a8d78b35164ebbf456876ae42a0, type: 3}
-  - {fileID: 3069087369994077759, guid: 5cd0e3cf94f844e48a7bd2ea71e5f731, type: 3}
-  - {fileID: 3069087369994077759, guid: 236904b5a0ff0d9488b5e7d60723a039, type: 3}
-  - {fileID: 3069087369994077759, guid: b95fd3419c715a44f8c84e21791e4b35, type: 3}
-  - {fileID: 3069087369994077759, guid: 228562635321da940b9582d3c2587aff, type: 3}
-  - {fileID: 3069087369994077759, guid: 23a78edbaeed5764ea93bb76f3331643, type: 3}
-  - {fileID: 3069087369994077759, guid: 10097ce09cf8a954dbc071afb9b4519b, type: 3}
-  - {fileID: 3069087369994077759, guid: 770fbfa9111ab8649a15bff31627166a, type: 3}
-  - {fileID: 3069087369994077759, guid: 0d274901dc1548c4398477f66267d75e, type: 3}
-  - {fileID: 3069087369994077759, guid: a14682e8b29ac974985ccb1896a0d280, type: 3}
-  - {fileID: 3069087369994077759, guid: d153bb2cf3f1cb740844f131c56e4c42, type: 3}
-  - {fileID: 3069087369994077759, guid: 6df9c0f8817b7a54fb1e275fcff7ed2d, type: 3}
-  - {fileID: 3069087369994077759, guid: b5311d5a16da58a42ac30fded0252e98, type: 3}
-  - {fileID: 3069087369994077759, guid: 26521a11c23a03741bb59a0734f0e9e1, type: 3}
   displaySymbols:
   - {fileID: 1504220541}
   - {fileID: 1594094240}
@@ -280,9 +260,24 @@ MonoBehaviour:
     UpdateTraits:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
-  puzzleFailure:
+  onComplete:
     m_PersistentCalls:
       m_Calls: []
+  onFail:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 256564160}
+        m_TargetAssemblyTypeName: NetworkingBroker, Assembly-CSharp
+        m_MethodName: SendMessageToAllPlayers
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: ClearSymbolChoices
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &256564158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -346,6 +341,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 36454a55e6012184bada76b6e6b5fc92, type: 2}
   - {fileID: 11400000, guid: 6f4e5f43a9b4bdb45b7a0c076d65e927, type: 2}
   - {fileID: 11400000, guid: 1bfd272827ee5894192253765b4021e5, type: 2}
+--- !u!114 &256564160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256564155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 124c037ae82a79649bafecdb42940f5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NetworkingBroker
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &327610525
 GameObject:
   m_ObjectHideFlags: 0

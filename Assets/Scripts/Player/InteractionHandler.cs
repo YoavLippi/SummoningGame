@@ -28,7 +28,7 @@ public class InteractionHandler : NetworkBehaviour
         hotbarSize = allSlots.Length;
         // finding selector
         selectionBox = GameObject.FindWithTag("HotbarSelector");
-
+        symbolPuzzleHandler = GameObject.FindWithTag("GameController").GetComponent<SymbolPuzzleHandler>();
         SortHotbar();
         StartCoroutine(SetSelectionAfterDelay(0));
 
@@ -147,14 +147,22 @@ public class InteractionHandler : NetworkBehaviour
 
     [SerializeField] private float reachDistance = 50f;
 
+#if UNITY_EDITOR
     private void FixedUpdate()
     {
         Ray caster = new Ray(playerViewCam.transform.position, playerViewCam.transform.forward);
         Debug.DrawRay(playerViewCam.transform.position, playerViewCam.transform.forward * reachDistance, UnityEngine.Color.red);
     }
+#endif
 
     [SerializeField] private LayerMask catMask;
+    
+    [Header("Symbols Puzzle")]
+    [SerializeField] private LayerMask symbolMask;
 
+    [SerializeField] private List<int> hitSymbols = new List<int>();
+    [SerializeField] private SymbolPuzzleHandler symbolPuzzleHandler;
+    
     [Header("Candle Puzzle")]
     [SerializeField] private LayerMask candleMask;
     [SerializeField] private LayerMask woundMask;
@@ -185,6 +193,23 @@ public class InteractionHandler : NetworkBehaviour
                     // should do the grave behaviour if it hit the grave, color shot else
                     grave.AddColorRpc(hotbarSlots[currentSelection].GetComponent < HotbarSlot > ().associatedColour);
                     return;
+                }
+            }
+
+            if (Physics.Raycast(playerViewCam.transform.position, playerViewCam.transform.forward,
+                    out RaycastHit symbolInfo, reachDistance, symbolMask))
+            {
+                SymbolBehaviour symbol = symbolInfo.collider.GetComponent<SymbolBehaviour>();
+                if (symbol)
+                {
+                    //no duplicates
+                    if (hitSymbols.Contains(symbol.SymbolID)) return;
+                    
+                    hitSymbols.Add(symbol.SymbolID);
+                    if (hitSymbols.Count >= 4)
+                    {
+                        symbolPuzzleHandler.ValidateChoiceRpc(hitSymbols.ToArray());
+                    }
                 }
             }
 
@@ -234,6 +259,15 @@ public class InteractionHandler : NetworkBehaviour
             if (wound != null)
                 wound.RequestCloseWoundRpc();
         }
+    }
+
+    #endregion
+
+    #region Helper Methods
+
+    public void ClearSymbolChoices()
+    {
+        hitSymbols.Clear();
     }
 
     #endregion

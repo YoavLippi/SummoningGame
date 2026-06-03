@@ -40,7 +40,8 @@ public class SymbolPuzzleHandler : NetworkBehaviour
     }
 
     [Header("Events")]
-    public UnityEvent puzzleFailure;
+    [SerializeField] private UnityEvent onComplete;
+    [SerializeField] private UnityEvent onFail;
     public override void OnNetworkSpawn()
     {
         if (IsServer)
@@ -130,7 +131,7 @@ public class SymbolPuzzleHandler : NetworkBehaviour
                     int replaceIndex = availableIndexes[subIndex];
 
                     newOrder.thisOrder[replaceIndex] = symbol;
-                    availableIndexes.Remove(subIndex);
+                    availableIndexes.Remove(replaceIndex);
                 }
 
                 correctOrderFull = newOrder.thisOrder;
@@ -214,9 +215,18 @@ public class SymbolPuzzleHandler : NetworkBehaviour
         return true;
     }
 
-    public bool ValidateChoice(SymbolData choice)
+    [Rpc(SendTo.Server)]
+    //needs to be an int array because symbolData is not allowed to be passed over the network
+    public void ValidateChoiceRpc(int[] choices)
     {
-        //we need to know the order the symbols are meant to be clicked in
-        return false;
+        for (int i = 0; i < choices.Length; i++)
+        {
+            if (choices[i] != correctRelevantOnlyNetwork[i])
+            {
+                onFail.Invoke();
+                return;
+            }
+        }
+        onComplete.Invoke();
     }
 }
