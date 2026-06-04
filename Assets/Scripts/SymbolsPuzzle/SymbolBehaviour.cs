@@ -37,4 +37,9 @@ public class SymbolBehaviour : NetworkBehaviour
         symbolData = SymbolsLookup.Instance.GetSymbol(current);
         spriteRenderer.sprite = symbolData.symbolSprite;
     }
+
+    public void HandleInteract()
+    {
+        
+    }
 }
