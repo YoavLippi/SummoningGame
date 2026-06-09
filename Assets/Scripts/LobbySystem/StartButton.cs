@@ -88,7 +88,7 @@ using UnityEngine.UIElements;
             if (!NetworkManager.Singleton.IsServer)
             {
                 StartButtonNetwork.Instance.ToggleReadyRpc();
-                text = (text == "Ready") ? "Unready" : "Ready";
+                //text = (text == "Ready") ? "Unready" : "Ready";
                 return;
             }
             
