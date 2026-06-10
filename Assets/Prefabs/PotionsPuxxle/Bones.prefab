@@ -104,4 +104,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PotionIngredient
   potencyValue: 2
-  instabilityValue: 1
+  instabilityValue: 0

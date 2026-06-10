@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PotionIngredient
   potencyValue: 2
-  instabilityValue: 1
+  instabilityValue: 0
 --- !u!54 &6264358505076649151
 Rigidbody:
   m_ObjectHideFlags: 0
