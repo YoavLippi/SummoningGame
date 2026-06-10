@@ -51,7 +51,7 @@ public class PauseMenu : MonoBehaviour
     void Update()
     {
         //need to check if the player has pressed 'ESC' to pause the game
-        if (pauseAction != nulee && pauseAction.WasPerformedThisFrame)
+        if (pauseAction != null && pauseAction.WasPerformedThisFrame())
         {
             TogglePause();
         }
