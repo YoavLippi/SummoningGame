@@ -121,19 +121,28 @@ public class PotionCauldron : NetworkBehaviour
 			var smokeMain = smokeParticles.main;
 			var bubbleEmission = bubbleParticles.emission;
 
-			smokeMain.startColor = stateColor; // Particles dynamically inherit state tint color
-
 			if (instability > 0)
 			{
-				smokeEmission.rateOverTime = 30f + (instability * 10f);
-				smokeMain.startSpeed = 2f + (instability * 0.5f);
-				bubbleEmission.rateOverTime = 40f + (instability * 15f);
+				
+				// Level 1 instability = 65 particles | Level 2 = 100 particles | Level 3 = 135 particles
+				smokeEmission.rateOverTime = 30f + (instability * 35f);
+
+				// Make the smoke shoot upward much faster as pressure builds
+				smokeMain.startSpeed = 1.5f + (instability * 0.8f);
+				smokeMain.startColor = stateColor; // Uses your designer configured yellow/red states
+
+				
+				// Level 1 = 50 bubbles | Level 2 = 90 bubbles | Level 3 = 130 bubbles
+				bubbleEmission.rateOverTime = 10f + (instability * 40f);
 			}
 			else
 			{
+				// Baseline Calm State (Instability == 0)
 				smokeEmission.rateOverTime = 10f;
-				smokeMain.startSpeed = 0.8f;
-				bubbleEmission.rateOverTime = 10f;
+				smokeMain.startSpeed = 0.6f;
+				smokeMain.startColor = stableColor; // Clean, calm cyan/purple tint
+
+				bubbleEmission.rateOverTime = 10f; // Soft, slow bubbling
 			}
 		}
 

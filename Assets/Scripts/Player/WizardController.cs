@@ -22,6 +22,10 @@ public class WizardController : NetworkBehaviour
 	[SerializeField] private int minStepsBeforeOwlHoot = 5;
 	[SerializeField] private float owlHootChance = 0.05f; // 20% chance to hoot after min steps
 
+	[Header("Variant Mesh Configuration")]
+	[SerializeField] private GameObject TowerMeshChild; 
+	[SerializeField] private GameObject GraveMeshChild;
+
 	private int stepsSinceLastOwlHoot = 20;
 	private float stepTimer = 0f;
 	[SerializeField] private float stepInterval = 0.5f;
@@ -46,6 +50,19 @@ public class WizardController : NetworkBehaviour
 		
 	public override void OnNetworkSpawn()
 	{
+		if (OwnerClientId == 0)
+		{
+			if (TowerMeshChild != null) TowerMeshChild.SetActive(true);
+			if (GraveMeshChild != null) GraveMeshChild.SetActive(false);
+			Debug.Log($"[MESH SYSTEM] Client {OwnerClientId} spawned as the Librarian.");
+		}
+		else
+		{
+			if (TowerMeshChild != null) TowerMeshChild.SetActive(false);
+			if (GraveMeshChild != null) GraveMeshChild.SetActive(true);
+			Debug.Log($"[MESH SYSTEM] Client {OwnerClientId} spawned as the Apprentice.");
+		}
+
 		if (IsOwner)
 		{
 			moveAction = playerInput.actions["Move"];
@@ -139,19 +156,19 @@ public class WizardController : NetworkBehaviour
 
 	void HandleRotation()
 	{
-		// 1. Get Mouse Delta (X = side-to-side, Y = up/down)
+		// Get Mouse Delta (X = side-to-side, Y = up/down)
 		Vector2 lookInput = lookAction.ReadValue<Vector2>();
 
-		// 2. HORIZONTAL: Rotate the whole body Left/Right (Y-axis)
+		// HORIZONTAL: Rotate the whole body Left/Right (Y-axis)
 		transform.Rotate(Vector3.up * lookInput.x * mouseSensitivity);
 
-		// 3. VERTICAL: Rotate the Camera/Eyes Up/Down (X-axis)
+		// VERTICAL: Rotate the Camera/Eyes Up/Down (X-axis)
 		verticalRotation -= lookInput.y * mouseSensitivity; // Subtracting makes the mouse 'Natural' (pull up to look up)
 
-		// 4. CLAMP: Prevent the camera from flipping over
+		// CLAMP: Prevent the camera from flipping over
 		verticalRotation = Mathf.Clamp(verticalRotation, -80f, 80f);
 
-		// 5. APPLY: Only tilt the camera holder, not the wizard's feet!
+		// APPLY: Only tilt the camera holder, not the wizard's feet!
 		if (playerCameraHolder != null)
 		{
 			playerCameraHolder.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
