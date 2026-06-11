@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.Events;
 
 public class PotionCauldron : NetworkBehaviour
 {
@@ -31,6 +32,8 @@ public class PotionCauldron : NetworkBehaviour
 	[SerializeField] private ParticleSystem bubbleParticles;
 	[SerializeField] private Renderer liquidSurfaceRenderer;
 	[SerializeField] private Light cauldronAmbientLight;
+
+	[Header("Events")] [SerializeField] private UnityEvent winEvent;
 
 	private static readonly int BaseColorProperty = Shader.PropertyToID("_BaseColor");
 	private static readonly int EmissionColorProperty = Shader.PropertyToID("_EmissionColor");
@@ -76,7 +79,8 @@ public class PotionCauldron : NetworkBehaviour
 			Debug.Log("Dynamic potion recipe matched perfectly! Playing cutscene...");
 			IsPuzzleComplete = true; // Lock local server interactions
 			LockPuzzleStateClientRpc();
-			PlaySuccessCutsceneClientRpc();
+			winEvent.Invoke();
+			//PlaySuccessCutsceneClientRpc();
 		}
 	}
 

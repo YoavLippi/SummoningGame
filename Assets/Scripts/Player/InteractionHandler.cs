@@ -33,6 +33,9 @@ public class InteractionHandler : NetworkBehaviour
         StartCoroutine(SetSelectionAfterDelay(0));
 
         _wandController = GetComponent<WandController>();
+        
+        //setup interaction prompt
+        interactPrompt = GameObject.FindWithTag("InteractPrompt");
     }
 
     #region Hotbar Controller
@@ -74,6 +77,7 @@ public class InteractionHandler : NetworkBehaviour
         if (!IsOwner) return;
         // should only fire once
         if (!context.performed) return;
+        if (!isDetectingInput) return;
 
         // value is the key on the keypad which has been pressed
         if (int.TryParse(context.control.name, out int value))
@@ -88,6 +92,7 @@ public class InteractionHandler : NetworkBehaviour
         if (!IsOwner) return;
         // should only fire once per scroll
         if (!context.performed) return;
+        if (!isDetectingInput) return;
 
         // casting current selection from a possible float value to nice integers
         int scrollDelta = context.ReadValue<float>() > 0 ? 1 : -1;
@@ -147,13 +152,21 @@ public class InteractionHandler : NetworkBehaviour
 
     [SerializeField] private float reachDistance = 50f;
 
-#if UNITY_EDITOR
+    [SerializeField] private GameObject interactPrompt;
+    
+    public bool isDetectingInput = true;
+    
     private void FixedUpdate()
     {
+        if (!IsOwner) return;
         Ray caster = new Ray(playerViewCam.transform.position, playerViewCam.transform.forward);
+        #if UNITY_EDITOR
         Debug.DrawRay(playerViewCam.transform.position, playerViewCam.transform.forward * reachDistance, UnityEngine.Color.red);
+        #endif
+        LayerMask totalMask = catMask | symbolMask | candleMask | woundMask;
+
+        interactPrompt.SetActive(Physics.Raycast(playerViewCam.transform.position, playerViewCam.transform.forward, reachDistance, totalMask));
     }
-#endif
 
     [SerializeField] private LayerMask catMask;
     
@@ -161,6 +174,8 @@ public class InteractionHandler : NetworkBehaviour
     [SerializeField] private LayerMask symbolMask;
 
     [SerializeField] private List<int> hitSymbols = new List<int>();
+    //also storing the gameobject references because it's easier to code for resetting them later
+    [SerializeField] private List<SymbolBehaviour> hitSymbolObjects = new List<SymbolBehaviour>();
     [SerializeField] private SymbolPuzzleHandler symbolPuzzleHandler;
     
     [Header("Candle Puzzle")]
@@ -173,6 +188,7 @@ public class InteractionHandler : NetworkBehaviour
     public void OnFire(InputAction.CallbackContext context)
     {
         if (!IsOwner) return;
+        if (!isDetectingInput) return;
 
         // Press
         if (context.performed)
@@ -205,11 +221,14 @@ public class InteractionHandler : NetworkBehaviour
                     //no duplicates
                     if (hitSymbols.Contains(symbol.SymbolID)) return;
                     
+                    symbol.HandleInteract();
                     hitSymbols.Add(symbol.SymbolID);
+                    hitSymbolObjects.Add(symbol);
                     if (hitSymbols.Count >= 4)
                     {
                         symbolPuzzleHandler.ValidateChoiceRpc(hitSymbols.ToArray());
                     }
+                    
                 }
             }
 
@@ -268,6 +287,11 @@ public class InteractionHandler : NetworkBehaviour
     public void ClearSymbolChoices()
     {
         hitSymbols.Clear();
+        foreach (var sBehaviour in hitSymbolObjects)
+        {
+            sBehaviour.ResetSymbol();
+        }
+        hitSymbolObjects.Clear();
     }
 
     #endregion
