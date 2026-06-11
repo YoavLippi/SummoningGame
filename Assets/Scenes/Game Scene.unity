@@ -1399,6 +1399,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
       value: Symbol Base 4
@@ -1592,6 +1596,10 @@ PrefabInstance:
     - target: {fileID: 4414354749499599800, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
@@ -6806,6 +6814,10 @@ PrefabInstance:
     - target: {fileID: 4414354749499599800, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
@@ -12677,6 +12689,10 @@ PrefabInstance:
     - target: {fileID: 4414354749499599800, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
@@ -41134,6 +41150,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
       value: Symbol Base 4 (23)
@@ -47375,7 +47395,7 @@ GameObject:
   - component: {fileID: 612902423}
   - component: {fileID: 612902424}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: Symbols Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47822,6 +47842,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
       value: Symbol Base 4 (2)
@@ -47943,6 +47967,10 @@ PrefabInstance:
     - target: {fileID: 4414354749499599800, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
@@ -48202,6 +48230,10 @@ PrefabInstance:
     - target: {fileID: 4414354749499599800, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
@@ -51758,6 +51790,10 @@ PrefabInstance:
     - target: {fileID: 4414354749499599800, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
@@ -57348,6 +57384,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
       value: Symbol Base 4 (1)
@@ -57469,6 +57509,10 @@ PrefabInstance:
     - target: {fileID: 4414354749499599800, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
@@ -57700,6 +57744,10 @@ PrefabInstance:
     - target: {fileID: 4414354749499599800, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
@@ -64097,6 +64145,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
       value: Symbol Base 4 (14)
@@ -69555,6 +69607,10 @@ PrefabInstance:
     - target: {fileID: 4414354749499599800, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
@@ -75204,6 +75260,10 @@ PrefabInstance:
     - target: {fileID: 4414354749499599800, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
@@ -85804,6 +85864,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
       value: Symbol Base 4 (3)
@@ -85926,6 +85990,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
       value: Symbol Base 4 (15)
@@ -86047,6 +86115,10 @@ PrefabInstance:
     - target: {fileID: 4414354749499599800, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
@@ -100991,6 +101063,10 @@ PrefabInstance:
     - target: {fileID: 4414354749499599800, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
@@ -116358,6 +116434,10 @@ PrefabInstance:
     - target: {fileID: 4414354749499599800, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
@@ -138513,6 +138593,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
       value: Symbol Base 4 (20)
@@ -139290,6 +139374,10 @@ PrefabInstance:
     - target: {fileID: 4414354749499599800, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
@@ -159304,6 +159392,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
       value: Symbol Base 4 (8)
@@ -159740,6 +159832,10 @@ PrefabInstance:
     - target: {fileID: 4414354749499599800, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
@@ -165864,6 +165960,10 @@ PrefabInstance:
     - target: {fileID: 4414354749499599800, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
@@ -180997,6 +181097,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
       value: Symbol Base 3
@@ -181567,6 +181671,10 @@ PrefabInstance:
     - target: {fileID: 4414354749499599800, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
@@ -187238,6 +187346,7 @@ GameObject:
   - component: {fileID: 2029109398}
   - component: {fileID: 2029109401}
   - component: {fileID: 2029109402}
+  - component: {fileID: 2029109403}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameController
@@ -187341,7 +187450,7 @@ MonoBehaviour:
   - {fileID: 1616926795}
   - {fileID: 252357440}
   - {fileID: 1531155983}
-  displaySymbolsLargeParent: {fileID: 0}
+  displaySymbolsLargeParent: {fileID: 612902422}
   symbolOrders: []
   correctOrderFull: []
   correctOrderRelevantOnly: []
@@ -187365,7 +187474,19 @@ MonoBehaviour:
       MaxSecondsBetweenUpdates: 0
   onComplete:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2029109403}
+        m_TargetAssemblyTypeName: GameLogicController, Assembly-CSharp
+        m_MethodName: CheckFlagRpc
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onFail:
     m_PersistentCalls:
       m_Calls:
@@ -187501,6 +187622,39 @@ MonoBehaviour:
   playerInput: {fileID: -1906157402960468665, guid: 80374d7759382d94998d7da5c27a6cc5, type: 3}
   wizControl: {fileID: 0}
   interactHandler: {fileID: 0}
+--- !u!114 &2029109403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2029109393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fc9e1fbd72527e49b46ab9e8889f49d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameLogicController
+  ShowTopMostFoldoutHeaderGroup: 1
+  isOtherDone:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+  winEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2029109400}
+        m_TargetAssemblyTypeName: NetworkingBroker, Assembly-CSharp
+        m_MethodName: ChangeSceneForAllRpc
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Main Menu
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2045950955
 GameObject:
   m_ObjectHideFlags: 0
@@ -193170,6 +193324,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4791463511881140073, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8433390988445556711, guid: 6cbc0156779e410489e812c0f8132e93, type: 3}
       propertyPath: m_Name
       value: Symbol Base 4 (11)
@@ -193349,7 +193507,7 @@ GameObject:
   - component: {fileID: 2110167552}
   - component: {fileID: 2110167551}
   m_Layer: 5
-  m_Name: Canvas (1)
+  m_Name: Symbol Display Holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -249040,6 +249198,21 @@ MonoBehaviour:
   bubbleParticles: {fileID: 0}
   liquidSurfaceRenderer: {fileID: 0}
   cauldronAmbientLight: {fileID: 0}
+  winEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2029109403}
+        m_TargetAssemblyTypeName: GameLogicController, Assembly-CSharp
+        m_MethodName: CheckFlagRpc
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &7427871123022539983
 BoxCollider:
   m_ObjectHideFlags: 0
