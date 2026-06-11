@@ -156,37 +156,73 @@ public class WoundBehaviour : NetworkBehaviour
 
         currentSequence = sequence;
 
-        // apply the correct color to each sequence indicator based on the received data
+        // step 1: hide all indicators first
         for (int i = 0; i < sequenceIndicators.Length; i++)
         {
-            if (sequenceIndicators[i] == null) continue;
-
-            if (i < sequence.Length && i < colors.Length)
-            {
-                UnityEngine.Color displayColor = GetColorFromEnum((InteractionHandler.Color)colors[i]);
-
-                Renderer r = sequenceIndicators[i].GetComponent<Renderer>();
-                if (r != null) r.material.color = displayColor;
-
-                Light l = sequenceIndicators[i].GetComponent<Light>();
-                if (l != null) l.color = displayColor;
-
-                Image img = sequenceIndicators[i].GetComponent<Image>();
-                if (img != null) img.color = displayColor;
-
-                SpriteRenderer sr = sequenceIndicators[i].GetComponent<SpriteRenderer>();
-                if (sr != null) sr.color = displayColor;
-
-                sequenceIndicators[i].SetActive(true);
-            }
-            else
-            {
+            if (sequenceIndicators[i] != null)
                 sequenceIndicators[i].SetActive(false);
-            }
+        }
+
+        // step 2: activate and color indicators in SEQUENCE ORDER
+        for (int step = 0; step < sequence.Length && step < colors.Length; step++)
+        {
+            if (step >= sequenceIndicators.Length || sequenceIndicators[step] == null)
+                continue;
+
+            int slotIndex = sequence[step];
+            UnityEngine.Color displayColor = GetColorFromEnum((InteractionHandler.Color)colors[step]);
+
+            // apply color to whichever component exists
+            Renderer r = sequenceIndicators[step].GetComponent<Renderer>();
+            if (r != null) r.material.color = displayColor;
+
+            Light l = sequenceIndicators[step].GetComponent<Light>();
+            if (l != null) l.color = displayColor;
+
+            UnityEngine.UI.Image img = sequenceIndicators[step].GetComponent<UnityEngine.UI.Image>();
+            if (img != null) img.color = displayColor;
+
+            SpriteRenderer sr = sequenceIndicators[step].GetComponent<SpriteRenderer>();
+            if (sr != null) sr.color = displayColor;
+
+            // show the slot index number as text
+            UpdateIndicatorText(sequenceIndicators[step], slotIndex);
+
+            sequenceIndicators[step].SetActive(true);
         }
 
         OnWoundOpenChanged(woundOpen.Value, woundOpen.Value);
     }
+
+    // helper to update text on an indicator showing the slot number
+    private void UpdateIndicatorText(GameObject indicator, int slotIndex)
+    {
+        var tmp = indicator.GetComponentInChildren<TMPro.TextMeshProUGUI>(true);
+        if (tmp != null)
+        {
+            tmp.text = slotIndex.ToString();
+            tmp.gameObject.SetActive(true);
+            return;
+        }
+
+        var tmpWorld = indicator.GetComponentInChildren<TMPro.TextMeshPro>(true);
+        if (tmpWorld != null)
+        {
+            tmpWorld.text = slotIndex.ToString();
+            tmpWorld.gameObject.SetActive(true);
+            return;
+        }
+
+        var legacyText = indicator.GetComponentInChildren<UnityEngine.UI.Text>(true);
+        if (legacyText != null)
+        {
+            legacyText.text = slotIndex.ToString();
+            legacyText.gameObject.SetActive(true);
+            return;
+        }
+    }
+
+
 
     // helper that converts the interaction handler color enum to a unity color
     private UnityEngine.Color GetColorFromEnum(InteractionHandler.Color color)
