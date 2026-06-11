@@ -34,7 +34,8 @@
     border-top-color: rgb(0, 0, 0);
     border-bottom-color: rgb(0, 0, 0);
     color: rgb(255, 255, 255);
-    font-size: 16px;
+    font-size: 20px;
+    -unity-font-definition: url("project://database/Assets/Fonts/QuiteMagicalRegular-8VA2.ttf?fileID=12800000&guid=af3462cca40ac6743a7d89505baecb05&type=3#QuiteMagicalRegular-8VA2");
 }
 
 .unity-button:enabled:hover {
@@ -68,6 +69,13 @@
     transition-duration: 0.2s, 0.2s;
     transition-timing-function: ease-out, ease-out;
     transition-delay: 0s, 0s;
+    background-image: url("project://database/Assets/Art/2DAssets/MainMenu/BlankButton.png?fileID=21300000&guid=46e80b5c9441da449bda2e9ed0c8c225&type=3#BlankButton");
+    -unity-font-definition: url("project://database/Assets/Fonts/QuiteMagicalRegular-8VA2.ttf?fileID=12800000&guid=af3462cca40ac6743a7d89505baecb05&type=3#QuiteMagicalRegular-8VA2");
+    color: rgb(112, 48, 160);
+    -unity-text-outline-color: rgb(248, 196, 25);
+    -unity-text-outline-width: 0.3px;
+    text-overflow: clip;
+    font-size: 20px;
 }
 
 .unity-button:enabled:active {
