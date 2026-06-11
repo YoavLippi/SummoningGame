@@ -489,6 +489,7 @@ MonoBehaviour:
   GraveMeshChild: {fileID: 2337295693037908076}
   stepInterval: 20
   gravityValue: -9.81
+  isDetectingInput: 1
 --- !u!114 &-1906157402960468665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -604,6 +605,11 @@ MonoBehaviour:
   currentSelection: 0
   wandPos: {fileID: 5491930813688140524}
   reachDistance: 75
+  interactPrompt: {fileID: 0}
+  totalMask:
+    serializedVersion: 2
+    m_Bits: 5824
+  isDetectingInput: 1
   catMask:
     serializedVersion: 2
     m_Bits: 64
@@ -611,6 +617,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4096
   hitSymbols: 
+  hitSymbolObjects: []
   symbolPuzzleHandler: {fileID: 0}
   candleMask:
     serializedVersion: 2

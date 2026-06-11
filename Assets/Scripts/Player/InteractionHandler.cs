@@ -154,6 +154,8 @@ public class InteractionHandler : NetworkBehaviour
 
 	[SerializeField] private GameObject interactPrompt;
 
+	[SerializeField] private LayerMask totalMask;
+
 	public bool isDetectingInput = true;
 
 	private void FixedUpdate()
@@ -163,7 +165,7 @@ public class InteractionHandler : NetworkBehaviour
 #if UNITY_EDITOR
 		Debug.DrawRay(playerViewCam.transform.position, playerViewCam.transform.forward * reachDistance, UnityEngine.Color.red);
 #endif
-		LayerMask totalMask = catMask | symbolMask | candleMask | woundMask;
+		//LayerMask totalMask = catMask | symbolMask | candleMask | woundMask;
 
 		interactPrompt.SetActive(Physics.Raycast(playerViewCam.transform.position, playerViewCam.transform.forward, reachDistance, totalMask));
 	}

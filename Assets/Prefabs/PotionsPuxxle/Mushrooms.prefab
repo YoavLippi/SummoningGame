@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3203652005186673813}
   - component: {fileID: 6692867841261692431}
   - component: {fileID: 6789533714098323862}
+  - component: {fileID: 6649854463435955107}
   m_Layer: 7
   m_Name: Mushrooms
   m_TagString: Untagged
@@ -105,3 +106,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PotionIngredient
   potencyValue: 3
   instabilityValue: 2
+--- !u!136 &6649854463435955107
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3180394796138503954}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2.2673645
+  m_Height: 3.5290527
+  m_Direction: 1
+  m_Center: {x: -268.64587, y: 217.33853, z: 168.53995}
