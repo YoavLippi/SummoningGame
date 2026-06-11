@@ -1024,7 +1024,7 @@ GameObject:
   - component: {fileID: 3132146969426636524}
   - component: {fileID: 2485736259927834075}
   m_Layer: 5
-  m_Name: HotbarHolder
+  m_Name: HotbarHolder 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
