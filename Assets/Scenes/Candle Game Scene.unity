@@ -6880,7 +6880,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2204119277847431195, guid: 4dbfa8ae3076d9342ac8597af6b32719, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -176447,7 +176447,7 @@ MonoBehaviour:
     - requiredSlotIndex: 3
       requiredColor: 2
   _candleBehaviour: {fileID: 8586821684524005294}
-  _woundBehaviour: {fileID: 0}
+  _woundBehaviour: {fileID: 1189308408}
   currentRound: 0
 --- !u!1 &2045950955
 GameObject:
@@ -195559,7 +195559,7 @@ GameObject:
   - component: {fileID: 6844773529400973746}
   - component: {fileID: 7553199811551969545}
   m_Layer: 10
-  m_Name: CandleFlame_4
+  m_Name: CandleFlame_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -201513,7 +201513,7 @@ GameObject:
   - component: {fileID: 895908047503278664}
   - component: {fileID: 7280921374029501570}
   m_Layer: 10
-  m_Name: CandleFlame_1
+  m_Name: CandleFlame_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -225595,7 +225595,7 @@ GameObject:
   - component: {fileID: 1430204858616656530}
   - component: {fileID: 240922149364593629}
   m_Layer: 10
-  m_Name: CandleFlame_2
+  m_Name: CandleFlame_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -237696,7 +237696,7 @@ GameObject:
   - component: {fileID: 6908735348969522534}
   - component: {fileID: 5334111013350816682}
   m_Layer: 10
-  m_Name: CandleFlame_7
+  m_Name: CandleFlame_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -244151,7 +244151,7 @@ GameObject:
   - component: {fileID: 3371291086897393544}
   - component: {fileID: 838307918552315898}
   m_Layer: 10
-  m_Name: CandleFlame_6
+  m_Name: CandleFlame_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -245437,7 +245437,7 @@ GameObject:
   - component: {fileID: 7794772651768100423}
   - component: {fileID: 2370961301419680386}
   m_Layer: 10
-  m_Name: CandleFlame_3
+  m_Name: CandleFlame_7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -246990,13 +246990,13 @@ MonoBehaviour:
   - {fileID: 525958227661516914}
   - {fileID: 4430860923126991609}
   candleParticles:
-  - {fileID: 895908047503278664}
   - {fileID: 1430204858616656530}
-  - {fileID: 7794772651768100423}
-  - {fileID: 6844773529400973746}
-  - {fileID: 5121020848909748487}
+  - {fileID: 895908047503278664}
   - {fileID: 3371291086897393544}
   - {fileID: 6908735348969522534}
+  - {fileID: 5121020848909748487}
+  - {fileID: 6844773529400973746}
+  - {fileID: 7794772651768100423}
   sequenceActive: 0
   canInput: 1
   currentRound: 0
