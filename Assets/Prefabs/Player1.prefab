@@ -380,7 +380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 253506300
+  GlobalObjectIdHash: 1022860673
   InScenePlacedSourceGlobalObjectIdHash: 1022860673
   DeferredDespawnTick: 0
   Ownership: 1
@@ -574,6 +574,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: e26cd45d-67ea-4f7a-b9dc-5dfc1e0ab7be
     m_ActionName: 'PlayerController/PickUp[/Mouse/rightButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e8efc040-e773-4b67-919a-02714c9ae6a9
+    m_ActionName: 'PlayerController/Pause[/Keyboard/escape,/Keyboard/tab]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerController
@@ -886,19 +890,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9896b24e1c71f9f4faf9aa4a0b9fc354, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.045
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9896b24e1c71f9f4faf9aa4a0b9fc354, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.483
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9896b24e1c71f9f4faf9aa4a0b9fc354, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.726
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9896b24e1c71f9f4faf9aa4a0b9fc354, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9896b24e1c71f9f4faf9aa4a0b9fc354, type: 3}
       propertyPath: m_LocalRotation.x
@@ -906,7 +910,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9896b24e1c71f9f4faf9aa4a0b9fc354, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9896b24e1c71f9f4faf9aa4a0b9fc354, type: 3}
       propertyPath: m_LocalRotation.z
@@ -918,7 +922,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9896b24e1c71f9f4faf9aa4a0b9fc354, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9896b24e1c71f9f4faf9aa4a0b9fc354, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
