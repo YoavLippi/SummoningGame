@@ -6,12 +6,13 @@ using UnityEngine.Serialization;
 public class SymbolBehaviour : NetworkBehaviour
 {
     [SerializeField] private SymbolData symbolData;
-
     public SymbolData SymbolData
     {
         get => symbolData;
         set => symbolData = value;
     }
+
+    [SerializeField] private GameObject borderDisplay;
 
     [SerializeField] private NetworkVariable<int> symbolID;
 
@@ -27,6 +28,8 @@ public class SymbolBehaviour : NetworkBehaviour
     }
 
     [SerializeField] private SpriteRenderer spriteRenderer;
+    private static readonly int IsGrayscale = Shader.PropertyToID("_isGrayscale");
+
     public override void OnNetworkSpawn()
     {
         symbolID.OnValueChanged += HandleIDChange;
@@ -40,6 +43,16 @@ public class SymbolBehaviour : NetworkBehaviour
 
     public void HandleInteract()
     {
-        
+        borderDisplay.SetActive(true);
+        GetComponent<Collider>().enabled = false;
+        //_isGrayscale
+        GetComponent<SpriteRenderer>().material.SetFloat(IsGrayscale, 1.0f);
+    }
+
+    public void ResetSymbol()
+    {
+        borderDisplay.SetActive(false);
+        GetComponent<Collider>().enabled = true;
+        GetComponent<SpriteRenderer>().material.SetFloat(IsGrayscale, 0f);
     }
 }
