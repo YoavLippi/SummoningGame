@@ -12,6 +12,7 @@ TagManager:
   - WoundTarget
   - CandleSlot
   - InteractPrompt
+  - CauldronMagnet
   layers:
   - Default
   - TransparentFX
