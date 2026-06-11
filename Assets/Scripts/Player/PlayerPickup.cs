@@ -24,6 +24,8 @@ public class PlayerPickup : NetworkBehaviour
 	[SerializeField] private float cauldronTargetingRadius = 1.5f; // How forgiving the drop aim is
 	//[SerializeField] private float throwForce = 5f;
 
+	private PotionCauldron cauldronInstance;
+
 	private InputAction pickupAction;
 	private GameObject carriedItem;
 	private Rigidbody carriedRb;
@@ -32,6 +34,7 @@ public class PlayerPickup : NetworkBehaviour
 	private void Start()
 	{
 		StopAllCoroutines();
+		cauldronInstance = FindFirstObjectByType<PotionCauldron>();
 	}
 	public override void OnNetworkSpawn()
 	{
@@ -93,6 +96,18 @@ public class PlayerPickup : NetworkBehaviour
 
 	private void Update()
 	{
+		if (cauldronInstance != null && cauldronInstance.IsPuzzleComplete)
+		{
+			// If the player is currently holding an item when victory triggers, force drop it safely
+			if (carriedRb != null)
+			{
+				carriedRb.useGravity = true;
+				carriedItem = null;
+				carriedRb = null;
+			}
+			return; // Exit out early, ignoring interaction keys completely!
+		}
+
 		if (!IsOwner) return;
 
 		// Smoothly move the item to the hold position every frame while holding it
@@ -160,29 +175,36 @@ public class PlayerPickup : NetworkBehaviour
 	{
 		if (carriedRb != null)
 		{
-			// Check if the player is looking towards the cauldron when letting go
 			FindActiveCinemachineCamera();
+
+			// Shoot a thick volumetric cylinder forward from the eyes
 			Ray ray = new Ray(activeCamTransform.position, activeCamTransform.forward);
 			RaycastHit hit;
 
-			if (Physics.SphereCast(ray, cauldronTargetingRadius, out hit, pickupRange * 2f))
+			// Multiply pickupRange by 2 or 3 so players can "toss" items from across the room!
+			if (Physics.SphereCast(ray, sphereRadius, out hit, pickupRange * 2.5f))
 			{
-				if (hit.collider.CompareTag("Cauldron"))
+				// If our aim line passes through the large invisible child trigger bubble...
+				if (hit.collider.CompareTag("CauldronMagnet"))
 				{
-					// Calculate target destination (middle of the cauldron, slightly lowered inside)
-					Vector3 cauldronCenter = hit.collider.bounds.center;
+					// Find the center of the ACTUAL cauldron (the parent) so it glides to the middle
+					Vector3 cauldronTrueCenter = hit.collider.transform.parent != null ?
+							hit.collider.transform.parent.gameObject.GetComponent<Collider>().bounds.center :
+							hit.collider.bounds.center;
 
-					// Start the smooth magnetic slide instead of using physics forces
-					StartCoroutine(GlideIntoCauldron(carriedItem, carriedRb, cauldronCenter));
+					// Adjust target destination slightly above the surface liquid
+					cauldronTrueCenter.y += 0.2f;
 
-					// Clear references immediately so the player disconnected from the item
+					// Fire the smooth tractor-beam glide!
+					StartCoroutine(GlideIntoCauldron(carriedItem, carriedRb, cauldronTrueCenter));
+
 					carriedItem = null;
 					carriedRb = null;
 					return;
 				}
 			}
 
-			// Standard Drop: Fall straight down naturally if not looking at the cauldron
+			// Standard Fallback Drop: If looking completely away, fall flat to the floor
 			carriedRb.useGravity = true;
 			carriedRb.linearVelocity = Vector3.zero;
 		}
@@ -229,15 +251,14 @@ public class PlayerPickup : NetworkBehaviour
 
 	private void OnDrawGizmos()
 	{
-		Transform drawTransform = activeCamTransform != null ? activeCamTransform : (Camera.main != null ? Camera.main.transform : null);
-		if (drawTransform == null) return;
+		if (activeCamTransform == null && Camera.main != null)
+			activeCamTransform = Camera.main.transform;
+
+		if (activeCamTransform == null) return;
 
 		Gizmos.color = Color.deepPink;
-		Vector3 startPos = drawTransform.position;
-		Vector3 endPos = startPos + (drawTransform.forward * pickupRange);
-
-		Gizmos.DrawWireSphere(startPos, sphereRadius);
-		Gizmos.DrawLine(startPos, endPos);
-		Gizmos.DrawWireSphere(endPos, sphereRadius);
+		// Draw the new Drop Detection Bubble zone in your scene window
+		Vector3 detectionCenter = activeCamTransform.position + (activeCamTransform.forward * (pickupRange * 0.5f));
+		Gizmos.DrawWireSphere(detectionCenter, cauldronTargetingRadius);
 	}
 }

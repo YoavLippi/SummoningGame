@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9066137728324051893}
   - component: {fileID: 842067093910593407}
   - component: {fileID: 1085460709360846495}
+  - component: {fileID: 5362213460475268775}
   m_Layer: 7
   m_Name: Eyeballs
   m_TagString: Untagged
@@ -105,3 +106,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PotionIngredient
   potencyValue: -1
   instabilityValue: -1
+--- !u!136 &5362213460475268775
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6843082426096485625}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2.103714
+  m_Height: 1.8191223
+  m_Direction: 1
+  m_Center: {x: -266.04907, y: 216.2688, z: 165.11813}

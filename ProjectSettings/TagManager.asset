@@ -11,6 +11,8 @@ TagManager:
   - CandleGameController
   - WoundTarget
   - CandleSlot
+  - InteractPrompt
+  - CauldronMagnet
   layers:
   - Default
   - TransparentFX
