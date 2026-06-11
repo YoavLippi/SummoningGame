@@ -29,14 +29,18 @@ public class StartButtonNetwork : NetworkBehaviour
         {
             NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
         }
-        isReady.OnValueChanged += HandleChange;
+        isReady.OnValueChanged += HandleChangeRpc;
         
         SetReadyRpc(false);
     }
     
-    public void HandleChange(bool oldVal, bool newVal) 
+    [Rpc(SendTo.Everyone)]
+    private void HandleChangeRpc(bool oldVal, bool newVal) 
     {
-        
+        if (!IsServer)
+        {
+            model.m_Model.SetTextFromNetwork(newVal? "Unready" : "Ready");
+        }
     }
 
     [Rpc(SendTo.Server)]
