@@ -6,6 +6,7 @@ using NUnit.Framework;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(NetworkObject))]
@@ -16,7 +17,8 @@ public class SymbolPuzzleHandler : NetworkBehaviour
     [SerializeField] private int columnSize;
     [SerializeField] private int symbolDisplayAmount;
     //[SerializeField] private GameObject[] allSymbols;
-    [SerializeField] private SymbolBehaviour[] displaySymbols;
+    [FormerlySerializedAs("displaySymbols")] [SerializeField] private SymbolBehaviour[] displaySymbolsSmall;
+    [SerializeField] private GameObject displaySymbolsLargeParent;
     
     [Header("Runtime")]
     [SerializeField] private List<SymbolOrder> symbolOrders;
@@ -175,6 +177,17 @@ public class SymbolPuzzleHandler : NetworkBehaviour
                 allOrdersNetwork.Add(symbol.symbolID);
             }
         }
+        SymbolBehaviour[] displaySymbolsLarge = displaySymbolsLargeParent.GetComponentsInChildren<SymbolBehaviour>();
+        int count = 0;
+        for (int i = 0; i < columnAmount; i++)
+        {
+            for (int j = 0; j < columnSize; j++)
+            {
+                displaySymbolsLarge[count].SymbolID = symbolOrders[i].thisOrder[j].symbolID;
+                count++;
+            }
+        }
+        
 
         int startingIndex = correctIndex * columnSize;
         for (int i = 0; i < columnSize; i++)
@@ -192,9 +205,9 @@ public class SymbolPuzzleHandler : NetworkBehaviour
             displaySymbolsNetwork.Add(symbol.symbolID);
         }
         
-        for (int i = 0; i < displaySymbols.Length; i++)
+        for (int i = 0; i < displaySymbolsSmall.Length; i++)
         {
-            displaySymbols[i].SymbolID = correctSymbols[i].symbolID;
+            displaySymbolsSmall[i].SymbolID = correctSymbols[i].symbolID;
         }
     }
 

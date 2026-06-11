@@ -37,6 +37,9 @@
                 </Blocks.Sessions.SessionBrowserElement>
             </ui:VisualElement>
         </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1;">
+            <ui:Label text="To start a session, type a name into the field on the left, then press create.&#10;The session list doesn&apos;t automatically refresh. To join a session, refresh the list, then select a session name and press join." class="blocks-header" style="margin-bottom: 0; margin-top: 0; -unity-text-outline-width: 1px; text-shadow: 1px 1px 5px rgb(0, 0, 0); -unity-font-style: bold; -unity-text-outline-color: rgb(0, 0, 0); background-color: rgba(0, 0, 0, 0.89); border-top-left-radius: 11px; border-top-right-radius: 11px; border-bottom-right-radius: 11px; border-bottom-left-radius: 11px; padding-right: 10px; padding-left: 10px;"/>
+        </ui:VisualElement>
         <ui:VisualElement style="flex-grow: 1; align-items: center; flex-direction: row; width: 551px; justify-content: center; align-self: auto;">
             <Blocks.Sessions.Common.LeaveSessionButton data-source="project://database/Assets/Prefabs/OurSessionSettings.asset?fileID=11400000&amp;guid=91282b656b0e7334abf064367752c1a1&amp;type=2#OurSessionSettings" name="LeaveSessionButton" style="width: 40%; aspect-ratio: 3;">
                 <Bindings>

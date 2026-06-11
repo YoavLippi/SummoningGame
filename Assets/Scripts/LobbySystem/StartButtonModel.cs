@@ -60,6 +60,11 @@ using UnityEngine.UIElements;
             //DisplayText = isReady ? "Unready" : "Ready";
         }
 
+        public void SetTextFromNetwork(string text)
+        {
+            DisplayText = text;
+        }
+
         public void SetEnabled(bool enabled)
         {
             IsEnabled = enabled;
