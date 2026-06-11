@@ -13,6 +13,7 @@ TagManager:
   - CandleSlot
   - InteractPrompt
   - CauldronMagnet
+  - Ingredient
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - UI
   - CatGrave
   - Interactable
-  - 
+  - PotionCauldron
   - Wound
   - CandleSlot
   - 

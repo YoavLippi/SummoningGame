@@ -1,6 +1,7 @@
 using UnityEngine;
+using Unity.Netcode;
 
-public class PotionIngredient : MonoBehaviour
+public class PotionIngredient : NetworkBehaviour
 {
 	[Header("Ingredient Attributes")]
 	[SerializeField] private int potencyValue = 3;
@@ -9,32 +10,37 @@ public class PotionIngredient : MonoBehaviour
 	// SAFETY GUARD: Prevents double-processing if physics triggers twice in one frame
 	private bool hasBeenIngested = false;
 
-	private void OnTriggerEnter(Collider other)
-	{
-		CheckIngest(other.gameObject);
-	}
+	//private void OnTriggerEnter(Collider other)
+	//{
+	//	CheckIngest(other.gameObject);
+	//}
 
-	private void OnCollisionEnter(Collision collision)
-	{
-		CheckIngest(collision.gameObject);
-	}
+	//private void OnCollisionEnter(Collision collision)
+	//{
+	//	CheckIngest(collision.gameObject);
+	//}
 
-	private void CheckIngest(GameObject otherObj)
+	public void CheckIngest(GameObject otherObj)
 	{
-		// If it already processed, completely ignore any secondary impacts
+		if (!IsServer) return;
 		if (hasBeenIngested) return;
 
-		if (otherObj.CompareTag("Cauldron"))
+		hasBeenIngested = true;
+
+		// Locate the cauldron in your scene layout
+		PotionCauldron cauldron = Object.FindFirstObjectByType<PotionCauldron>();
+
+		if (cauldron != null)
 		{
-			hasBeenIngested = true; // Lock it instantly!
-
-			PotionCauldron cauldron = otherObj.GetComponent<PotionCauldron>();
-			if (cauldron != null)
-			{
-				cauldron.MixIngredientServerRpc(potencyValue, instabilityValue);
-			}
-
-			Destroy(gameObject);
+			// Directly push the math values to the cauldron's ServerRpc
+			cauldron.MixIngredientServerRpc(potencyValue, instabilityValue);
+			Debug.Log($"[INGREDIENT] {gameObject.name} successfully ingested! Potency +{potencyValue}, Instability +{instabilityValue}");
 		}
+		else
+		{
+			Debug.LogError("[INGREDIENT] Could not find PotionCauldron in the active scene hierarchy!");
+		}
+				
+		GetComponent<NetworkObject>().Despawn(true);
 	}
 }

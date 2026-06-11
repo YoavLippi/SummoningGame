@@ -13,6 +13,10 @@ public class InteractionHandler : NetworkBehaviour
 
 	[SerializeField] private CinemachineCamera playerViewCam;
 
+	[Header("Ingredient Pickup Injection")]
+	[SerializeField] private PlayerPickup _playerPickup; // Reference to our pickup script
+	[SerializeField] private LayerMask ingredientAndCauldronMask;
+
 	public void Start()
 	{
 		if (!IsOwner) return;
@@ -192,13 +196,41 @@ public class InteractionHandler : NetworkBehaviour
 		if (!IsOwner) return;
 		if (!isDetectingInput) return;
 
+		if (_playerPickup == null) _playerPickup = GetComponent<PlayerPickup>();
+		Ray caster = new Ray(playerViewCam.transform.position, playerViewCam.transform.forward);
+
+		//RaycastHit ingredientHit;
 		// Press
 		if (context.performed)
 		{
-			Debug.Log($"OnFire triggered at {Time.time}");
+			Debug.Log("[INTERACTOR] Mouse Pressed Down.");
 
-			// Vector3 dir = playerViewCam.transform.rotation
-			Ray caster = new Ray(playerViewCam.transform.position, playerViewCam.transform.forward);
+			// If we aren't holding anything, look for an ingredient mesh item to grab
+			if (_playerPickup != null && _playerPickup.CarriedItem == null)
+			{
+				bool hitSomething = Physics.Raycast(caster, out RaycastHit ingredientHit, reachDistance, ingredientAndCauldronMask);
+				if (hitSomething && ingredientHit.collider.CompareTag("Ingredient"))
+				{
+					_playerPickup.InsidePressPickup(ingredientHit, true);
+					return; // Halt execution so wand does not fire while lifting items
+				}
+			}
+
+			//  INGREDIENT PICKUP CHECK 
+			// Before checking old puzzles, check if we clicked a loose ingredient on the table
+			//if (Physics.Raycast(caster, out RaycastHit ingredientHit, reachDistance, ingredientAndCauldronMask))
+			//{
+			//	Debug.Log($"[DIAGNOSTIC] Passed Layer Filter! Checking if Tag is 'Ingredient'. Actual Tag is: {ingredientHit.collider.tag}");
+			//	if (ingredientHit.collider.CompareTag("Ingredient"))
+			//	{
+			//		if (_playerPickup != null)
+			//		{
+			//			Debug.Log("[DIAGNOSTIC] Success! Executing PerformPickupOrDrop call.");
+			//			_playerPickup.PerformPickupOrDrop(ingredientHit, true);
+			//			return; // Successfully picked up! Stop code here so wand doesn't fire.
+			//		}
+			//	}
+			//}
 
 			// Grave check (resolve by component, not tag)
 			if (Physics.Raycast(playerViewCam.transform.position, playerViewCam.transform.forward, out RaycastHit hitInfo, reachDistance, catMask))
@@ -272,13 +304,25 @@ public class InteractionHandler : NetworkBehaviour
 			_wandController.FireWithColor(wandPos.position, playerViewCam.transform.rotation, hotbarSlots[currentSelection].GetComponent<HotbarSlot>().slotColor);
 		}
 
-		// close wound if we were holding it open
-		if (context.canceled && isHoldingWound)
+		if (context.canceled)
 		{
-			isHoldingWound = false;
-			WoundBehaviour wound = FindObjectOfType<WoundBehaviour>();
-			if (wound != null)
-				wound.RequestCloseWoundRpc();
+			Debug.Log("[INTERACTOR] Mouse Released/Canceled.");
+
+			// If we are holding an active item, releasing the key drops or brews it instantly!
+			if (_playerPickup != null && _playerPickup.CarriedItem != null)
+			{
+				bool hitSomething = Physics.Raycast(caster, out RaycastHit dropHit, reachDistance, totalMask | ingredientAndCauldronMask);
+				_playerPickup.InsideReleaseDrop(dropHit, hitSomething);
+				return;
+			}
+
+			// Original puzzle cleanup logic fallback
+			if (isHoldingWound)
+			{
+				isHoldingWound = false;
+				WoundBehaviour wound = FindObjectOfType<WoundBehaviour>();
+				if (wound != null) wound.RequestCloseWoundRpc();
+			}
 		}
 	}
 
