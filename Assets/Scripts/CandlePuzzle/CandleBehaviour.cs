@@ -50,7 +50,7 @@ public class CandleBehaviour : NetworkBehaviour
 
         if (_candleController == null)
         {
-            var ctrlObj = GameObject.FindWithTag("CandleController");
+            var ctrlObj = GameObject.FindWithTag("GameController");
             if (ctrlObj != null)
                 _candleController = ctrlObj.GetComponent<CandleController>();
         }
