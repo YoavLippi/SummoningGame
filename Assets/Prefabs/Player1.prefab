@@ -575,10 +575,10 @@ MonoBehaviour:
   symbolPuzzleHandler: {fileID: 0}
   candleMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 1280
   woundMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 512
 --- !u!114 &-436604901402377656
 MonoBehaviour:
   m_ObjectHideFlags: 0
