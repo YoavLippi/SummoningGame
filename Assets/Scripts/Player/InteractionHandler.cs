@@ -77,6 +77,7 @@ public class InteractionHandler : NetworkBehaviour
         if (!IsOwner) return;
         // should only fire once
         if (!context.performed) return;
+        if (!isDetectingInput) return;
 
         // value is the key on the keypad which has been pressed
         if (int.TryParse(context.control.name, out int value))
@@ -91,6 +92,7 @@ public class InteractionHandler : NetworkBehaviour
         if (!IsOwner) return;
         // should only fire once per scroll
         if (!context.performed) return;
+        if (!isDetectingInput) return;
 
         // casting current selection from a possible float value to nice integers
         int scrollDelta = context.ReadValue<float>() > 0 ? 1 : -1;
@@ -152,6 +154,8 @@ public class InteractionHandler : NetworkBehaviour
 
     [SerializeField] private GameObject interactPrompt;
     
+    public bool isDetectingInput = true;
+    
     private void FixedUpdate()
     {
         if (!IsOwner) return;
@@ -184,6 +188,7 @@ public class InteractionHandler : NetworkBehaviour
     public void OnFire(InputAction.CallbackContext context)
     {
         if (!IsOwner) return;
+        if (!isDetectingInput) return;
 
         // Press
         if (context.performed)

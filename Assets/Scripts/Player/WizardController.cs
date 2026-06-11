@@ -37,6 +37,8 @@ public class WizardController : NetworkBehaviour
 	private bool isGrounded;
 	public float gravityValue = -9.81f;
 
+	public bool isDetectingInput = true;
+
 
 	void Awake()
 	{
@@ -81,6 +83,7 @@ public class WizardController : NetworkBehaviour
 	void Update()
 	{
 		if (!IsOwner) return;
+		if (!isDetectingInput) return;
 
 		HandleRotation();
 		HandleMovement();

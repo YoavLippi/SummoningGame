@@ -1,7 +1,11 @@
+using System.Collections;
+using Unity.Netcode;
+using Unity.Services.Vivox;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
-public class PauseMenu : MonoBehaviour
+public class PauseMenu : NetworkBehaviour
 {
     //this script is gonna reference the wizardcontroller script to enable /disable the cursor lock state. idk how that makes sense
     //but here we go lol. 
@@ -22,7 +26,9 @@ public class PauseMenu : MonoBehaviour
     InputAction pauseAction;
     bool isPaused = false;
 
-    WizardController wizControl;
+    [SerializeField] WizardController wizControl;
+    [SerializeField] InteractionHandler interactHandler;
+    private bool canToggleVoice;
 
     void Awake()
     {
@@ -31,8 +37,19 @@ public class PauseMenu : MonoBehaviour
         {
             pausePanel.SetActive(false);
         }
+        //wizControl = GetComponent<WizardController>();
+    }
 
-        wizControl = GetComponent<WizardController>();
+    public override void OnNetworkSpawn()
+    {
+        StartCoroutine(DelayFindWizControl(1));
+    }
+
+    private IEnumerator DelayFindWizControl(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        wizControl = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<WizardController>();
+        interactHandler = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<InteractionHandler>();
     }
 
     void Start()
@@ -65,11 +82,15 @@ public class PauseMenu : MonoBehaviour
         {
             //pause the game for local
             PauseGame();
+            wizControl.isDetectingInput = false;
+            interactHandler.isDetectingInput = false;
         }
         else
         {
             //unpause for local
             ResumeGame();
+            wizControl.isDetectingInput = true;
+            interactHandler.isDetectingInput = true;
         }
     }
 
@@ -113,12 +134,30 @@ public class PauseMenu : MonoBehaviour
             TogglePause();
         }
     }
-
+    
     public void ExitBtnClicked()
     {
-        Application.Quit();
+        NetworkManager.Singleton.SceneManager.LoadScene("Main Menu", LoadSceneMode.Single);
     }
 
     //voice chat and networking stuff can go underneath.
+    public async void JoinVoiceSession()
+    {
+        string inputName = NetworkManager.Singleton.LocalClient.ClientId.ToString();
+        canToggleVoice = false;
+        await VivoxVoiceManager.Instance.InitializeAsync(inputName);
+        var loginOptions = new LoginOptions()
+        {
+            DisplayName = inputName,
+            ParticipantUpdateFrequency = ParticipantPropertyUpdateFrequency.FivePerSecond
+        };
+        await VivoxService.Instance.LoginAsync(loginOptions);
+        canToggleVoice = true;
+        //CanJoinVoice = false;
+    }
 
+    public async void LeaveVoiceSession()
+    {
+        await VivoxService.Instance.LogoutAsync();
+    }
 }
