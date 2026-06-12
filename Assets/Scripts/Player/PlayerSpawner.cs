@@ -14,6 +14,11 @@ public class PlayerSpawner : NetworkBehaviour
 	private void Start()
 	{
 		connectedPlayers = NetworkManager.Singleton.ConnectedClients;
+		if (NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject() != null)
+		{
+			RepositionExistingPlayers();
+			return;
+		}
 		SpawnPlayers();
 	}
 
@@ -28,6 +33,26 @@ public class PlayerSpawner : NetworkBehaviour
 				//newPlayer.GetComponent<CinemachineCamera>().Priority = 10;
 				newPlayer.GetComponent<NetworkObject>().SpawnAsPlayerObject(player.Key);
 			}
+		}
+	}
+
+	private void RepositionExistingPlayers()
+	{
+		NetworkObject localPlayer = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
+		if (localPlayer != null)
+		{
+			Transform targetMarker = IsHost ? hostSpawn : clientSpawn;
+
+			// Turn off CharacterController temporarily if your player uses one 
+			// so it doesn't fight the teleport physics
+			var controller = localPlayer.GetComponent<CharacterController>();
+			if (controller != null) controller.enabled = false;
+
+			localPlayer.transform.position = targetMarker.position;
+			localPlayer.transform.rotation = targetMarker.rotation;
+
+			if (controller != null) controller.enabled = true;
+			Debug.Log($"[SPAWNER] Moved existing player to: {targetMarker.position}");
 		}
 	}
 }
