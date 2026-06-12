@@ -34,17 +34,23 @@ public class CandleBehaviour : NetworkBehaviour
     [SerializeField] private bool canInput = true;
     [SerializeField] private int currentRound = 0;
 
+    // failure tracking for 3-strike lose condition
+    [Header("Failure Tracking")]
+    [SerializeField] private int failureCount = 0;
+    [SerializeField] private int maxFailures = 3;
+    [SerializeField] private bool puzzleFailed = false;
+
     // public getter that returns true when the controller is ready and input is not locked
-    public bool IsReadyForInput => _candleController != null && _candleController.IsRoundReady && canInput;
+    public bool IsReadyForInput => _candleController != null && _candleController.IsRoundReady && canInput && !puzzleFailed;
 
     // finds the candle controller on start if it wasn't assigned in the inspector
     private void Start()
     {
-        Debug.Log($"[Candles] Start called. canInput={canInput}, sequenceActive={sequenceActive}, currentRound={currentRound}");
+        Debug.Log($"[Candles] Start called. canInput={canInput}, sequenceActive={sequenceActive}, currentRound={currentRound}, failures={failureCount}");
 
         if (_candleController == null)
         {
-            var ctrlObj = GameObject.FindWithTag("CandleController");
+            var ctrlObj = GameObject.FindWithTag("GameController");
             if (ctrlObj != null)
                 _candleController = ctrlObj.GetComponent<CandleController>();
         }
@@ -113,6 +119,9 @@ public class CandleBehaviour : NetworkBehaviour
     {
         if (!IsServer) return;
 
+        // don't reset if puzzle is permanently failed
+        if (puzzleFailed) return;
+
         litColors.Clear();
         inputtedSequence.Clear();
         sequenceActive = false;
@@ -121,32 +130,38 @@ public class CandleBehaviour : NetworkBehaviour
         int stepCount = _candleController != null ? _candleController.GetStepCount(currentRound) : 0;
         ResetAllCandlesClientRpc(stepCount);
 
-        Debug.Log("[Candles] Sequence nulled � round reset.");
+        Debug.Log("[Candles] Sequence nulled — round reset.");
     }
 
     // main server rpc that validates player input against the current round's solution step
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void InputCandleRpc(int slotIndex, InteractionHandler.Color shotColor)
     {
+        if (puzzleFailed)
+        {
+            Debug.LogWarning("[CandleBehaviour] Input rejected — puzzle already failed.");
+            return;
+        }
+
         if (_candleController == null)
         {
-            Debug.LogWarning($"[CandleBehaviour] Input rejected � no CandleController. slot={slotIndex}, color={shotColor}");
+            Debug.LogWarning($"[CandleBehaviour] Input rejected — no CandleController. slot={slotIndex}, color={shotColor}");
             return;
         }
 
         if (!_candleController.IsRoundReady)
         {
-            Debug.LogWarning($"[CandleBehaviour] Input rejected � round not ready. slot={slotIndex}, color={shotColor}");
+            Debug.LogWarning($"[CandleBehaviour] Input rejected — round not ready. slot={slotIndex}, color={shotColor}");
             return;
         }
 
         if (!canInput)
         {
-            Debug.LogWarning($"[CandleBehaviour] Input rejected � input locked. slot={slotIndex}, color={shotColor}");
+            Debug.LogWarning($"[CandleBehaviour] Input rejected — input locked. slot={slotIndex}, color={shotColor}");
             return;
         }
 
-        Debug.Log($"[CandleBehaviour] RPC received � slot: {slotIndex}, color: {shotColor}, canInput: {canInput}");
+        Debug.Log($"[CandleBehaviour] RPC received — slot: {slotIndex}, color: {shotColor}, canInput: {canInput}");
 
         if (!sequenceActive)
         {
@@ -171,7 +186,7 @@ public class CandleBehaviour : NetworkBehaviour
             litColors.Add((int)shotColor);
             inputtedSequence.Add(slotIndex);
 
-            // Instant visual feedback � snaps the light on immediately so the player sees
+            // Instant visual feedback — snaps the light on immediately so the player sees
             // the result without waiting for the NetworkList sync roundtrip.
             // The authoritative rebuild from OnSequenceChanged will reconcile it a frame later.
             SetCandleColorClientRpc(slotIndex, shotColor);
@@ -195,8 +210,50 @@ public class CandleBehaviour : NetworkBehaviour
     // coroutine that waits briefly then resets the puzzle after an incorrect input
     private IEnumerator FailAndReset()
     {
+        failureCount++;
+        Debug.Log($"[Candles] Failure {failureCount}/{maxFailures}");
+
+        // Visual feedback: flash all active candles red briefly
+        FlashAllCandlesClientRpc(false);
+
         yield return new WaitForSeconds(0.5f);
-        NullSequenceRpc();
+
+        if (failureCount >= maxFailures)
+        {
+            TriggerLoseCondition();
+        }
+        else
+        {
+            NullSequenceRpc();
+        }
+    }
+
+    // handles the lose state when max failures are reached
+    private void TriggerLoseCondition()
+    {
+        puzzleFailed = true;
+        canInput = false;
+        sequenceActive = false;
+
+        Debug.Log("[Candles] Max failures reached. Puzzle failed!");
+
+        // Unlock cursor so player can navigate menus
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        // Trigger lose cutscene via SessionCutscenes (same pattern as GraveBehaviour)
+        SessionCutscenes cutscenes = FindObjectOfType<SessionCutscenes>();
+        if (cutscenes != null)
+        {
+            cutscenes.TriggerLoseClientRpc();
+        }
+        else
+        {
+            Debug.LogWarning("[Candles] No SessionCutscenes found in scene!");
+        }
+
+        // Cleanup and despawn (same as GraveBehaviour)
+        CleanupPlayersClientRpc();
     }
 
     // coroutine that evaluates the completed sequence and either advances the round or resets
@@ -418,5 +475,65 @@ public class CandleBehaviour : NetworkBehaviour
     private void PuzzleCompleteClientRpc()
     {
         Debug.Log("[Candles] All 3 rounds complete. Puzzle solved!");
+
+        // Unlock cursor so player can navigate menus
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        // Trigger win cutscene via SessionCutscenes (same pattern as GraveBehaviour)
+        SessionCutscenes cutscenes = FindObjectOfType<SessionCutscenes>();
+        if (cutscenes != null)
+        {
+            cutscenes.TriggerWinClientRpc();
+        }
+        else
+        {
+            Debug.LogWarning("[Candles] No SessionCutscenes found in scene!");
+        }
+
+        // Optional: Despawn player objects to clean up before scene transition
+        // (Only if you want the same cleanup flow as GraveBehaviour)
+        if (NetworkManager.Singleton?.LocalClient?.PlayerObject != null)
+        {
+            NetworkManager.Singleton.LocalClient.PlayerObject.Despawn(true);
+        }
+    }
+
+    // client rpc that flashes all active candles with success/fail color
+    [ClientRpc]
+    private void FlashAllCandlesClientRpc(bool success)
+    {
+        UnityEngine.Color targetColor = success ? Color.green : Color.red;
+
+        int activeCount = _candleController != null ? _candleController.GetStepCount(currentRound) : candleObjects.Length;
+
+        for (int i = 0; i < activeCount && i < candleLights.Length; i++)
+        {
+            if (candleLights[i] != null)
+            {
+                candleLights[i].enabled = true;
+                candleLights[i].color = targetColor;
+                candleLights[i].intensity = 5f;
+            }
+
+            if (i < candleParticles.Length && candleParticles[i] != null)
+            {
+                SetParticleColor(candleParticles[i], targetColor);
+                candleParticles[i].Play();
+            }
+        }
+    }
+
+    // client rpc: cleanup pattern from GraveBehaviour
+    [ClientRpc]
+    public void CleanupPlayersClientRpc()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        if (NetworkManager.Singleton?.LocalClient?.PlayerObject != null)
+        {
+            NetworkManager.Singleton.LocalClient.PlayerObject.Despawn(true);
+        }
     }
 }
