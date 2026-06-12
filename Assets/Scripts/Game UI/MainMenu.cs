@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Unity.Netcode;
@@ -13,7 +14,7 @@ public class MainMenu : MonoBehaviour
     private async void Start()
     {
         ShowPanel(0); // this shows the first panel (Main Menu) by default
-        Cursor.lockState = CursorLockMode.None;
+        await DelayCursorUnlock();
 
         bool activeSession =
             (MultiplayerService.Instance?.Sessions?.TryGetValue("default-session", out var session) == true
@@ -44,6 +45,12 @@ public class MainMenu : MonoBehaviour
         NetworkManager.Singleton.Shutdown();
 
         await Task.Delay(100);
+    }
+
+    private async Task DelayCursorUnlock()
+    {
+        await Task.Delay(100);
+        Cursor.lockState = CursorLockMode.None;
     }
     
     //really ugly to have it here, but it should work
