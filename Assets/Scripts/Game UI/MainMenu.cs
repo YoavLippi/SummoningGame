@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Services.Multiplayer;
@@ -9,13 +10,34 @@ public class MainMenu : MonoBehaviour
 
     [SerializeField] private GameObject[] panels;
 
-    private void Start()
+    private async void Start()
     {
-        //Just cleaning up sessions after booting back to menu
-        NetworkManager.Singleton.Shutdown();
-        LeaveSession("default-session");
         ShowPanel(0); // this shows the first panel (Main Menu) by default
         Cursor.lockState = CursorLockMode.None;
+        
+        var nm = NetworkManager.Singleton;
+
+        if (nm.IsServer)
+        {
+            var spawnManager = nm.SpawnManager;
+
+            // Copy list first to avoid modification during iteration
+            var spawnedObjects = spawnManager.SpawnedObjectsList.ToArray();
+
+            foreach (var netObj in spawnedObjects)
+            {
+                if (netObj != null && netObj.IsSpawned && !netObj.IsPlayerObject)
+                {
+                    netObj.Despawn(false);
+                }
+            }
+        }
+        
+        await LeaveSession("default-session");
+        //Just cleaning up sessions after booting back to menu
+        NetworkManager.Singleton.Shutdown();
+
+        await Task.Delay(100);
     }
     
     //really ugly to have it here, but it should work

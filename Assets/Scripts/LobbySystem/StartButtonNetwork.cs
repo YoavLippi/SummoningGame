@@ -16,7 +16,17 @@ public class StartButtonNetwork : NetworkBehaviour
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(Instance);
+        }
+
         Instance = this;
+    }
+
+    public override void OnDestroy()
+    {
+        Instance = null;
     }
 
     private void Start()
@@ -30,21 +40,26 @@ public class StartButtonNetwork : NetworkBehaviour
         {
             NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
         }
-        isReady.OnValueChanged += HandleChangeRpc;
+        isReady.OnValueChanged += HandleChange;
         
-        SetReadyRpc(false);
+        if (IsServer)
+        {
+            isReady.Value = false;
+        }
     }
 
     public override void OnNetworkDespawn()
     {
+        Debug.LogWarning("DESPAWNED StartButtonNetwork");
         if (IsServer)
         {
             NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
         }
-    }
 
-    [Rpc(SendTo.Everyone)]
-    private void HandleChangeRpc(bool oldVal, bool newVal) 
+        isReady.OnValueChanged -= HandleChange;
+    }
+    
+    private void HandleChange(bool oldVal, bool newVal) 
     {
         if (!IsServer)
         {
