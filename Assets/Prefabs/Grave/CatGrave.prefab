@@ -266,7 +266,6 @@ GameObject:
   - component: {fileID: 1349553527443679287}
   - component: {fileID: 5834459224627888928}
   - component: {fileID: 7066324517508418192}
-  - component: {fileID: 4368070311028174654}
   - component: {fileID: 7904296574329149815}
   m_Layer: 6
   m_Name: CatGrave
@@ -377,44 +376,6 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &4368070311028174654
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2298585680865814078}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c2ec4f275b1099449bb5888a8c258be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GraveBehaviour
-  ShowTopMostFoldoutHeaderGroup: 1
-  inputtedColors:
-    UpdateTraits:
-      MinSecondsBetweenUpdates: 0
-      MaxSecondsBetweenUpdates: 0
-  debugColorsViewer: 
-  _gameController: {fileID: 0}
-  isSolutionCorrect: 0
-  runeObjects:
-  - {fileID: 4525066573092552601}
-  - {fileID: 8007514930157317192}
-  - {fileID: 3288828619433117558}
-  - {fileID: 8703053774763945272}
-  - {fileID: 2745284435462838308}
-  palette:
-  - {r: 1, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0.21568628, b: 1, a: 0}
-  - {r: 1, g: 0.95686275, b: 0, a: 0}
-  - {r: 0.0627451, g: 1, b: 0, a: 0}
-  - {r: 1, g: 0.5176471, b: 0, a: 0}
-  - {r: 0.45882353, g: 0, b: 1, a: 0}
-  - {r: 0.99215686, g: 0, b: 1, a: 0}
-  successColor: {r: 0, g: 1, b: 0, a: 1}
-  failColor: {r: 1, g: 0, b: 0, a: 1}
-  flashDuration: 5
-  absorptionEffect: {fileID: 1532592711967869092, guid: 9ae8bec594b24674da4e44ed57ab31eb, type: 3}
 --- !u!64 &7904296574329149815
 MeshCollider:
   m_ObjectHideFlags: 0

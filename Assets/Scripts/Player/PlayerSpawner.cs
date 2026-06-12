@@ -1,36 +1,30 @@
+using System;
+using System.Collections.Generic;
+using Unity.Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
-
 public class PlayerSpawner : NetworkBehaviour
 {
+    [SerializeField] private IReadOnlyDictionary<ulong, NetworkClient> connectedPlayers;
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private Transform hostSpawn;
     [SerializeField] private Transform clientSpawn;
-
-    public override void OnNetworkSpawn()
+    private void Start()
     {
-        // Only the server should spawn player objects
-        if (!IsServer) return;
-
+        connectedPlayers = NetworkManager.Singleton.ConnectedClients;
         SpawnPlayers();
     }
-
     private void SpawnPlayers()
     {
-        foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
+        foreach (var player in connectedPlayers)
         {
-            Transform spawnPos = (client.ClientId == NetworkManager.ServerClientId)
-                ? hostSpawn
-                : clientSpawn;
-
-            GameObject newPlayer = Instantiate(
-                playerPrefab,
-                spawnPos.position,
-                Quaternion.identity
-            );
-
-            newPlayer.GetComponent<NetworkObject>()
-                     .SpawnAsPlayerObject(client.ClientId);
+            if (player.Key == NetworkManager.Singleton.LocalClientId)
+            {
+                Transform spawnPos = IsHost ? hostSpawn : clientSpawn;
+                GameObject newPlayer = Instantiate(playerPrefab, spawnPos.position, Quaternion.identity);
+                //newPlayer.GetComponent<CinemachineCamera>().Priority = 10;
+                newPlayer.GetComponent<NetworkObject>().SpawnAsPlayerObject(player.Key);
+            }
         }
     }
 }
