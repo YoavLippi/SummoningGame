@@ -14,6 +14,12 @@ public class MainMenu : MonoBehaviour
     {
         ShowPanel(0); // this shows the first panel (Main Menu) by default
         Cursor.lockState = CursorLockMode.None;
+
+        bool activeSession =
+            (MultiplayerService.Instance?.Sessions?.TryGetValue("default-session", out var session) == true
+             && session.State == SessionState.Connected);
+
+        if (!activeSession) return;
         
         var nm = NetworkManager.Singleton;
 
@@ -34,7 +40,7 @@ public class MainMenu : MonoBehaviour
         }
         
         await LeaveSession("default-session");
-        //Just cleaning up sessions after booting back to menu
+            //Just cleaning up sessions after booting back to menu
         NetworkManager.Singleton.Shutdown();
 
         await Task.Delay(100);
