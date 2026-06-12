@@ -102271,7 +102271,7 @@ Transform:
   m_GameObject: {fileID: 1395012710}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 904, y: 152.7, z: 408}
+  m_LocalPosition: {x: 924.26, y: 139.23, z: 350.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -188820,7 +188820,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Main Menu
+          m_StringArgument: Candle Game Scene
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &2045950955
@@ -208181,7 +208181,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1161986483300688711
 GameObject:
   m_ObjectHideFlags: 0
