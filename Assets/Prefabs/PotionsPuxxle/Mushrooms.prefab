@@ -11,11 +11,13 @@ GameObject:
   - component: {fileID: 9108922143200209157}
   - component: {fileID: 3203652005186673813}
   - component: {fileID: 6692867841261692431}
+  - component: {fileID: -8422150241223282890}
   - component: {fileID: 6789533714098323862}
   - component: {fileID: 6649854463435955107}
+  - component: {fileID: 2574863117509328817}
   m_Layer: 7
   m_Name: Mushrooms
-  m_TagString: Untagged
+  m_TagString: Ingredient
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -92,6 +94,31 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-8422150241223282890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3180394796138503954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2872872081
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &6789533714098323862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,6 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 556cea0bfa4c37c4eb158af3df7b1298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PotionIngredient
+  ShowTopMostFoldoutHeaderGroup: 1
   potencyValue: 3
   instabilityValue: 2
 --- !u!136 &6649854463435955107
@@ -121,7 +149,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -129,3 +157,16 @@ CapsuleCollider:
   m_Height: 3.5290527
   m_Direction: 1
   m_Center: {x: -268.64587, y: 217.33853, z: 168.53995}
+--- !u!114 &2574863117509328817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3180394796138503954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a9e5de7b1bf80641a9743d4e1af19c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClientTransformSync
+  ShowTopMostFoldoutHeaderGroup: 1

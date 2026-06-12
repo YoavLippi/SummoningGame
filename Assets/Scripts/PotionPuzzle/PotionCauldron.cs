@@ -9,7 +9,6 @@ public class PotionCauldron : NetworkBehaviour
 	public NetworkVariable<int> currentInstability = new NetworkVariable<int>(0);
 
 	[Header("Dynamic Targets (Server Picked)")]
-	// We make these NetworkVariables so the Apprentice's UI/Book can display the correct answer!
 	public NetworkVariable<int> targetPotency = new NetworkVariable<int>(0);
 	public NetworkVariable<int> targetInstability = new NetworkVariable<int>(0);
 
@@ -33,24 +32,44 @@ public class PotionCauldron : NetworkBehaviour
 	[SerializeField] private Renderer liquidSurfaceRenderer;
 	[SerializeField] private Light cauldronAmbientLight;
 
-	[Header("Events")] [SerializeField] private UnityEvent winEvent;
+	[Header("Events")][SerializeField] private UnityEvent winEvent;
 
 	private static readonly int BaseColorProperty = Shader.PropertyToID("_BaseColor");
 	private static readonly int EmissionColorProperty = Shader.PropertyToID("_EmissionColor");
 	private static readonly int ColorProperty = Shader.PropertyToID("_Color");
+
 	public override void OnNetworkSpawn()
 	{
 		// Only the Server is allowed to roll the dice on the targets
 		if (IsServer)
 		{
-			// Pick a random required potency between 8 and 18
 			targetPotency.Value = Random.Range(8, 19);
-
-			// Usually, you want instability to hit 0, but we can make it require exactly 0 or 1!
 			targetInstability.Value = Random.Range(0, 2);
 
 			Debug.Log($"[SERVER] New Potion Recipe Generated! Target Potency: {targetPotency.Value}, Target Instability: {targetInstability.Value}");
 		}
+
+		// THE FIX: Subscribe both the host and clients to value change listeners!
+		// The exact frame the values sync across the network, the visuals will update locally,
+		// completely bypassing the need for a separate ClientRpc call!
+		currentPotency.OnValueChanged += OnCauldronValuesChanged;
+		currentInstability.OnValueChanged += OnCauldronValuesChanged;
+
+		// Initialize visual elements to their baseline starting state
+		UpdateCauldronVisuals(currentPotency.Value, currentInstability.Value);
+	}
+
+	public override void OnNetworkDespawn()
+	{
+		// Clean up our listeners when leaving the game to prevent memory leaks
+		currentPotency.OnValueChanged -= OnCauldronValuesChanged;
+		currentInstability.OnValueChanged -= OnCauldronValuesChanged;
+	}
+
+	private void OnCauldronValuesChanged(int oldValue, int newValue)
+	{
+		// Whenever the network variables change, fire the visual layout loop safely!
+		UpdateCauldronVisuals(currentPotency.Value, currentInstability.Value);
 	}
 
 	[ServerRpc(RequireOwnership = false)]
@@ -64,7 +83,8 @@ public class PotionCauldron : NetworkBehaviour
 		if (currentPotency.Value < 0) currentPotency.Value = 0;
 		if (currentInstability.Value < 0) currentInstability.Value = 0;
 
-		UpdateCauldronVisualsClientRpc(currentPotency.Value, currentInstability.Value);
+		// REMOVED: UpdateCauldronVisualsClientRpc call is gone from here.
+		// Simply changing the NetworkVariable values above automatically triggers our new listeners!
 
 		CheckPotionSolution();
 	}
@@ -73,35 +93,23 @@ public class PotionCauldron : NetworkBehaviour
 	{
 		if (!IsServer) return;
 
-		// We compare the current NetworkVariable values against the random target values
 		if (currentPotency.Value == targetPotency.Value && currentInstability.Value == targetInstability.Value)
 		{
 			Debug.Log("Dynamic potion recipe matched perfectly! Playing cutscene...");
-			IsPuzzleComplete = true; // Lock local server interactions
+			IsPuzzleComplete = true;
 			LockPuzzleStateClientRpc();
 			winEvent.Invoke();
-			//PlaySuccessCutsceneClientRpc();
 		}
 	}
 
 	[ClientRpc]
 	private void LockPuzzleStateClientRpc()
 	{
-		IsPuzzleComplete = true; // Every client machine now registers the lock state
+		IsPuzzleComplete = true;
 	}
 
-	[ClientRpc]
-	private void PlaySuccessCutsceneClientRpc()
-	{
-		if (cutsceneDirectorObject != null)
-		{
-			cutsceneDirectorObject.SetActive(true);
-		}
-	}
-
-
-	[ClientRpc]
-	private void UpdateCauldronVisualsClientRpc(int potency, int instability)
+	// REMOVED [ClientRpc] attribute. This is now a regular local calculation method!
+	private void UpdateCauldronVisuals(int potency, int instability)
 	{
 		Color stateColor = stableColor;
 
@@ -127,26 +135,17 @@ public class PotionCauldron : NetworkBehaviour
 
 			if (instability > 0)
 			{
-				
-				// Level 1 instability = 65 particles | Level 2 = 100 particles | Level 3 = 135 particles
 				smokeEmission.rateOverTime = 30f + (instability * 35f);
-
-				// Make the smoke shoot upward much faster as pressure builds
 				smokeMain.startSpeed = 1.5f + (instability * 0.8f);
-				smokeMain.startColor = stateColor; // Uses your designer configured yellow/red states
-
-				
-				// Level 1 = 50 bubbles | Level 2 = 90 bubbles | Level 3 = 130 bubbles
+				smokeMain.startColor = stateColor;
 				bubbleEmission.rateOverTime = 10f + (instability * 40f);
 			}
 			else
 			{
-				// Baseline Calm State (Instability == 0)
 				smokeEmission.rateOverTime = 10f;
 				smokeMain.startSpeed = 0.6f;
-				smokeMain.startColor = stableColor; // Clean, calm cyan/purple tint
-
-				bubbleEmission.rateOverTime = 10f; // Soft, slow bubbling
+				smokeMain.startColor = stableColor;
+				bubbleEmission.rateOverTime = 10f;
 			}
 		}
 
@@ -156,20 +155,14 @@ public class PotionCauldron : NetworkBehaviour
 			Material liquidMat = liquidSurfaceRenderer.material;
 			if (liquidMat != null)
 			{
-				// Define a steady, unmoving brightness level for your magic liquid.
-				// 1.5f to 2.0f gives a beautiful, rich neon glow without overexposing to white.
 				float constantGlow = 1.25f;
-
-				// Force a slightly brighter burst only when they successfully win the puzzle
 				if (stateColor == recipeCompleteColor) constantGlow = 3.5f;
 
 				Color finalEmission = stateColor * constantGlow;
 
-				// Apply clean, solid tint colors to the base channels
 				if (liquidMat.HasProperty(BaseColorProperty)) liquidMat.SetColor(BaseColorProperty, stateColor);
 				if (liquidMat.HasProperty(ColorProperty)) liquidMat.SetColor(ColorProperty, stateColor);
 
-				// Apply the steady emission strength to the shader registers
 				if (liquidMat.HasProperty(EmissionColorProperty))
 				{
 					liquidMat.SetColor(EmissionColorProperty, finalEmission);
@@ -177,8 +170,6 @@ public class PotionCauldron : NetworkBehaviour
 				}
 
 				liquidMat.color = stateColor;
-
-				// Push updates straight to the real-time illumination loop
 				DynamicGI.SetEmissive(liquidSurfaceRenderer, finalEmission);
 			}
 		}

@@ -5,11 +5,13 @@ using System.Collections;
 public class IngredientSpawner : NetworkBehaviour
 {
 	[Header("Spawn Settings")]
-	[SerializeField] private GameObject ingredientPrefab; // Drop your Bone/Mushroom prefab here
-	[SerializeField] private float respawnDelay = 1.0f;    // Time to wait before a new one appears
+	[SerializeField] private GameObject ingredientPrefab;
+	[SerializeField] private float respawnDelay = 1.5f;
 
 	private GameObject currentSpawnedItem;
 	private bool isWaitingToRespawn = false;
+
+	public GameObject IngredientPrefab => ingredientPrefab;
 
 	public void Start()
 	{
@@ -18,46 +20,55 @@ public class IngredientSpawner : NetworkBehaviour
 
 	public override void OnNetworkSpawn()
 	{
-		// Only the server should handle spawning physical network objects
 		if (!IsServer) return;
-
 		SpawnNewIngredient();
 	}
 
-	private void Update()
+	public void SpawnNewIngredient()
 	{
 		if (!IsServer) return;
-		if (isWaitingToRespawn) return;
 
-		// If the item we spawned is gone (either picked up, destroyed, or fell in the cauldron)
-		if (currentSpawnedItem == null)
+		if (ingredientPrefab == null)
 		{
-			StartCoroutine(RespawnSequence());
+			return;
 		}
-	}
 
-	private void SpawnNewIngredient()
-	{
-		// Create the object at the spawner's exact position and rotation
 		currentSpawnedItem = Instantiate(ingredientPrefab, transform.position, transform.rotation);
-
-		// If your ingredients are NetworkObjects, spawn them across the network:
 		var netObj = currentSpawnedItem.GetComponent<NetworkObject>();
 		if (netObj != null)
 		{
-			netObj.Spawn(true);
+			netObj.Spawn(true);			
+		}		
+
+		var ingredientScript = currentSpawnedItem.GetComponent<PotionIngredient>();
+		if (ingredientScript != null)
+		{
+			ingredientScript.SetAssignedSpawner(this);
+			
+		}		
+	}
+
+	public void NotifyObjectLeftPlate()
+	{	
+
+		if (!IsServer) return;
+
+		if (isWaitingToRespawn)
+		{			
+			return;
 		}
+
+		StartCoroutine(RespawnSequence());
 	}
 
 	private IEnumerator RespawnSequence()
 	{
 		isWaitingToRespawn = true;
-
-		// Wait for the delay (gives a nice visual beat so it doesn't just instantly snap back)
+		
 		yield return new WaitForSeconds(respawnDelay);
 
 		SpawnNewIngredient();
 
-		isWaitingToRespawn = false;
+		isWaitingToRespawn = false;		
 	}
 }

@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1038711963271264254}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0933, y: -0.08, z: 0.1354}
+  m_LocalPosition: {x: -0.05, y: -0.1, z: 0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -599,6 +599,10 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   _wandController: {fileID: -436604901402377656}
   playerViewCam: {fileID: 1195311440804003583}
+  _playerPickup: {fileID: 596383510246498736}
+  ingredientAndCauldronMask:
+    serializedVersion: 2
+    m_Bits: 384
   hotbarSize: 9
   hotbarSlots: []
   selectionBox: {fileID: 0}
@@ -865,16 +869,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerPickup
   ShowTopMostFoldoutHeaderGroup: 1
-  playerInput: {fileID: -1906157402960468665}
-  actionMapName: PlayerController
-  pickupActionName: PickUp
-  holdPosition: {fileID: 4062042625441108266}
-  interactableLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  pickupRange: 30
-  sphereRadius: 0.3
-  cauldronTargetingRadius: 1.5
+  dropForwardOffset: 1
+  handLocation: {fileID: 4062042625441108266}
 --- !u!1001 &3219748129861406013
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -885,15 +881,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 9896b24e1c71f9f4faf9aa4a0b9fc354, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.042
+      value: 0.043
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9896b24e1c71f9f4faf9aa4a0b9fc354, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.042
+      value: 0.043
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9896b24e1c71f9f4faf9aa4a0b9fc354, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.042
+      value: 0.043
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9896b24e1c71f9f4faf9aa4a0b9fc354, type: 3}
       propertyPath: m_LocalPosition.x

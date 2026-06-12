@@ -1,40 +1,93 @@
 using UnityEngine;
+using Unity.Netcode;
+using System.Collections;
 
-public class PotionIngredient : MonoBehaviour
+public class PotionIngredient : NetworkBehaviour
 {
 	[Header("Ingredient Attributes")]
 	[SerializeField] private int potencyValue = 3;
 	[SerializeField] private int instabilityValue = 0;
 
-	// SAFETY GUARD: Prevents double-processing if physics triggers twice in one frame
 	private bool hasBeenIngested = false;
 
-	private void OnTriggerEnter(Collider other)
+	// Tracks which specific table spawner node created this instance
+	private IngredientSpawner assignedSpawner;
+
+	public void SetAssignedSpawner(IngredientSpawner spawner)
 	{
-		CheckIngest(other.gameObject);
+		assignedSpawner = spawner;
 	}
 
-	private void OnCollisionEnter(Collision collision)
+	public void CheckIngest(GameObject otherObj)
 	{
-		CheckIngest(collision.gameObject);
-	}
-
-	private void CheckIngest(GameObject otherObj)
-	{
-		// If it already processed, completely ignore any secondary impacts
+		if (!IsServer) return;
 		if (hasBeenIngested) return;
 
-		if (otherObj.CompareTag("Cauldron"))
+		hasBeenIngested = true;
+
+		PotionCauldron cauldron = Object.FindFirstObjectByType<PotionCauldron>();
+
+		if (cauldron != null)
 		{
-			hasBeenIngested = true; // Lock it instantly!
+			cauldron.MixIngredientServerRpc(potencyValue, instabilityValue);
+			Debug.Log($"[INGREDIENT] {gameObject.name} successfully ingested! Potency +{potencyValue}, Instability +{instabilityValue}");
+		}
+				
+		if (assignedSpawner != null)
+		{
+			assignedSpawner.NotifyObjectLeftPlate();
+		}
 
-			PotionCauldron cauldron = otherObj.GetComponent<PotionCauldron>();
-			if (cauldron != null)
-			{
-				cauldron.MixIngredientServerRpc(potencyValue, instabilityValue);
-			}
-
+		if (NetworkManager.Singleton.IsServer)
+		{
+			var netObj = GetComponent<NetworkObject>();
+			if (netObj != null && netObj.IsSpawned) netObj.Despawn(false);
 			Destroy(gameObject);
+		}
+	}
+
+	public void TriggerReturnGlide()
+	{
+		if (assignedSpawner != null)
+		{
+			// Run the smooth movement glide back to the spawner's exact transform coordinates
+			StartCoroutine(ReturnToTableCoroutine(assignedSpawner.transform.position));
+		}
+	}
+
+	private IEnumerator ReturnToTableCoroutine(Vector3 targetTablePosition)
+	{
+		float duration = 0.6f; // Adjust for float speed charm
+		float elapsed = 0f;
+		Vector3 startPosition = transform.position;
+		Quaternion startRotation = transform.rotation;
+
+		while (elapsed < duration)
+		{
+			elapsed += Time.deltaTime;
+			float t = elapsed / duration;
+
+			// Smooth easing curve out for a graceful floating touchdown
+			float smoothT = Mathf.Sin(t * Mathf.PI * 0.5f);
+
+			transform.position = Vector3.Lerp(startPosition, targetTablePosition, smoothT);
+			transform.rotation = Quaternion.Lerp(startRotation, Quaternion.identity, smoothT);
+			yield return null;
+		}
+
+		transform.position = targetTablePosition;
+		transform.rotation = Quaternion.identity;
+
+		// Re-enable the physics collider locally now that it's safe home on the plate
+		Collider col = GetComponent<Collider>();
+		if (col != null) col.enabled = true;
+	}
+	public void NotifySpawnerOfPickup()
+	{
+		if (assignedSpawner != null)
+		{
+			assignedSpawner.NotifyObjectLeftPlate();
+			assignedSpawner = null; // Disconnect tracking link so it doesn't trigger twice
 		}
 	}
 }
