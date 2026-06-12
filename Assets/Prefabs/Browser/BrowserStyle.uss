@@ -81,4 +81,8 @@
 .unity-button:enabled:active {
     color: rgb(0, 0, 0);
     background-color: rgb(147, 147, 147);
+    -unity-background-image-tint-color: rgb(153, 153, 153);
+}
+
+.blocks-container--horizontal {
 }
