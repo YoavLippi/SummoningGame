@@ -189720,9 +189720,9 @@ MonoBehaviour:
   onFail:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029109400}
+      - m_Target: {fileID: 11500000, guid: 08052303d01ccb8488dc32c7e5ecc49d, type: 3}
         m_TargetAssemblyTypeName: NetworkingBroker, Assembly-CSharp
-        m_MethodName: SendMessageToAllPlayers
+        m_MethodName: 
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -189883,6 +189883,21 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: Candle Game Scene
+          m_BoolArgument: 0
+        m_CallState: 2
+  PuzzleCompleteCutsceneEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2029109393}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &2045950955
