@@ -15,6 +15,7 @@ public class MainMenu : MonoBehaviour
         NetworkManager.Singleton.Shutdown();
         LeaveSession("default-session");
         ShowPanel(0); // this shows the first panel (Main Menu) by default
+        Cursor.lockState = CursorLockMode.None;
     }
     
     //really ugly to have it here, but it should work
