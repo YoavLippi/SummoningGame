@@ -28,6 +28,7 @@ public class NetworkingBroker : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     public void LoadSceneRpc(string sceneName)
     {
+        if (!IsHost) return;
         NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 }
