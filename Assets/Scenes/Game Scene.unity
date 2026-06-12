@@ -65317,6 +65317,7 @@ GameObject:
   - component: {fileID: 937158604}
   - component: {fileID: 937158603}
   - component: {fileID: 937158602}
+  - component: {fileID: 937158606}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -65416,6 +65417,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &937158606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 937158601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c99ab22dd106c948b1b59532d0d60e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PersistentUI
 --- !u!1 &953956495
 GameObject:
   m_ObjectHideFlags: 0
@@ -180336,6 +180349,10 @@ PrefabInstance:
     - target: {fileID: 8407796686211779553, guid: aded6eccb64442341b012f9ccd371e0d, type: 3}
       propertyPath: m_Name
       value: HotbarHolder 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407796686211779553, guid: aded6eccb64442341b012f9ccd371e0d, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 8735261052454962557, guid: aded6eccb64442341b012f9ccd371e0d, type: 3}
       propertyPath: m_Pivot.x

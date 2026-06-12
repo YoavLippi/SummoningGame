@@ -12,7 +12,7 @@ public class PlayerSpawner : NetworkBehaviour
 	[SerializeField] private Transform clientSpawn;
 
 	private void Start()
-	{
+	{		
 		connectedPlayers = NetworkManager.Singleton.ConnectedClients;
 		if (NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject() != null)
 		{
@@ -22,6 +22,7 @@ public class PlayerSpawner : NetworkBehaviour
 		SpawnPlayers();
 	}
 
+	
 	private void SpawnPlayers()
 	{
 		foreach (var player in connectedPlayers)
