@@ -177083,6 +177083,8 @@ MonoBehaviour:
   introPanel: {fileID: 5290136977644066895}
   winPanel: {fileID: 6151729600815054940}
   losePanel: {fileID: 4674883680666874198}
+  puzzle1CompletePanel: {fileID: 0}
+  bothCutscenePanel: {fileID: 0}
 --- !u!114 &2029109398
 MonoBehaviour:
   m_ObjectHideFlags: 0
