@@ -9,6 +9,9 @@ public class SessionCutscenes : NetworkBehaviour // changed to network
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject losePanel;
 
+    [SerializeField] private GameObject puzzle1CompletePanel;   
+    [SerializeField] private GameObject bothCutscenePanel;
+
     private void Start()
     {
         StartCoroutine(PlayClip(introPanel, onComplete: () => introPanel.SetActive(false)));
@@ -19,6 +22,16 @@ public class SessionCutscenes : NetworkBehaviour // changed to network
 
     [ClientRpc]
     public void TriggerLoseClientRpc() => StartCoroutine(PlayClip(losePanel, onComplete: LoadMainMenu));
+
+    public void TriggerPuzzle1Complete()
+    {
+        StartCoroutine(PlayClip(puzzle1CompletePanel, onComplete: () => puzzle1CompletePanel.SetActive(false)));
+    }
+
+    public void TriggerBothCutscene()
+    {
+        StartCoroutine(PlayClip(bothCutscenePanel, onComplete: LoadMainMenu));
+    }
 
 
     private IEnumerator PlayClip(GameObject panel, System.Action onComplete)
