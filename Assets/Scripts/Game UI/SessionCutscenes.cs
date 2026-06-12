@@ -1,24 +1,51 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Video;
+using UnityEngine.SceneManagement;
 using Unity.Netcode;
 
-public class SessionCutscenes : NetworkBehaviour // changed to network
+public class SessionCutscenes : NetworkBehaviour
 {
     [SerializeField] private GameObject introPanel;
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject losePanel;
 
-    [SerializeField] private GameObject puzzle1CompletePanel;   
+    [SerializeField] private GameObject puzzle1CompletePanel;
     [SerializeField] private GameObject bothCutscenePanel;
+
+    public InteractionHandler interactionHandler;
+
+    private bool _isFirstScene = true;
 
     private void Start()
     {
         StartCoroutine(PlayClip(introPanel, onComplete: () => introPanel.SetActive(false)));
     }
 
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (_isFirstScene)
+        {
+            _isFirstScene = false;
+            return;
+        }
+
+        interactionHandler.Initialize();
+        StartCoroutine(PlayClip(introPanel, onComplete: () => introPanel.SetActive(false)));
+    }
+
     [ClientRpc]
-    public void TriggerWinClientRpc() => StartCoroutine(PlayClip(winPanel, onComplete: LoadMainMenu)); // changed to client rpc for both
+    public void TriggerWinClientRpc() => StartCoroutine(PlayClip(winPanel, onComplete: LoadMainMenu));
 
     [ClientRpc]
     public void TriggerLoseClientRpc() => StartCoroutine(PlayClip(losePanel, onComplete: LoadMainMenu));
@@ -33,12 +60,11 @@ public class SessionCutscenes : NetworkBehaviour // changed to network
         StartCoroutine(PlayClip(bothCutscenePanel, onComplete: LoadMainMenu));
     }
 
-
     private IEnumerator PlayClip(GameObject panel, System.Action onComplete)
     {
         panel.SetActive(true);
 
-                MusicManager.Instance.SetPaused(true); // stop music
+        MusicManager.Instance.SetPaused(true);
 
         VideoPlayer video = panel.GetComponent<VideoPlayer>();
 
@@ -46,16 +72,16 @@ public class SessionCutscenes : NetworkBehaviour // changed to network
         yield return new WaitUntil(() => video.isPrepared);
 
         video.Play();
-        yield return null; // one frame for isPlaying to become true
+        yield return null;
         yield return new WaitUntil(() => !video.isPlaying);
 
-        MusicManager.Instance.SetPaused(false); // resume music
+        MusicManager.Instance.SetPaused(false);
 
         onComplete?.Invoke();
     }
 
     private void LoadMainMenu()
     {
-        NetworkManager.Singleton.SceneManager.LoadScene("Main Menu", UnityEngine.SceneManagement.LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene("Main Menu", LoadSceneMode.Single);
     }
 }

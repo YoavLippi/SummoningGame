@@ -188473,7 +188473,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8407796686211779553, guid: f58417a65ce204040ad225c0d9163df3, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Hotbar
       objectReference: {fileID: 0}
     - target: {fileID: 8735261052454962557, guid: f58417a65ce204040ad225c0d9163df3, type: 3}
       propertyPath: m_Pivot.x
