@@ -1,61 +1,64 @@
 using System.Collections;
-using UnityEngine;
-using UnityEngine.Video;
 using Unity.Netcode;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Video;
 
 public class SessionCutscenes : NetworkBehaviour // changed to network
 {
-    [SerializeField] private GameObject introPanel;
-    [SerializeField] private GameObject winPanel;
-    [SerializeField] private GameObject losePanel;
+	[SerializeField] private GameObject introPanel;
+	[SerializeField] private GameObject winPanel;
+	[SerializeField] private GameObject losePanel;
 
-    [SerializeField] private GameObject puzzle1CompletePanel;   
-    [SerializeField] private GameObject bothCutscenePanel;
+	[SerializeField] private GameObject puzzle1CompletePanel;
+	[SerializeField] private GameObject bothCutscenePanel;
 
-    private void Start()
-    {
-        StartCoroutine(PlayClip(introPanel, onComplete: () => introPanel.SetActive(false)));
-    }
+	public UnityEvent bothCutsceneCompleteEvent;
 
-    [ClientRpc]
-    public void TriggerWinClientRpc() => StartCoroutine(PlayClip(winPanel, onComplete: LoadMainMenu)); // changed to client rpc for both
+	private void Start()
+	{
+		StartCoroutine(PlayClip(introPanel, onComplete: () => introPanel.SetActive(false)));
+	}
 
-    [ClientRpc]
-    public void TriggerLoseClientRpc() => StartCoroutine(PlayClip(losePanel, onComplete: LoadMainMenu));
+	[ClientRpc]
+	public void TriggerWinClientRpc() => StartCoroutine(PlayClip(winPanel, onComplete: LoadMainMenu)); // changed to client rpc for both
 
-    public void TriggerPuzzle1Complete()
-    {
-        StartCoroutine(PlayClip(puzzle1CompletePanel, onComplete: () => puzzle1CompletePanel.SetActive(false)));
-    }
+	[ClientRpc]
+	public void TriggerLoseClientRpc() => StartCoroutine(PlayClip(losePanel, onComplete: LoadMainMenu));
 
-    public void TriggerBothCutscene()
-    {
-        StartCoroutine(PlayClip(bothCutscenePanel, onComplete: LoadMainMenu));
-    }
+	public void TriggerPuzzle1Complete()
+	{
+		StartCoroutine(PlayClip(puzzle1CompletePanel, onComplete: () => puzzle1CompletePanel.SetActive(false)));
+	}
+
+	public void TriggerBothCutscene()
+	{
+		StartCoroutine(PlayClip(bothCutscenePanel, onComplete: LoadMainMenu));
+	}
 
 
-    private IEnumerator PlayClip(GameObject panel, System.Action onComplete)
-    {
-        panel.SetActive(true);
+	private IEnumerator PlayClip(GameObject panel, System.Action onComplete)
+	{
+		panel.SetActive(true);
 
-                MusicManager.Instance.SetPaused(true); // stop music
+		MusicManager.Instance.SetPaused(true); // stop music
 
-        VideoPlayer video = panel.GetComponent<VideoPlayer>();
+		VideoPlayer video = panel.GetComponent<VideoPlayer>();
 
-        video.Prepare();
-        yield return new WaitUntil(() => video.isPrepared);
+		video.Prepare();
+		yield return new WaitUntil(() => video.isPrepared);
 
-        video.Play();
-        yield return null; // one frame for isPlaying to become true
-        yield return new WaitUntil(() => !video.isPlaying);
+		video.Play();
+		yield return null; // one frame for isPlaying to become true
+		yield return new WaitUntil(() => !video.isPlaying);
 
-        MusicManager.Instance.SetPaused(false); // resume music
+		MusicManager.Instance.SetPaused(false); // resume music
 
-        onComplete?.Invoke();
-    }
+		onComplete?.Invoke();
+	}
 
-    private void LoadMainMenu()
-    {
-        NetworkManager.Singleton.SceneManager.LoadScene("Main Menu", UnityEngine.SceneManagement.LoadSceneMode.Single);
-    }
+	private void LoadMainMenu()
+	{
+		NetworkManager.Singleton.SceneManager.LoadScene("Main Menu", UnityEngine.SceneManagement.LoadSceneMode.Single);
+	}
 }

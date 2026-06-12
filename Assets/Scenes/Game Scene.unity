@@ -53357,13 +53357,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 802985617}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: 0.9999915, z: -0, w: -0.004133454}
   m_LocalPosition: {x: 357.2, y: 451.9, z: 504.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1776698450}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180.474, z: 0}
 --- !u!1001 &810895135
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -104568,13 +104568,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1395012710}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 924.26, y: 139.23, z: 350.1}
+  m_LocalRotation: {x: -0, y: 0.49745035, z: -0, w: 0.86749244}
+  m_LocalPosition: {x: 931.15, y: 139.23, z: 344.98}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1776698450}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 59.663, z: 0}
 --- !u!1 &1397774544
 GameObject:
   m_ObjectHideFlags: 0
@@ -191761,6 +191761,9 @@ MonoBehaviour:
   losePanel: {fileID: 4674883680666874198}
   puzzle1CompletePanel: {fileID: 866348827}
   bothCutscenePanel: {fileID: 244013284}
+  bothCutsceneCompleteEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2029109398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191975,18 +191978,6 @@ MonoBehaviour:
   winEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029109400}
-        m_TargetAssemblyTypeName: NetworkingBroker, Assembly-CSharp
-        m_MethodName: LoadSceneRpc
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Candle Game Scene
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 2029109397}
         m_TargetAssemblyTypeName: SessionCutscenes, Assembly-CSharp
         m_MethodName: TriggerBothCutscene
@@ -191997,6 +191988,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2029109400}
+        m_TargetAssemblyTypeName: NetworkingBroker, Assembly-CSharp
+        m_MethodName: LoadSceneRpc
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Candle Game Scene
           m_BoolArgument: 0
         m_CallState: 2
   PuzzleCompleteCutsceneEvent:
