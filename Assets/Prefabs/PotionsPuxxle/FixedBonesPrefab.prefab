@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 5886602780943787474}
   - component: {fileID: 7656855471716167764}
   - component: {fileID: 379853124619471355}
-  m_Layer: 0
-  m_Name: FixedBonesPrefab 1
-  m_TagString: Untagged
+  m_Layer: 7
+  m_Name: FixedBonesPrefab
+  m_TagString: Ingredient
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

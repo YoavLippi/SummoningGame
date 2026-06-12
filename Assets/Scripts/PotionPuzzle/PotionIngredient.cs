@@ -7,18 +7,15 @@ public class PotionIngredient : NetworkBehaviour
 	[SerializeField] private int potencyValue = 3;
 	[SerializeField] private int instabilityValue = 0;
 
-	// SAFETY GUARD: Prevents double-processing if physics triggers twice in one frame
 	private bool hasBeenIngested = false;
 
-	//private void OnTriggerEnter(Collider other)
-	//{
-	//	CheckIngest(other.gameObject);
-	//}
+	// Tracks which specific table spawner node created this instance
+	private IngredientSpawner assignedSpawner;
 
-	//private void OnCollisionEnter(Collision collision)
-	//{
-	//	CheckIngest(collision.gameObject);
-	//}
+	public void SetAssignedSpawner(IngredientSpawner spawner)
+	{
+		assignedSpawner = spawner;
+	}
 
 	public void CheckIngest(GameObject otherObj)
 	{
@@ -27,12 +24,10 @@ public class PotionIngredient : NetworkBehaviour
 
 		hasBeenIngested = true;
 
-		// Locate the cauldron in your scene layout
 		PotionCauldron cauldron = Object.FindFirstObjectByType<PotionCauldron>();
 
 		if (cauldron != null)
 		{
-			// Directly push the math values to the cauldron's ServerRpc
 			cauldron.MixIngredientServerRpc(potencyValue, instabilityValue);
 			Debug.Log($"[INGREDIENT] {gameObject.name} successfully ingested! Potency +{potencyValue}, Instability +{instabilityValue}");
 		}
@@ -40,7 +35,29 @@ public class PotionIngredient : NetworkBehaviour
 		{
 			Debug.LogError("[INGREDIENT] Could not find PotionCauldron in the active scene hierarchy!");
 		}
-				
-		GetComponent<NetworkObject>().Despawn(true);
+
+		
+		if (assignedSpawner != null)
+		{
+			assignedSpawner.NotifyObjectLeftPlate();
+		}
+
+		if (NetworkManager.Singleton.IsServer)
+		{
+			var netObj = GetComponent<NetworkObject>();
+			if (netObj != null && netObj.IsSpawned)
+			{
+				netObj.Despawn(false);
+			}
+			Destroy(gameObject);
+		}
+	}
+	public void NotifySpawnerOfPickup()
+	{
+		if (assignedSpawner != null)
+		{
+			assignedSpawner.NotifyObjectLeftPlate();
+			assignedSpawner = null; // Disconnect tracking link so it doesn't trigger twice
+		}
 	}
 }

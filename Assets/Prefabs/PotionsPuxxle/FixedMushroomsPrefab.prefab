@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 2980955248862447454}
   - component: {fileID: 3839268309828403566}
   - component: {fileID: 4200653059240699038}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FixedMushroomsPrefab
-  m_TagString: Untagged
+  m_TagString: Ingredient
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 4000080206
+  GlobalObjectIdHash: 1909582101
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -126,7 +126,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8422150241223282890, guid: 4564055193cc8584a89efe2047bd6394, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3656793406
+      value: 5629283
       objectReference: {fileID: 0}
     - target: {fileID: -8422150241223282890, guid: 4564055193cc8584a89efe2047bd6394, type: 3}
       propertyPath: SceneMigrationSynchronization

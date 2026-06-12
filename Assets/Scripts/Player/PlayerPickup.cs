@@ -17,6 +17,13 @@ public class PlayerPickup : NetworkBehaviour
 	public void InsidePressPickup(RaycastHit hitInfo, bool hitSomething)
 	{
 		//  SAFETY GUARD: Only the local controller owner can trigger a pickup event!
+		PotionCauldron cauldron = Object.FindFirstObjectByType<PotionCauldron>();
+		if (cauldron != null && cauldron.IsPuzzleComplete)
+		{
+			// If the potion is successfully brewed, freeze all pickup interactions!
+			return;
+		}
+
 		if (!IsOwner || carriedItem != null) return;
 
 		if (hitSomething && hitInfo.collider.CompareTag("Ingredient"))
@@ -95,6 +102,12 @@ public class PlayerPickup : NetworkBehaviour
 	{
 		if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkObjectId, out NetworkObject netObj))
 		{
+			var ingredientScript = netObj.gameObject.GetComponent<PotionIngredient>();
+			if (ingredientScript != null)
+			{
+				ingredientScript.NotifySpawnerOfPickup();
+			}
+
 			netObj.gameObject.transform.SetParent(null, true);
 			netObj.ChangeOwnership(rpcParams.Receive.SenderClientId);
 			NotifyPickupClientRpc(networkObjectId);
@@ -176,7 +189,17 @@ public class PlayerPickup : NetworkBehaviour
 			if (NetworkManager.Singleton.IsServer)
 			{
 				var ingredientScript = item.GetComponent<PotionIngredient>();
-				if (ingredientScript != null) ingredientScript.CheckIngest(item);
+				if (ingredientScript != null)
+				{
+					ingredientScript.CheckIngest(item);
+				}
+				else
+				{
+					// Fallback security cleanup if the object lacks an ingredient component
+					var netObj = item.GetComponent<NetworkObject>();
+					if (netObj != null && netObj.IsSpawned) netObj.Despawn(true);
+					else Destroy(item);
+				}
 			}
 		}
 	}

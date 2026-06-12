@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 904733457240278171}
   - component: {fileID: 666319963996102874}
   - component: {fileID: 6117357857002553207}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FixedEyeBallsPrefab
-  m_TagString: Untagged
+  m_TagString: Ingredient
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
