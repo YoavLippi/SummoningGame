@@ -46,11 +46,9 @@ public class PlayerPickup : NetworkBehaviour
 
 	public void InsideReleaseDrop(RaycastHit crosshairHit, bool hitSomething)
 	{
-		//  SAFETY GUARD: Block remote proxies from processing your release vectors!
 		if (!IsOwner || carriedItem == null) return;
 
-		Debug.Log($"[DROP TRACE] Attempting to release {carriedItem.name}. Current Position before release: {carriedItem.transform.position}");
-
+		// CHOICE A: Magnetize Glide straight into the Cauldron
 		if (hitSomething && crosshairHit.collider.CompareTag("CauldronMagnet"))
 		{
 			Vector3 targetCenter = crosshairHit.collider.bounds.center;
@@ -63,22 +61,27 @@ public class PlayerPickup : NetworkBehaviour
 			return;
 		}
 
-		Vector3 startingOrigin = handLocation != null ? handLocation.position : transform.position;
-		Vector3 dropPosition = startingOrigin + (transform.forward * dropForwardOffset);
+		// CHOICE B: MAGICAL MISDROP RETURN
+		// If it wasn't dropped in the cauldron, float it back to its specific table plate!
+		Debug.Log("[DROP TRACE] Misdrop registered! Commanding item to float home.");
 
-		if (Physics.Raycast(dropPosition, Vector3.down, out RaycastHit surfaceHit, 4f))
+		var ingredientScript = carriedItem.GetComponent<PotionIngredient>();
+		if (ingredientScript != null)
 		{
-			dropPosition = surfaceHit.point;
-			Debug.Log($"[DROP TRACE] Safely hit surface layer below player eyes at: {dropPosition}");
+			// Tell the item to slide back gracefully to its table spawner location
+			ingredientScript.TriggerReturnGlide();
 		}
 		else
 		{
-			// Fallback placement logic maps straight down to desk level height
-			dropPosition = startingOrigin + (transform.forward * dropForwardOffset) - new Vector3(0, 0.5f, 0);
-			Debug.Log($"[DROP TRACE] No structural surface found below. Defaulting to air drop layout at: {dropPosition}");
+			// Fallback emergency safety if script component goes missing
+			Collider col = carriedItem.GetComponent<Collider>();
+			if (col != null) col.enabled = true;
 		}
 
-		RequestDropServerRpc(carriedNetObj.NetworkObjectId, dropPosition);
+		//  RULES CHECK: Notice we DO NOT talk to the spawner here! 
+		// Because the item went back to the plate, the table remains occupied, 
+		// preventing duplicate item spawning loops entirely.
+
 		ClearLocalReferences();
 	}
 
@@ -102,12 +105,6 @@ public class PlayerPickup : NetworkBehaviour
 	{
 		if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkObjectId, out NetworkObject netObj))
 		{
-			var ingredientScript = netObj.gameObject.GetComponent<PotionIngredient>();
-			if (ingredientScript != null)
-			{
-				ingredientScript.NotifySpawnerOfPickup();
-			}
-
 			netObj.gameObject.transform.SetParent(null, true);
 			netObj.ChangeOwnership(rpcParams.Receive.SenderClientId);
 			NotifyPickupClientRpc(networkObjectId);
