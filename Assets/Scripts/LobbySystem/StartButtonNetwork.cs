@@ -1,6 +1,7 @@
 using System;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 [RequireComponent(typeof(NetworkObject))]
@@ -22,7 +23,7 @@ public class StartButtonNetwork : NetworkBehaviour
     {
         model = browserTree.rootVisualElement.Q<StartButton>("StartReady");
     }
-
+    
     public override void OnNetworkSpawn()
     {
         if (IsServer)
@@ -33,7 +34,15 @@ public class StartButtonNetwork : NetworkBehaviour
         
         SetReadyRpc(false);
     }
-    
+
+    public override void OnNetworkDespawn()
+    {
+        if (IsServer)
+        {
+            NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
+        }
+    }
+
     [Rpc(SendTo.Everyone)]
     private void HandleChangeRpc(bool oldVal, bool newVal) 
     {
@@ -61,6 +70,6 @@ public class StartButtonNetwork : NetworkBehaviour
     {
         //UnreadyRpc();
         isReady.Value = false;
-        model.m_Model.SetReadyFromNetwork(false);
+        model?.m_Model.SetReadyFromNetwork(false);
     }
 }

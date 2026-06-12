@@ -188799,7 +188799,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2029109393}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fc9e1fbd72527e49b46ab9e8889f49d, type: 3}
+  m_Script: {fileID: 11500000, guid: 34a8afd866b749748bfff589931eb8a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameLogicController
   ShowTopMostFoldoutHeaderGroup: 1
@@ -188813,7 +188813,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2029109400}
         m_TargetAssemblyTypeName: NetworkingBroker, Assembly-CSharp
-        m_MethodName: ChangeSceneForAllRpc
+        m_MethodName: LoadSceneRpc
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -249082,7 +249082,7 @@ GameObject:
   - component: {fileID: 7368383715942197148}
   - component: {fileID: 7368383715942197147}
   m_Layer: 10
-  m_Name: PuzzleCandle 4 (1)
+  m_Name: PuzzleCandle 4
   m_TagString: CandleSlot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -259116,13 +259116,13 @@ MonoBehaviour:
   debugColorViewer: 
   _candleController: {fileID: 2029109401}
   candleObjects:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 6085181965693893574}
+  - {fileID: 2569811233479985994}
+  - {fileID: 3657088018155425421}
+  - {fileID: 6958816052894932387}
+  - {fileID: 8267743631848730637}
+  - {fileID: 2059564230054324321}
+  - {fileID: 3777374866568740406}
   candleLights:
   - {fileID: 8508889940261450561}
   - {fileID: 9142318107469515504}
