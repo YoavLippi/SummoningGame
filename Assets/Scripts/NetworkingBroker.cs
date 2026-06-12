@@ -4,31 +4,31 @@ using UnityEngine.SceneManagement;
 
 public class NetworkingBroker : NetworkBehaviour
 {
-    public void SendMessageToAllPlayers(string message)
-    {
-        SendMessageGlobalRpc(message);
-    }
+	public void SendMessageToAllPlayers(string message)
+	{
+		SendMessageGlobalRpc(message);
+	}
 
-    public void SendMessageToLocalPlayer(string message)
-    {
-        SendMessageLocal(message);
-    }
-    
-    private void SendMessageLocal(string message)
-    {
-        NetworkManager.Singleton.LocalClient.PlayerObject.SendMessage(message);
-    }
+	public void SendMessageToLocalPlayer(string message)
+	{
+		SendMessageLocal(message);
+	}
 
-    [Rpc(SendTo.Everyone)]
-    private void SendMessageGlobalRpc(string message)
-    {
-        NetworkManager.Singleton.LocalClient.PlayerObject.SendMessage(message);
-    }
+	private void SendMessageLocal(string message)
+	{
+		NetworkManager.Singleton.LocalClient.PlayerObject.SendMessage(message);
+	}
 
-    [Rpc(SendTo.Everyone)]
-    public void LoadSceneRpc(string sceneName)
-    {
-        if (!IsHost) return;
-        NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
-    }
+	[Rpc(SendTo.Everyone)]
+	private void SendMessageGlobalRpc(string message)
+	{
+		NetworkManager.Singleton.LocalClient.PlayerObject.SendMessage(message);
+	}
+
+	[Rpc(SendTo.Server)]
+	public void LoadSceneRpc(string sceneName)
+	{
+		if (!IsHost) return;
+		NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+	}
 }
