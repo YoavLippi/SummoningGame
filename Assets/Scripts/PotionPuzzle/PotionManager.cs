@@ -27,9 +27,9 @@ public class PotionManager : NetworkBehaviour
 		}
 	}
 
-	[ClientRpc]
-	void NotifyWinClientRpc()
-	{
-		// Trigger fireworks or open a door 
-	}
+    [ClientRpc]
+    void NotifyWinClientRpc()
+    {
+        FindObjectOfType<GameLogicController>().CheckFlagRpc();
+    }
 }
