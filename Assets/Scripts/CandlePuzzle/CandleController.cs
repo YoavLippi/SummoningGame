@@ -20,9 +20,9 @@ public class CandleController : NetworkBehaviour
         public List<CandleStep> sequence = new List<CandleStep>();
     }
 
-    // inspector-configured solutions for all three rounds of the puzzle
+    // inspector-configured solutions for all rounds of the puzzle
     [Header("Solutions (set in Inspector)")]
-    [SerializeField] private RoundSolution[] rounds = new RoundSolution[3];
+    [SerializeField] private RoundSolution[] rounds = new RoundSolution[0];
 
     // references to the wound and candle behaviours for coordination
     [Header("References")]
@@ -122,19 +122,23 @@ public class CandleController : NetworkBehaviour
     }
 
 #if UNITY_EDITOR
-    // validates that exactly 3 rounds exist and each round gets progressively longer
+    // validates that each round gets progressively longer
     private void OnValidate()
     {
-        if (rounds == null || rounds.Length != 3)
+        if (rounds == null)
         {
-            System.Array.Resize(ref rounds, 3);
-            for (int i = 0; i < rounds.Length; i++)
-            {
-                if (rounds[i] == null)
-                    rounds[i] = new RoundSolution();
-            }
+            rounds = new RoundSolution[0];
+            return;
         }
 
+        // ensure no null entries
+        for (int i = 0; i < rounds.Length; i++)
+        {
+            if (rounds[i] == null)
+                rounds[i] = new RoundSolution();
+        }
+
+        // warn if sequences don't get progressively longer
         for (int i = 1; i < rounds.Length; i++)
         {
             if (rounds[i].sequence.Count <= rounds[i - 1].sequence.Count)
