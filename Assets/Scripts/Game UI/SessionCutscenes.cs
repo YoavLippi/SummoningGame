@@ -15,9 +15,10 @@ public class SessionCutscenes : NetworkBehaviour // changed to network
 	[SerializeField] private GameObject puzzle1CompletePanel;
 	[SerializeField] private GameObject bothCutscenePanel;
 	[SerializeField] public GameObject Puzzle1Winpanel;
+	[SerializeField] public GameObject Puzzle1Towerpanel;
 
-    //reference to the input actions to disable them during cutscenes
-    private WizardController wizControl;
+	//reference to the input actions to disable them during cutscenes
+	private WizardController wizControl;
     private InteractionHandler interactHandler;
 
 
@@ -56,6 +57,7 @@ public class SessionCutscenes : NetworkBehaviour // changed to network
 	{
 		StartCoroutine(PlayClip(puzzle1CompletePanel, onComplete: () => puzzle1CompletePanel.SetActive(false)));
 		Puzzle1Winpanel.SetActive(true);
+		Puzzle1Towerpanel.SetActive(true);
 	}
 
 	public void TriggerBothCutscene()
