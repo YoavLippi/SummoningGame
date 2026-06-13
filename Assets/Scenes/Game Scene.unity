@@ -25851,7 +25851,7 @@ Transform:
   m_GameObject: {fileID: 403608860}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 7.686, z: 5.4720006}
+  m_LocalPosition: {x: 383.8298, y: 329.2041, z: 528.3223}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -65429,6 +65429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c99ab22dd106c948b1b59532d0d60e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PersistentUI
+  mainStartingSceneName: Main Menu
 --- !u!1 &953956495
 GameObject:
   m_ObjectHideFlags: 0
@@ -191757,6 +191758,7 @@ MonoBehaviour:
   losePanel: {fileID: 4674883680666874198}
   puzzle1CompletePanel: {fileID: 866348827}
   bothCutscenePanel: {fileID: 244013284}
+  playerInput: {fileID: -1906157402960468665, guid: 80374d7759382d94998d7da5c27a6cc5, type: 3}
   bothCutsceneCompleteEvent:
     m_PersistentCalls:
       m_Calls: []
