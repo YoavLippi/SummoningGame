@@ -12,6 +12,7 @@ public class SessionCutscenes : NetworkBehaviour // changed to network
 
 	[SerializeField] private GameObject puzzle1CompletePanel;
 	[SerializeField] private GameObject bothCutscenePanel;
+	[SerializeField] public GameObject Puzzle1Winpanel;
 
 	public UnityEvent bothCutsceneCompleteEvent;
 
@@ -29,6 +30,7 @@ public class SessionCutscenes : NetworkBehaviour // changed to network
 	public void TriggerPuzzle1Complete()
 	{
 		StartCoroutine(PlayClip(puzzle1CompletePanel, onComplete: () => puzzle1CompletePanel.SetActive(false)));
+		Puzzle1Winpanel.SetActive(true);
 	}
 
 	public void TriggerBothCutscene()
