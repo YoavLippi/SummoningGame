@@ -200,7 +200,7 @@ public class WoundBehaviour : NetworkBehaviour
         var tmp = indicator.GetComponentInChildren<TMPro.TextMeshProUGUI>(true);
         if (tmp != null)
         {
-            tmp.text = slotIndex.ToString();
+            tmp.text = (slotIndex + 1).ToString();  // +1 for human-readable numbering
             tmp.gameObject.SetActive(true);
             return;
         }
@@ -208,15 +208,15 @@ public class WoundBehaviour : NetworkBehaviour
         var tmpWorld = indicator.GetComponentInChildren<TMPro.TextMeshPro>(true);
         if (tmpWorld != null)
         {
-            tmpWorld.text = slotIndex.ToString();
+            tmpWorld.text = (slotIndex + 1).ToString();  // +1 for player readability
             tmpWorld.gameObject.SetActive(true);
             return;
         }
 
-        var legacyText = indicator.GetComponentInChildren<UnityEngine.UI.Text>(true);
+        var legacyText = indicator.GetComponentInChildren < UnityEngine.UI.Text > (true);
         if (legacyText != null)
         {
-            legacyText.text = slotIndex.ToString();
+            legacyText.text = (slotIndex + 1).ToString();  // +1 for player readability 
             legacyText.gameObject.SetActive(true);
             return;
         }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using TMPro;
 
 // network behaviour that handles the candle puzzle logic, input validation, and visual feedback
 public class CandleBehaviour : NetworkBehaviour
@@ -39,6 +40,9 @@ public class CandleBehaviour : NetworkBehaviour
     [SerializeField] private int failureCount = 0;
     [SerializeField] private int maxFailures = 3;
     [SerializeField] private bool puzzleFailed = false;
+    [SerializeField] private GameObject failurePanel;          // assign in inspector
+    [SerializeField] private TMP_Text failureMessageText;      // assign in inspector
+    [SerializeField] private float failureMessageDuration = 3f;
 
     // public getter that returns true when the controller is ready and input is not locked
     public bool IsReadyForInput => _candleController != null && _candleController.IsRoundReady && canInput && !puzzleFailed;
@@ -63,7 +67,7 @@ public class CandleBehaviour : NetworkBehaviour
             for (int i = 0; i < candleObjects.Length; i++)
             {
                 if (candleObjects[i] != null)
-                    candleParticles[i] = candleObjects[i].GetComponentInChildren<ParticleSystem>(true);
+                    candleParticles[i] = candleObjects[i].GetComponentInChildren < ParticleSystem > (true);
             }
         }
     }
@@ -213,8 +217,14 @@ public class CandleBehaviour : NetworkBehaviour
         failureCount++;
         Debug.Log($"[Candles] Failure {failureCount}/{maxFailures}");
 
-        // Visual feedback: flash all active candles red briefly
         FlashAllCandlesClientRpc(false);
+
+        if (failureCount < maxFailures)
+        {
+            // show message on fails 1 and 2 only
+            string msg = failureCount == 1 ? "Two more left." : "1 more attempt left.";
+            ShowFailureMessageClientRpc(msg);
+        }
 
         yield return new WaitForSeconds(0.5f);
 
@@ -226,6 +236,21 @@ public class CandleBehaviour : NetworkBehaviour
         {
             NullSequenceRpc();
         }
+    }
+
+    [ClientRpc]
+    private void ShowFailureMessageClientRpc(string message)
+    {
+        if (failurePanel != null && failureMessageText != null)
+            StartCoroutine(DisplayFailureMessage(message));
+    }
+
+    private IEnumerator DisplayFailureMessage(string message)
+    {
+        failureMessageText.text = message;
+        failurePanel.SetActive(true);
+        yield return new WaitForSeconds(failureMessageDuration);
+        failurePanel.SetActive(false);
     }
 
     // handles the lose state when max failures are reached
@@ -242,7 +267,7 @@ public class CandleBehaviour : NetworkBehaviour
         Cursor.visible = true;
 
         // Trigger lose cutscene via SessionCutscenes (same pattern as GraveBehaviour)
-        SessionCutscenes cutscenes = FindObjectOfType<SessionCutscenes>();
+        SessionCutscenes cutscenes = FindObjectOfType < SessionCutscenes > ();
         if (cutscenes != null)
         {
             cutscenes.TriggerLoseClientRpc();
@@ -433,7 +458,7 @@ public class CandleBehaviour : NetworkBehaviour
             if (i < lightCount && candleLights[i] != null)
                 candleLights[i].enabled = false;
 
-            // NEW: stop and clear all particles on reset so nothing lingers between rounds.
+            // stop and clear all particles on reset so nothing lingers between rounds.
             if (i < particleCount && candleParticles[i] != null)
                 candleParticles[i].Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
@@ -474,14 +499,15 @@ public class CandleBehaviour : NetworkBehaviour
     [ClientRpc]
     private void PuzzleCompleteClientRpc()
     {
-        Debug.Log("[Candles] All 3 rounds complete. Puzzle solved!");
+        int totalRounds = _candleController != null ? _candleController.TotalRounds : 0;
+        Debug.Log($"[Candles] All {totalRounds} rounds complete. Puzzle solved!");
 
         // Unlock cursor so player can navigate menus
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
         // Trigger win cutscene via SessionCutscenes (same pattern as GraveBehaviour)
-        SessionCutscenes cutscenes = FindObjectOfType<SessionCutscenes>();
+        SessionCutscenes cutscenes = FindObjectOfType < SessionCutscenes > ();
         if (cutscenes != null)
         {
             cutscenes.TriggerWinClientRpc();
