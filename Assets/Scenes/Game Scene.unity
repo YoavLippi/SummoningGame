@@ -132271,7 +132271,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: Your apprentice can see what potency and instabilty the cauldron needs
-    to reach. Add certain ingredients (mushrooms, eyeballs, or bones) to get to the
+    to reach. Add certain ingredients (mushrooms, eyeballs, or bones) to get the
     cauldron to the correct state and solve the puzzle.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 46253dc64fc7df9498a822376684711c, type: 2}
