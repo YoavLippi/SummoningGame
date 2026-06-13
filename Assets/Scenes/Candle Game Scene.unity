@@ -25083,7 +25083,7 @@ Transform:
   m_GameObject: {fileID: 403608860}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 7.686, z: 5.4720006}
+  m_LocalPosition: {x: 375.78958, y: 329.2041, z: 515.25256}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -177165,6 +177165,7 @@ MonoBehaviour:
   losePanel: {fileID: 4674883680666874198}
   puzzle1CompletePanel: {fileID: 0}
   bothCutscenePanel: {fileID: 0}
+  playerInput: {fileID: -1906157402960468665, guid: 80374d7759382d94998d7da5c27a6cc5, type: 3}
   bothCutsceneCompleteEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -177312,7 +177313,21 @@ MonoBehaviour:
       requiredColor: 5
     - requiredSlotIndex: 0
       requiredColor: 0
-  - sequence: []
+  - sequence:
+    - requiredSlotIndex: 6
+      requiredColor: 0
+    - requiredSlotIndex: 1
+      requiredColor: 2
+    - requiredSlotIndex: 4
+      requiredColor: 6
+    - requiredSlotIndex: 3
+      requiredColor: 3
+    - requiredSlotIndex: 0
+      requiredColor: 4
+    - requiredSlotIndex: 2
+      requiredColor: 1
+    - requiredSlotIndex: 5
+      requiredColor: 5
   _candleBehaviour: {fileID: 8586821684524005294}
   _woundBehaviour: {fileID: 1189308408}
   currentRound: 0

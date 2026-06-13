@@ -2,7 +2,9 @@ using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using UnityEngine.Video;
+using static UnityEngine.Timeline.DirectorControlPlayable;
 
 public class SessionCutscenes : NetworkBehaviour // changed to network
 {
@@ -14,14 +16,37 @@ public class SessionCutscenes : NetworkBehaviour // changed to network
 	[SerializeField] private GameObject bothCutscenePanel;
 	[SerializeField] public GameObject Puzzle1Winpanel;
 
-	public UnityEvent bothCutsceneCompleteEvent;
+    //reference to the input actions to disable them during cutscenes
+    private WizardController wizControl;
+    private InteractionHandler interactHandler;
+
+
+    public UnityEvent bothCutsceneCompleteEvent;
 
 	private void Start()
 	{
-		StartCoroutine(PlayClip(introPanel, onComplete: () => introPanel.SetActive(false)));
+        //find the local player's controllers to disable input during cutscenes
+        FindLocalPlayerControllers();
+        StartCoroutine(PlayClip(introPanel, onComplete: () => introPanel.SetActive(false)));
 	}
 
-	[ClientRpc]
+    //function  to find local player contraller to disable/enable input during cutscenes
+    private void FindLocalPlayerControllers()
+    {
+        // Wait a frame for player to be spawned/moved, then find
+        if (NetworkManager.Singleton?.LocalClient?.PlayerObject != null)
+        {
+            var playerObj = NetworkManager.Singleton.LocalClient.PlayerObject;
+            wizControl = playerObj.GetComponent <WizardController > ();
+            interactHandler = playerObj.GetComponent <InteractionHandler > ();
+        }
+        else
+        {
+            Debug.LogWarning("[SessionCutscenes] Could not find local player object!");
+        }
+    }
+
+    [ClientRpc]
 	public void TriggerWinClientRpc() => StartCoroutine(PlayClip(winPanel, onComplete: LoadMainMenu)); // changed to client rpc for both
 
 	[ClientRpc]
@@ -41,9 +66,15 @@ public class SessionCutscenes : NetworkBehaviour // changed to network
 
 	private IEnumerator PlayClip(GameObject panel, System.Action onComplete)
 	{
-		panel.SetActive(true);
+        //find the controllers in case scene changed and references are stale
+        FindLocalPlayerControllers();
 
-		MusicManager.Instance.SetPaused(true); // stop music
+        //disable the player input before cutscene starts
+        SetPlayerInputEnabled(false);
+
+        panel.SetActive(true);
+
+        MusicManager.Instance.SetPaused(true); // stop music
 
 		VideoPlayer video = panel.GetComponent<VideoPlayer>();
 
@@ -56,10 +87,24 @@ public class SessionCutscenes : NetworkBehaviour // changed to network
 
 		MusicManager.Instance.SetPaused(false); // resume music
 
-		onComplete?.Invoke();
+        //then enable player input after cutscene ends
+        SetPlayerInputEnabled(true);
+
+        onComplete?.Invoke();
 	}
 
-	private void LoadMainMenu()
+    private void SetPlayerInputEnabled(bool enabled)
+    {
+        if (wizControl != null)
+            wizControl.isDetectingInput = enabled;
+
+        if (interactHandler != null)
+            interactHandler.isDetectingInput = enabled;
+
+        Debug.Log($"[SessionCutscenes] Player input set to: {enabled}");
+    }
+
+    private void LoadMainMenu()
 	{
 		NetworkManager.Singleton.SceneManager.LoadScene("Main Menu", UnityEngine.SceneManagement.LoadSceneMode.Single);
 	}
